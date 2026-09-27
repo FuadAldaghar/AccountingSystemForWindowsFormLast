@@ -22,9 +22,12 @@
         private System.Windows.Forms.ToolStripMenuItem stockReportMenuItem;
         private System.Windows.Forms.ToolStripMenuItem accountStatementMenuItem;
 
+        private System.Windows.Forms.Panel contentPanel;
         private System.Windows.Forms.Panel pnlHeader;
+        private System.Windows.Forms.Panel pnlHeaderAccent;
         private System.Windows.Forms.Label lblTitle;
         private System.Windows.Forms.Label lblSubTitle;
+        private System.Windows.Forms.Label lblBrand;
 
         protected override void Dispose(bool disposing)
         {
@@ -34,174 +37,254 @@
             base.Dispose(disposing);
         }
 
+        #region Windows Form Designer generated code
+
         private void InitializeComponent()
         {
+            contentPanel = new Panel();
             pnlHeader = new Panel();
+            pnlHeaderAccent = new Panel();
+            lblBrand = new Label();
+            lblSubTitle = new Label();
+            lblTitle = new Label();
+
             mainMenuStrip = new MenuStrip();
+
             systemMenu = new ToolStripMenuItem();
             accountTreeMenuItem = new ToolStripMenuItem();
             itemsMenuItem = new ToolStripMenuItem();
+
             vouchersMenu = new ToolStripMenuItem();
             receiptVoucherMenuItem = new ToolStripMenuItem();
             paymentVoucherMenuItem = new ToolStripMenuItem();
+
             invoicesMenu = new ToolStripMenuItem();
             purchaseInvoiceMenuItem = new ToolStripMenuItem();
             salesInvoiceMenuItem = new ToolStripMenuItem();
+
             reportsMenu = new ToolStripMenuItem();
             stockReportMenuItem = new ToolStripMenuItem();
             accountStatementMenuItem = new ToolStripMenuItem();
+
             قيوداليوميهToolStripMenuItem = new ToolStripMenuItem();
             قيوداليوميهToolStripMenuItem1 = new ToolStripMenuItem();
+
+            contentPanel.SuspendLayout();
+            pnlHeader.SuspendLayout();
             mainMenuStrip.SuspendLayout();
             SuspendLayout();
-            // 
+
+            // contentPanel
+            // منطقة الشاشات الداخلية: تتمدد فقط في المساحة المتبقية.
+            contentPanel.BackColor = Color.FromArgb(246, 248, 247);
+            contentPanel.Dock = DockStyle.Fill;
+            contentPanel.Name = "contentPanel";
+            contentPanel.Padding = new Padding(10);
+            contentPanel.TabIndex = 2;
+
             // pnlHeader
-            // 
+            pnlHeader.BackColor = Color.FromArgb(24, 78, 58);
             pnlHeader.Dock = DockStyle.Top;
-            pnlHeader.Location = new Point(0, 0);
+            pnlHeader.Height = 78;
             pnlHeader.Name = "pnlHeader";
-            pnlHeader.Size = new Size(1269, 60);
             pnlHeader.TabIndex = 0;
-            // 
+            pnlHeader.Controls.Add(lblBrand);
+            pnlHeader.Controls.Add(lblSubTitle);
+            pnlHeader.Controls.Add(lblTitle);
+            pnlHeader.Controls.Add(pnlHeaderAccent);
+
+            // pnlHeaderAccent
+            pnlHeaderAccent.BackColor = Color.FromArgb(214, 170, 54);
+            pnlHeaderAccent.Dock = DockStyle.Bottom;
+            pnlHeaderAccent.Height = 4;
+            pnlHeaderAccent.Name = "pnlHeaderAccent";
+            pnlHeaderAccent.TabIndex = 0;
+
+            // lblBrand
+            lblBrand.AutoSize = false;
+            lblBrand.Dock = DockStyle.Right;
+            lblBrand.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            lblBrand.ForeColor = Color.FromArgb(230, 240, 235);
+            lblBrand.Location = new Point(1060, 0);
+            lblBrand.Name = "lblBrand";
+            lblBrand.Padding = new Padding(0, 0, 24, 0);
+            lblBrand.Size = new Size(210, 74);
+            lblBrand.TabIndex = 0;
+            lblBrand.Text = "Accounting System";
+            lblBrand.TextAlign = ContentAlignment.MiddleRight;
+
+            // lblSubTitle
+            lblSubTitle.AutoSize = false;
+            lblSubTitle.Font = new Font("Segoe UI", 9F);
+            lblSubTitle.ForeColor = Color.FromArgb(205, 225, 215);
+            lblSubTitle.Location = new Point(24, 43);
+            lblSubTitle.Name = "lblSubTitle";
+            lblSubTitle.Size = new Size(650, 24);
+            lblSubTitle.TabIndex = 2;
+            lblSubTitle.Text = "إدارة الحسابات والفواتير والسندات والتقارير المالية";
+            lblSubTitle.TextAlign = ContentAlignment.MiddleLeft;
+
+            // lblTitle
+            lblTitle.AutoSize = false;
+            lblTitle.Font = new Font("Segoe UI", 19F, FontStyle.Bold);
+            lblTitle.ForeColor = Color.White;
+            lblTitle.Location = new Point(24, 7);
+            lblTitle.Name = "lblTitle";
+            lblTitle.Size = new Size(650, 38);
+            lblTitle.TabIndex = 1;
+            lblTitle.Text = "نظام المحاسبة";
+            lblTitle.TextAlign = ContentAlignment.MiddleLeft;
+
             // mainMenuStrip
-            // 
             mainMenuStrip.BackColor = Color.White;
-            mainMenuStrip.Font = new Font("Tahoma", 10F);
-            mainMenuStrip.ForeColor = Color.FromArgb(35, 35, 35);
-            mainMenuStrip.ImageScalingSize = new Size(22, 22);
-            mainMenuStrip.Items.AddRange(new ToolStripItem[] { systemMenu, vouchersMenu, invoicesMenu, reportsMenu });
-            mainMenuStrip.Location = new Point(0, 60);
+            mainMenuStrip.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
+            mainMenuStrip.ForeColor = Color.FromArgb(45, 45, 45);
+            mainMenuStrip.ImageScalingSize = new Size(24, 24);
+            mainMenuStrip.Items.AddRange(new ToolStripItem[]
+            {
+                systemMenu,
+                vouchersMenu,
+                invoicesMenu,
+                reportsMenu
+            });
+            mainMenuStrip.Dock = DockStyle.Top;
             mainMenuStrip.Name = "mainMenuStrip";
-            mainMenuStrip.Padding = new Padding(10, 5, 10, 5);
+            mainMenuStrip.Padding = new Padding(16, 7, 16, 7);
             mainMenuStrip.RightToLeft = RightToLeft.Yes;
-            mainMenuStrip.Size = new Size(1269, 35);
+            mainMenuStrip.Size = new Size(1269, 46);
             mainMenuStrip.TabIndex = 1;
-            // 
+
             // systemMenu
-            // 
-            systemMenu.DropDownItems.AddRange(new ToolStripItem[] { accountTreeMenuItem, itemsMenuItem });
+            systemMenu.DropDownItems.AddRange(new ToolStripItem[]
+            {
+                accountTreeMenuItem,
+                itemsMenuItem
+            });
             systemMenu.Name = "systemMenu";
-            systemMenu.Size = new Size(65, 25);
+            systemMenu.Padding = new Padding(10, 2, 10, 2);
+            systemMenu.Size = new Size(78, 32);
             systemMenu.Text = "الدليل";
-            // 
+
             // accountTreeMenuItem
-            // 
             accountTreeMenuItem.Name = "accountTreeMenuItem";
-            accountTreeMenuItem.Size = new Size(198, 26);
+            accountTreeMenuItem.Size = new Size(220, 30);
             accountTreeMenuItem.Text = "دليل الحسابات";
             accountTreeMenuItem.Click += accountTreeMenuItem_Click;
-            // 
+
             // itemsMenuItem
-            // 
             itemsMenuItem.Name = "itemsMenuItem";
-            itemsMenuItem.Size = new Size(198, 26);
+            itemsMenuItem.Size = new Size(220, 30);
             itemsMenuItem.Text = "دليل الأصناف";
             itemsMenuItem.Click += itemsMenuItem_Click;
-            // 
+
             // vouchersMenu
-            // 
-            vouchersMenu.DropDownItems.AddRange(new ToolStripItem[] { receiptVoucherMenuItem, paymentVoucherMenuItem });
+            vouchersMenu.DropDownItems.AddRange(new ToolStripItem[]
+            {
+                receiptVoucherMenuItem,
+                paymentVoucherMenuItem
+            });
             vouchersMenu.Name = "vouchersMenu";
-            vouchersMenu.Size = new Size(84, 25);
+            vouchersMenu.Padding = new Padding(10, 2, 10, 2);
+            vouchersMenu.Size = new Size(88, 32);
             vouchersMenu.Text = "السندات";
-            // 
+
             // receiptVoucherMenuItem
-            // 
             receiptVoucherMenuItem.Name = "receiptVoucherMenuItem";
-            receiptVoucherMenuItem.Size = new Size(224, 26);
+            receiptVoucherMenuItem.Size = new Size(220, 30);
             receiptVoucherMenuItem.Text = "سند قبض";
             receiptVoucherMenuItem.Click += receiptVoucherMenuItem_Click;
-            // 
+
             // paymentVoucherMenuItem
-            // 
             paymentVoucherMenuItem.Name = "paymentVoucherMenuItem";
-            paymentVoucherMenuItem.Size = new Size(224, 26);
+            paymentVoucherMenuItem.Size = new Size(220, 30);
             paymentVoucherMenuItem.Text = "سند صرف";
             paymentVoucherMenuItem.Click += paymentVoucherMenuItem_Click;
-            // 
+
             // invoicesMenu
-            // 
-            invoicesMenu.DropDownItems.AddRange(new ToolStripItem[] { purchaseInvoiceMenuItem, salesInvoiceMenuItem });
+            invoicesMenu.DropDownItems.AddRange(new ToolStripItem[]
+            {
+                purchaseInvoiceMenuItem,
+                salesInvoiceMenuItem
+            });
             invoicesMenu.Name = "invoicesMenu";
-            invoicesMenu.Size = new Size(72, 25);
+            invoicesMenu.Padding = new Padding(10, 2, 10, 2);
+            invoicesMenu.Size = new Size(82, 32);
             invoicesMenu.Text = "الفواتير";
-            // 
+
             // purchaseInvoiceMenuItem
-            // 
             purchaseInvoiceMenuItem.Name = "purchaseInvoiceMenuItem";
-            purchaseInvoiceMenuItem.Size = new Size(202, 26);
+            purchaseInvoiceMenuItem.Size = new Size(220, 30);
             purchaseInvoiceMenuItem.Text = "فاتورة مشتريات";
             purchaseInvoiceMenuItem.Click += purchaseInvoiceMenuItem_Click;
-            // 
+
             // salesInvoiceMenuItem
-            // 
             salesInvoiceMenuItem.Name = "salesInvoiceMenuItem";
-            salesInvoiceMenuItem.Size = new Size(202, 26);
+            salesInvoiceMenuItem.Size = new Size(220, 30);
             salesInvoiceMenuItem.Text = "فاتورة مبيعات";
             salesInvoiceMenuItem.Click += salesInvoiceMenuItem_Click;
-            // 
+
             // reportsMenu
-            // 
-            reportsMenu.DropDownItems.AddRange(new ToolStripItem[] { stockReportMenuItem, accountStatementMenuItem, قيوداليوميهToolStripMenuItem, قيوداليوميهToolStripMenuItem1 });
+            reportsMenu.DropDownItems.AddRange(new ToolStripItem[]
+            {
+                stockReportMenuItem,
+                accountStatementMenuItem,
+                قيوداليوميهToolStripMenuItem
+            });
             reportsMenu.Name = "reportsMenu";
-            reportsMenu.Size = new Size(71, 25);
+            reportsMenu.Padding = new Padding(10, 2, 10, 2);
+            reportsMenu.Size = new Size(82, 32);
             reportsMenu.Text = "التقارير";
-            // 
-            // stockReportMenuItem
-            // 
+
+            // report items
             stockReportMenuItem.Name = "stockReportMenuItem";
-            stockReportMenuItem.Size = new Size(236, 26);
+            stockReportMenuItem.Size = new Size(240, 30);
             stockReportMenuItem.Text = "تقرير مخزون الأصناف";
             stockReportMenuItem.Click += stockReportMenuItem_Click;
-            // 
-            // accountStatementMenuItem
-            // 
+
             accountStatementMenuItem.Name = "accountStatementMenuItem";
-            accountStatementMenuItem.Size = new Size(236, 26);
+            accountStatementMenuItem.Size = new Size(240, 30);
             accountStatementMenuItem.Text = "كشف حساب";
             accountStatementMenuItem.Click += accountStatementMenuItem_Click;
-            // 
-            // قيوداليوميهToolStripMenuItem
-            // 
+
             قيوداليوميهToolStripMenuItem.Name = "قيوداليوميهToolStripMenuItem";
-            قيوداليوميهToolStripMenuItem.Size = new Size(236, 26);
-            قيوداليوميهToolStripMenuItem.Text = "قيود اليوميه";
+            قيوداليوميهToolStripMenuItem.Size = new Size(240, 30);
+            قيوداليوميهToolStripMenuItem.Text = "قيود اليومية";
             قيوداليوميهToolStripMenuItem.Click += قيوداليوميهToolStripMenuItem_Click;
-            // 
-            // قيوداليوميهToolStripMenuItem1
-            // 
+
+            // Hidden duplicate menu item kept for compatibility with existing code.
             قيوداليوميهToolStripMenuItem1.Name = "قيوداليوميهToolStripMenuItem1";
-            قيوداليوميهToolStripMenuItem1.Size = new Size(236, 26);
-            قيوداليوميهToolStripMenuItem1.Text = "قيود اليوميه";
-            // 
+            قيوداليوميهToolStripMenuItem1.Size = new Size(240, 30);
+            قيوداليوميهToolStripMenuItem1.Text = "قيود اليومية";
+
             // frm_Main
-            // 
             AutoScaleDimensions = new SizeF(9F, 21F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.White;
+            BackColor = Color.FromArgb(246, 248, 247);
             ClientSize = new Size(1269, 854);
-            Controls.Add(mainMenuStrip);
-            Controls.Add(pnlHeader);
-            Font = new Font("Tahoma", 10F);
+            Font = new Font("Segoe UI", 10F);
             MainMenuStrip = mainMenuStrip;
-            MinimumSize = new Size(900, 550);
+            MinimumSize = new Size(1000, 650);
             Name = "frm_Main";
             RightToLeft = RightToLeft.Yes;
             RightToLeftLayout = true;
             StartPosition = FormStartPosition.CenterScreen;
             Text = "نظام المحاسبة";
+            // ترتيب الـ Dock: Content أولاً، ثم Menu، ثم Header.
+            // بهذا تبدأ كل شاشة داخلية أسفل الهيدر والقائمة.
+            Controls.Add(contentPanel);
+            Controls.Add(mainMenuStrip);
+            Controls.Add(pnlHeader);
             Load += frm_Main_Load;
+
+            contentPanel.ResumeLayout(false);
+            pnlHeader.ResumeLayout(false);
             mainMenuStrip.ResumeLayout(false);
             mainMenuStrip.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
-
-            // =========================================================
-            // Events
-            // =========================================================
-
-
         }
+
+        #endregion
 
         // =============================================================
         // Icon Types
