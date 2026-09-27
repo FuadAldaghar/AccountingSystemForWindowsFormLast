@@ -1,4 +1,6 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
+using System.Windows.Forms;
 using AccountingSystemForWindowsFormLast.Data;
 using Microsoft.Data.SqlClient;
 
@@ -12,12 +14,13 @@ namespace AccountingSystemForWindowsFormLast.Forms
 
             btnSearch.Click += BtnSearch_Click;
             btnShowAll.Click += BtnShowAll_Click;
-            cmbItem.SelectedIndexChanged += CmbItem_SelectedIndexChanged;
         }
 
         private void StockReport_Load(object sender, EventArgs e)
         {
-            dtpFromDate.Value = new DateTime(DateTime.Today.Year, 1, 1);
+            dtpFromDate.Value =
+                new DateTime(DateTime.Today.Year, 1, 1);
+
             dtpToDate.Value = DateTime.Today;
 
             LoadItems();
@@ -28,7 +31,9 @@ namespace AccountingSystemForWindowsFormLast.Forms
         {
             try
             {
-                using SqlConnection connection = DatabaseConnection.GetConnection();
+                using SqlConnection connection =
+                    DatabaseConnection.GetConnection();
+
                 connection.Open();
 
                 string query = @"
@@ -40,27 +45,35 @@ namespace AccountingSystemForWindowsFormLast.Forms
                     FROM Items
                     ORDER BY ItemNumber";
 
-                using SqlCommand command = new SqlCommand(query, connection);
-                using SqlDataReader reader = command.ExecuteReader();
+                using SqlCommand command =
+                    new SqlCommand(query, connection);
+
+                using SqlDataReader reader =
+                    command.ExecuteReader();
 
                 DataTable table = new DataTable();
                 table.Load(reader);
 
                 DataRow allRow = table.NewRow();
+
                 allRow["ItemId"] = 0;
                 allRow["ItemNumber"] = "";
                 allRow["ItemName"] = "كل الأصناف";
                 allRow["Unit"] = "";
+
                 table.Rows.InsertAt(allRow, 0);
 
                 cmbItem.DataSource = table;
                 cmbItem.DisplayMember = "ItemName";
                 cmbItem.ValueMember = "ItemId";
+
+                cmbItem.SelectedIndex = 0;
             }
             catch (Exception ex)
             {
                 MessageBox.Show(
-                    "حدث خطأ أثناء تحميل الأصناف:\n" + ex.Message,
+                    "حدث خطأ أثناء تحميل الأصناف:\n" +
+                    ex.Message,
                     "خطأ",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
@@ -71,7 +84,10 @@ namespace AccountingSystemForWindowsFormLast.Forms
         {
             try
             {
-                if (dtpFromDate.Value.Date > dtpToDate.Value.Date)
+                DateTime fromDate = dtpFromDate.Value.Date;
+                DateTime toDate = dtpToDate.Value.Date;
+
+                if (fromDate > toDate)
                 {
                     MessageBox.Show(
                         "تاريخ البداية يجب أن يكون قبل تاريخ النهاية.",
@@ -82,7 +98,9 @@ namespace AccountingSystemForWindowsFormLast.Forms
                     return;
                 }
 
-                using SqlConnection connection = DatabaseConnection.GetConnection();
+                using SqlConnection connection =
+                    DatabaseConnection.GetConnection();
+
                 connection.Open();
 
                 string query = @"
@@ -96,7 +114,8 @@ namespace AccountingSystemForWindowsFormLast.Forms
                             SELECT SUM(pid.Quantity)
                             FROM PurchaseInvoiceDetails pid
                             INNER JOIN PurchaseInvoices pi
-                                ON pi.PurchaseInvoiceId = pid.PurchaseInvoiceId
+                                ON pi.PurchaseInvoiceId =
+                                   pid.PurchaseInvoiceId
                             WHERE pid.ItemId = i.ItemId
                               AND pi.InvoiceDate >= @FromDate
                               AND pi.InvoiceDate < DATEADD(DAY, 1, @ToDate)
@@ -106,55 +125,78 @@ namespace AccountingSystemForWindowsFormLast.Forms
                             SELECT SUM(sid.Quantity)
                             FROM SalesInvoiceDetails sid
                             INNER JOIN SalesInvoices si
-                                ON si.SalesInvoiceId = sid.SalesInvoiceId
+                                ON si.SalesInvoiceId =
+                                   sid.SalesInvoiceId
                             WHERE sid.ItemId = i.ItemId
                               AND si.InvoiceDate >= @FromDate
                               AND si.InvoiceDate < DATEADD(DAY, 1, @ToDate)
                         ), 0) AS [إجمالي المبيعات]
 
                     FROM Items i
+
                     WHERE
                         @ItemId IS NULL
                         OR i.ItemId = @ItemId
 
                     ORDER BY i.ItemNumber";
 
-                using SqlCommand command = new SqlCommand(query, connection);
+                using SqlCommand command =
+                    new SqlCommand(query, connection);
 
-                command.Parameters.AddWithValue(
+                command.Parameters.Add(
                     "@FromDate",
-                    dtpFromDate.Value.Date);
+                    SqlDbType.DateTime).Value = fromDate;
 
-                command.Parameters.AddWithValue(
+                command.Parameters.Add(
                     "@ToDate",
-                    dtpToDate.Value.Date);
+                    SqlDbType.DateTime).Value = toDate;
 
-                object itemValue = cmbItem.SelectedValue;
+                int itemId = 0;
 
-                if (itemValue == null || itemValue == DBNull.Value)
-                    command.Parameters.AddWithValue("@ItemId", DBNull.Value);
-                else
-                    command.Parameters.AddWithValue("@ItemId", Convert.ToInt32(itemValue));
+                if (cmbItem.SelectedValue != null &&
+                    cmbItem.SelectedValue != DBNull.Value)
+                {
+                    itemId =
+                        Convert.ToInt32(cmbItem.SelectedValue);
+                }
 
-                using SqlDataReader reader = command.ExecuteReader();
+                command.Parameters.Add(
+                    "@ItemId",
+                    SqlDbType.Int).Value =
+                    itemId == 0
+                        ? DBNull.Value
+                        : itemId;
+
+                using SqlDataReader reader =
+                    command.ExecuteReader();
 
                 DataTable table = new DataTable();
                 table.Load(reader);
 
-                table.Columns.Add("الرصيد", typeof(decimal));
+                table.Columns.Add(
+                    "الرصيد",
+                    typeof(decimal));
 
                 foreach (DataRow row in table.Rows)
                 {
-                    decimal purchases = Convert.ToDecimal(row["إجمالي المشتريات"]);
-                    decimal sales = Convert.ToDecimal(row["إجمالي المبيعات"]);
+                    decimal purchases =
+                        Convert.ToDecimal(
+                            row["إجمالي المشتريات"]);
 
-                    row["الرصيد"] = purchases - sales;
+                    decimal sales =
+                        Convert.ToDecimal(
+                            row["إجمالي المبيعات"]);
+
+                    row["الرصيد"] =
+                        purchases - sales;
                 }
 
                 dgvStock.DataSource = table;
 
                 if (dgvStock.Columns["ItemId"] != null)
+                {
                     dgvStock.Columns["ItemId"].Visible = false;
+                }
 
                 FormatGrid();
                 CalculateTotals();
@@ -162,7 +204,8 @@ namespace AccountingSystemForWindowsFormLast.Forms
             catch (Exception ex)
             {
                 MessageBox.Show(
-                    "حدث خطأ أثناء تحميل تقرير المخزون:\n" + ex.Message,
+                    "حدث خطأ أثناء تحميل تقرير المخزون:\n" +
+                    ex.Message,
                     "خطأ",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
@@ -172,22 +215,28 @@ namespace AccountingSystemForWindowsFormLast.Forms
         private void FormatGrid()
         {
             if (dgvStock.Columns["رقم الصنف"] != null)
-                dgvStock.Columns["رقم الصنف"].HeaderText = "رقم الصنف";
+                dgvStock.Columns["رقم الصنف"].HeaderText =
+                    "رقم الصنف";
 
             if (dgvStock.Columns["اسم الصنف"] != null)
-                dgvStock.Columns["اسم الصنف"].HeaderText = "اسم الصنف";
+                dgvStock.Columns["اسم الصنف"].HeaderText =
+                    "اسم الصنف";
 
             if (dgvStock.Columns["الوحدة"] != null)
-                dgvStock.Columns["الوحدة"].HeaderText = "الوحدة";
+                dgvStock.Columns["الوحدة"].HeaderText =
+                    "الوحدة";
 
             if (dgvStock.Columns["إجمالي المشتريات"] != null)
-                dgvStock.Columns["إجمالي المشتريات"].HeaderText = "المشتريات";
+                dgvStock.Columns["إجمالي المشتريات"].HeaderText =
+                    "المشتريات";
 
             if (dgvStock.Columns["إجمالي المبيعات"] != null)
-                dgvStock.Columns["إجمالي المبيعات"].HeaderText = "المبيعات";
+                dgvStock.Columns["إجمالي المبيعات"].HeaderText =
+                    "المبيعات";
 
             if (dgvStock.Columns["الرصيد"] != null)
-                dgvStock.Columns["الرصيد"].HeaderText = "الرصيد";
+                dgvStock.Columns["الرصيد"].HeaderText =
+                    "الرصيد";
 
             foreach (DataGridViewColumn column in dgvStock.Columns)
             {
@@ -210,14 +259,17 @@ namespace AccountingSystemForWindowsFormLast.Forms
                 if (row.IsNewRow)
                     continue;
 
-                totalPurchases += Convert.ToDecimal(
-                    row.Cells["إجمالي المشتريات"].Value);
+                totalPurchases +=
+                    Convert.ToDecimal(
+                        row.Cells["إجمالي المشتريات"].Value);
 
-                totalSales += Convert.ToDecimal(
-                    row.Cells["إجمالي المبيعات"].Value);
+                totalSales +=
+                    Convert.ToDecimal(
+                        row.Cells["إجمالي المبيعات"].Value);
 
-                totalBalance += Convert.ToDecimal(
-                    row.Cells["الرصيد"].Value);
+                totalBalance +=
+                    Convert.ToDecimal(
+                        row.Cells["الرصيد"].Value);
             }
 
             lblTotalPurchase.Text =
@@ -230,20 +282,20 @@ namespace AccountingSystemForWindowsFormLast.Forms
                 $"الرصيد: {totalBalance:N2}";
         }
 
-        private void BtnSearch_Click(object? sender, EventArgs e)
+        private void BtnSearch_Click(
+            object? sender,
+            EventArgs e)
         {
             LoadStockReport();
         }
 
-        private void BtnShowAll_Click(object? sender, EventArgs e)
+        private void BtnShowAll_Click(
+            object? sender,
+            EventArgs e)
         {
             cmbItem.SelectedIndex = 0;
-            LoadStockReport();
-        }
 
-        private void CmbItem_SelectedIndexChanged(object? sender, EventArgs e)
-        {
-            // لا نبحث تلقائياً حتى يضغط المستخدم زر البحث.
+            LoadStockReport();
         }
     }
 }

@@ -434,26 +434,40 @@ namespace AccountingSystemForWindowsFormLast.Forms
                         decimal total =
                             quantity * unitPrice;
 
-                        string detailQuery = @"
-                            INSERT INTO PurchaseInvoiceDetails
-                            (
-                                PurchaseInvoiceId,
-                                ItemId,
-                                Unit,
-                                Quantity,
-                                UnitPrice,
-                                Total
-                            )
-                            VALUES
-                            (
-                                @PurchaseInvoiceId,
-                                @ItemId,
-                                @Unit,
-                                @Quantity,
-                                @UnitPrice,
-                                @Total
-                            )";
+                        //string detailQuery = @"
+                        //    INSERT INTO PurchaseInvoiceDetails
+                        //    (
+                        //        PurchaseInvoiceId,
+                        //        ItemId,
+                        //        Unit,
+                        //        Quantity,
+                        //        UnitPrice,
+                        //        Total
+                        //    )
+                        //    VALUES
+                        //    (
+                        //        @PurchaseInvoiceId,
+                        //        @ItemId,
+                        //        @Unit,
+                        //        @Quantity,
+                        //        @UnitPrice,
+                        //        @Total
+                        //    )";
 
+                        string detailQuery = @"
+    INSERT INTO PurchaseInvoiceDetails
+    (
+        PurchaseInvoiceId,
+        ItemId,
+        Quantity,
+        UnitPrice
+    )
+    VALUES
+    (
+        @PurchaseInvoiceId,
+        @ItemId,
+        @Quantity,
+        @UnitPrice)";
                         using SqlCommand detailCommand =
                             new SqlCommand(
                                 detailQuery,
@@ -468,9 +482,9 @@ namespace AccountingSystemForWindowsFormLast.Forms
                             "@ItemId",
                             itemId);
 
-                        detailCommand.Parameters.AddWithValue(
-                            "@Unit",
-                            unit);
+                        //detailCommand.Parameters.AddWithValue(
+                        //    "@Unit",
+                        //    unit);
 
                         detailCommand.Parameters.AddWithValue(
                             "@Quantity",
@@ -709,13 +723,15 @@ namespace AccountingSystemForWindowsFormLast.Forms
         // الحصول على حساب المخزون
         // =========================================================
         private int GetInventoryAccountId(
-            SqlConnection connection,
-            SqlTransaction transaction)
+     SqlConnection connection,
+     SqlTransaction transaction)
         {
             string query = @"
-                SELECT TOP 1 AccountId
-                FROM Accounts
-                WHERE AccountNumber = '1130'";
+        SELECT TOP 1 AccountId
+        FROM Accounts
+        WHERE AccountNumber = N'114'
+          AND AccountName = N'المخزون'
+          AND IsGroup = 0";
 
             using SqlCommand command =
                 new SqlCommand(
@@ -728,7 +744,7 @@ namespace AccountingSystemForWindowsFormLast.Forms
             if (result == null)
             {
                 throw new Exception(
-                    "لم يتم العثور على حساب المخزون 1130.");
+                    "لم يتم العثور على حساب المخزون 114.");
             }
 
             return Convert.ToInt32(result);

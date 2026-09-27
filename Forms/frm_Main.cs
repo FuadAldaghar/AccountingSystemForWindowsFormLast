@@ -114,8 +114,8 @@ namespace AccountingSystemForWindowsFormLast
 
         private void paymentVoucherMenuItem_Click(object sender, EventArgs e)
         {
-            purchaseInvoiceForm = new PurchaseInvoice();
-            OpenForm(purchaseInvoiceForm);
+            paymentVoucherForm = new PaymentVoucher();
+            OpenForm(paymentVoucherForm);
         }
     }
 }

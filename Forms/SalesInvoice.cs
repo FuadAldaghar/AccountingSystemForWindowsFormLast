@@ -443,24 +443,19 @@ namespace AccountingSystemForWindowsFormLast.Forms
                             quantity * unitPrice;
 
                         const string sql = @"
-                            INSERT INTO SalesInvoiceDetails
-                            (
-                                SalesInvoiceId,
-                                ItemId,
-                                Unit,
-                                Quantity,
-                                UnitPrice,
-                                Total
-                            )
-                            VALUES
-                            (
-                                @SalesInvoiceId,
-                                @ItemId,
-                                @Unit,
-                                @Quantity,
-                                @UnitPrice,
-                                @Total
-                            )";
+    INSERT INTO SalesInvoiceDetails
+    (
+        SalesInvoiceId,
+        ItemId,
+        Quantity,
+        UnitPrice
+    )
+    VALUES
+    (
+       @SalesInvoiceId,
+        @ItemId,
+        @Quantity,
+        @UnitPrice)";
 
                         using SqlCommand command =
                             new SqlCommand(
@@ -476,9 +471,7 @@ namespace AccountingSystemForWindowsFormLast.Forms
                             "@ItemId",
                             itemId);
 
-                        command.Parameters.AddWithValue(
-                            "@Unit",
-                            unit);
+                 
 
                         command.Parameters.AddWithValue(
                             "@Quantity",
@@ -665,19 +658,19 @@ namespace AccountingSystemForWindowsFormLast.Forms
                 GetAccountId(
                     connection,
                     transaction,
-                    "4100");
+                    "41");
 
             int inventoryAccountId =
                 GetAccountId(
                     connection,
                     transaction,
-                    "1130");
+                    "31");
 
             int costOfGoodsAccountId =
                 GetAccountId(
                     connection,
                     transaction,
-                    "5100");
+                    "51");
 
             // ==========================================
             // حساب تكلفة البضاعة المباعة
