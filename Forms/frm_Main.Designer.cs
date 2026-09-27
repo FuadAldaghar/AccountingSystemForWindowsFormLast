@@ -2,326 +2,704 @@
 {
     partial class frm_Main
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        private System.Windows.Forms.MenuStrip mainMenuStrip;
+
+        private System.Windows.Forms.ToolStripMenuItem systemMenu;
+        private System.Windows.Forms.ToolStripMenuItem accountTreeMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem itemsMenuItem;
+
+        private System.Windows.Forms.ToolStripMenuItem vouchersMenu;
+        private System.Windows.Forms.ToolStripMenuItem receiptVoucherMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem paymentVoucherMenuItem;
+
+        private System.Windows.Forms.ToolStripMenuItem invoicesMenu;
+        private System.Windows.Forms.ToolStripMenuItem purchaseInvoiceMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem salesInvoiceMenuItem;
+
+        private System.Windows.Forms.ToolStripMenuItem reportsMenu;
+        private System.Windows.Forms.ToolStripMenuItem stockReportMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem accountStatementMenuItem;
+
+        private System.Windows.Forms.Panel pnlHeader;
+        private System.Windows.Forms.Label lblTitle;
+        private System.Windows.Forms.Label lblSubTitle;
+
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
-            {
                 components.Dispose();
-            }
+
             base.Dispose(disposing);
         }
 
-        #region Windows Form Designer generated code
-
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frm_Main));
-            menuStrip1 = new MenuStrip();
-            ملفToolStripMenuItem = new ToolStripMenuItem();
-            تبديلالمستخدمToolStripMenuItem = new ToolStripMenuItem();
-            النسخالإحتياطيToolStripMenuItem = new ToolStripMenuItem();
-            عمانسخةإحتاطيةToolStripMenuItem = new ToolStripMenuItem();
-            إسترجاعالنسخةالإحتياطيةToolStripMenuItem = new ToolStripMenuItem();
-            تسجيلخروجToolStripMenuItem = new ToolStripMenuItem();
-            تهيئةالنظامToolStripMenuItem = new ToolStripMenuItem();
-            بياناتالشركةToolStripMenuItem = new ToolStripMenuItem();
-            المستخدمينToolStripMenuItem = new ToolStripMenuItem();
-            بياناتالإتصالToolStripMenuItem = new ToolStripMenuItem();
-            الصناديقToolStripMenuItem = new ToolStripMenuItem();
-            البنوكToolStripMenuItem = new ToolStripMenuItem();
-            العملاتToolStripMenuItem = new ToolStripMenuItem();
-            الحساباتToolStripMenuItem = new ToolStripMenuItem();
-            دليلالحساباتToolStripMenuItem = new ToolStripMenuItem();
-            قيداليوميةالعامToolStripMenuItem = new ToolStripMenuItem();
-            سندالصرقToolStripMenuItem = new ToolStripMenuItem();
-            سندالقبضToolStripMenuItem = new ToolStripMenuItem();
-            التقاريرToolStripMenuItem = new ToolStripMenuItem();
-            طباعةالدليلالمحاسبيToolStripMenuItem = new ToolStripMenuItem();
-            كشفحسابToolStripMenuItem = new ToolStripMenuItem();
-            ميزانالمراجعةToolStripMenuItem = new ToolStripMenuItem();
-            الميزانيةالعموميةToolStripMenuItem = new ToolStripMenuItem();
-            الأرباحوالخسائرToolStripMenuItem = new ToolStripMenuItem();
-            مساعدةToolStripMenuItem = new ToolStripMenuItem();
-            statusStrip1 = new StatusStrip();
-            menuStrip1.SuspendLayout();
+            pnlHeader = new Panel();
+            mainMenuStrip = new MenuStrip();
+            systemMenu = new ToolStripMenuItem();
+            accountTreeMenuItem = new ToolStripMenuItem();
+            itemsMenuItem = new ToolStripMenuItem();
+            vouchersMenu = new ToolStripMenuItem();
+            receiptVoucherMenuItem = new ToolStripMenuItem();
+            paymentVoucherMenuItem = new ToolStripMenuItem();
+            invoicesMenu = new ToolStripMenuItem();
+            purchaseInvoiceMenuItem = new ToolStripMenuItem();
+            salesInvoiceMenuItem = new ToolStripMenuItem();
+            reportsMenu = new ToolStripMenuItem();
+            stockReportMenuItem = new ToolStripMenuItem();
+            accountStatementMenuItem = new ToolStripMenuItem();
+            قيوداليوميهToolStripMenuItem = new ToolStripMenuItem();
+            قيوداليوميهToolStripMenuItem1 = new ToolStripMenuItem();
+            mainMenuStrip.SuspendLayout();
             SuspendLayout();
             // 
-            // menuStrip1
+            // pnlHeader
             // 
-            menuStrip1.ImageScalingSize = new Size(20, 20);
-            menuStrip1.Items.AddRange(new ToolStripItem[] { ملفToolStripMenuItem, تهيئةالنظامToolStripMenuItem, الحساباتToolStripMenuItem, التقاريرToolStripMenuItem, مساعدةToolStripMenuItem });
-            menuStrip1.Location = new Point(0, 0);
-            menuStrip1.Name = "menuStrip1";
-            menuStrip1.Padding = new Padding(10, 3, 0, 3);
-            menuStrip1.Size = new Size(1139, 34);
-            menuStrip1.TabIndex = 1;
-            menuStrip1.Text = "menuStrip1";
+            pnlHeader.Dock = DockStyle.Top;
+            pnlHeader.Location = new Point(0, 0);
+            pnlHeader.Name = "pnlHeader";
+            pnlHeader.Size = new Size(1269, 60);
+            pnlHeader.TabIndex = 0;
             // 
-            // ملفToolStripMenuItem
+            // mainMenuStrip
             // 
-            ملفToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { تبديلالمستخدمToolStripMenuItem, النسخالإحتياطيToolStripMenuItem, تسجيلخروجToolStripMenuItem });
-            ملفToolStripMenuItem.Font = new Font("Arial", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            ملفToolStripMenuItem.Image = (Image)resources.GetObject("ملفToolStripMenuItem.Image");
-            ملفToolStripMenuItem.Name = "ملفToolStripMenuItem";
-            ملفToolStripMenuItem.Size = new Size(72, 28);
-            ملفToolStripMenuItem.Text = "ملف";
+            mainMenuStrip.BackColor = Color.White;
+            mainMenuStrip.Font = new Font("Tahoma", 10F);
+            mainMenuStrip.ForeColor = Color.FromArgb(35, 35, 35);
+            mainMenuStrip.ImageScalingSize = new Size(22, 22);
+            mainMenuStrip.Items.AddRange(new ToolStripItem[] { systemMenu, vouchersMenu, invoicesMenu, reportsMenu });
+            mainMenuStrip.Location = new Point(0, 60);
+            mainMenuStrip.Name = "mainMenuStrip";
+            mainMenuStrip.Padding = new Padding(10, 5, 10, 5);
+            mainMenuStrip.RightToLeft = RightToLeft.Yes;
+            mainMenuStrip.Size = new Size(1269, 35);
+            mainMenuStrip.TabIndex = 1;
             // 
-            // تبديلالمستخدمToolStripMenuItem
+            // systemMenu
             // 
-            تبديلالمستخدمToolStripMenuItem.Image = (Image)resources.GetObject("تبديلالمستخدمToolStripMenuItem.Image");
-            تبديلالمستخدمToolStripMenuItem.Name = "تبديلالمستخدمToolStripMenuItem";
-            تبديلالمستخدمToolStripMenuItem.Size = new Size(198, 28);
-            تبديلالمستخدمToolStripMenuItem.Text = "تبديل المستخدم";
+            systemMenu.DropDownItems.AddRange(new ToolStripItem[] { accountTreeMenuItem, itemsMenuItem });
+            systemMenu.Name = "systemMenu";
+            systemMenu.Size = new Size(65, 25);
+            systemMenu.Text = "الدليل";
             // 
-            // النسخالإحتياطيToolStripMenuItem
+            // accountTreeMenuItem
             // 
-            النسخالإحتياطيToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { عمانسخةإحتاطيةToolStripMenuItem, إسترجاعالنسخةالإحتياطيةToolStripMenuItem });
-            النسخالإحتياطيToolStripMenuItem.Image = (Image)resources.GetObject("النسخالإحتياطيToolStripMenuItem.Image");
-            النسخالإحتياطيToolStripMenuItem.Name = "النسخالإحتياطيToolStripMenuItem";
-            النسخالإحتياطيToolStripMenuItem.Size = new Size(198, 28);
-            النسخالإحتياطيToolStripMenuItem.Text = "النسخ الإحتياطي";
+            accountTreeMenuItem.Name = "accountTreeMenuItem";
+            accountTreeMenuItem.Size = new Size(198, 26);
+            accountTreeMenuItem.Text = "دليل الحسابات";
+            accountTreeMenuItem.Click += accountTreeMenuItem_Click;
             // 
-            // عمانسخةإحتاطيةToolStripMenuItem
+            // itemsMenuItem
             // 
-            عمانسخةإحتاطيةToolStripMenuItem.Image = (Image)resources.GetObject("عمانسخةإحتاطيةToolStripMenuItem.Image");
-            عمانسخةإحتاطيةToolStripMenuItem.Name = "عمانسخةإحتاطيةToolStripMenuItem";
-            عمانسخةإحتاطيةToolStripMenuItem.Size = new Size(268, 28);
-            عمانسخةإحتاطيةToolStripMenuItem.Text = "عمل نسخة إحتياطية";
+            itemsMenuItem.Name = "itemsMenuItem";
+            itemsMenuItem.Size = new Size(198, 26);
+            itemsMenuItem.Text = "دليل الأصناف";
+            itemsMenuItem.Click += itemsMenuItem_Click;
             // 
-            // إسترجاعالنسخةالإحتياطيةToolStripMenuItem
+            // vouchersMenu
             // 
-            إسترجاعالنسخةالإحتياطيةToolStripMenuItem.Image = (Image)resources.GetObject("إسترجاعالنسخةالإحتياطيةToolStripMenuItem.Image");
-            إسترجاعالنسخةالإحتياطيةToolStripMenuItem.Name = "إسترجاعالنسخةالإحتياطيةToolStripMenuItem";
-            إسترجاعالنسخةالإحتياطيةToolStripMenuItem.Size = new Size(268, 28);
-            إسترجاعالنسخةالإحتياطيةToolStripMenuItem.Text = "إسترجاع النسخة الإحتياطية";
+            vouchersMenu.DropDownItems.AddRange(new ToolStripItem[] { receiptVoucherMenuItem, paymentVoucherMenuItem });
+            vouchersMenu.Name = "vouchersMenu";
+            vouchersMenu.Size = new Size(84, 25);
+            vouchersMenu.Text = "السندات";
             // 
-            // تسجيلخروجToolStripMenuItem
+            // receiptVoucherMenuItem
             // 
-            تسجيلخروجToolStripMenuItem.Image = (Image)resources.GetObject("تسجيلخروجToolStripMenuItem.Image");
-            تسجيلخروجToolStripMenuItem.Name = "تسجيلخروجToolStripMenuItem";
-            تسجيلخروجToolStripMenuItem.Size = new Size(198, 28);
-            تسجيلخروجToolStripMenuItem.Text = "تسجيل خروج";
+            receiptVoucherMenuItem.Name = "receiptVoucherMenuItem";
+            receiptVoucherMenuItem.Size = new Size(224, 26);
+            receiptVoucherMenuItem.Text = "سند قبض";
+            receiptVoucherMenuItem.Click += receiptVoucherMenuItem_Click;
             // 
-            // تهيئةالنظامToolStripMenuItem
+            // paymentVoucherMenuItem
             // 
-            تهيئةالنظامToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { بياناتالشركةToolStripMenuItem, المستخدمينToolStripMenuItem, بياناتالإتصالToolStripMenuItem, الصناديقToolStripMenuItem, البنوكToolStripMenuItem, العملاتToolStripMenuItem });
-            تهيئةالنظامToolStripMenuItem.Font = new Font("Arial", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            تهيئةالنظامToolStripMenuItem.Image = (Image)resources.GetObject("تهيئةالنظامToolStripMenuItem.Image");
-            تهيئةالنظامToolStripMenuItem.Name = "تهيئةالنظامToolStripMenuItem";
-            تهيئةالنظامToolStripMenuItem.Size = new Size(118, 28);
-            تهيئةالنظامToolStripMenuItem.Text = "تهيئة النظام";
+            paymentVoucherMenuItem.Name = "paymentVoucherMenuItem";
+            paymentVoucherMenuItem.Size = new Size(224, 26);
+            paymentVoucherMenuItem.Text = "سند صرف";
+            paymentVoucherMenuItem.Click += paymentVoucherMenuItem_Click;
             // 
-            // بياناتالشركةToolStripMenuItem
+            // invoicesMenu
             // 
-            بياناتالشركةToolStripMenuItem.Image = (Image)resources.GetObject("بياناتالشركةToolStripMenuItem.Image");
-            بياناتالشركةToolStripMenuItem.Name = "بياناتالشركةToolStripMenuItem";
-            بياناتالشركةToolStripMenuItem.Size = new Size(186, 28);
-            بياناتالشركةToolStripMenuItem.Text = "بيانات الشركة";
+            invoicesMenu.DropDownItems.AddRange(new ToolStripItem[] { purchaseInvoiceMenuItem, salesInvoiceMenuItem });
+            invoicesMenu.Name = "invoicesMenu";
+            invoicesMenu.Size = new Size(72, 25);
+            invoicesMenu.Text = "الفواتير";
             // 
-            // المستخدمينToolStripMenuItem
+            // purchaseInvoiceMenuItem
             // 
-            المستخدمينToolStripMenuItem.Image = (Image)resources.GetObject("المستخدمينToolStripMenuItem.Image");
-            المستخدمينToolStripMenuItem.Name = "المستخدمينToolStripMenuItem";
-            المستخدمينToolStripMenuItem.Size = new Size(186, 28);
-            المستخدمينToolStripMenuItem.Text = "المستخدمين";
+            purchaseInvoiceMenuItem.Name = "purchaseInvoiceMenuItem";
+            purchaseInvoiceMenuItem.Size = new Size(202, 26);
+            purchaseInvoiceMenuItem.Text = "فاتورة مشتريات";
+            purchaseInvoiceMenuItem.Click += purchaseInvoiceMenuItem_Click;
             // 
-            // بياناتالإتصالToolStripMenuItem
+            // salesInvoiceMenuItem
             // 
-            بياناتالإتصالToolStripMenuItem.Image = (Image)resources.GetObject("بياناتالإتصالToolStripMenuItem.Image");
-            بياناتالإتصالToolStripMenuItem.Name = "بياناتالإتصالToolStripMenuItem";
-            بياناتالإتصالToolStripMenuItem.Size = new Size(186, 28);
-            بياناتالإتصالToolStripMenuItem.Text = "بيانات الإتصال";
+            salesInvoiceMenuItem.Name = "salesInvoiceMenuItem";
+            salesInvoiceMenuItem.Size = new Size(202, 26);
+            salesInvoiceMenuItem.Text = "فاتورة مبيعات";
+            salesInvoiceMenuItem.Click += salesInvoiceMenuItem_Click;
             // 
-            // الصناديقToolStripMenuItem
+            // reportsMenu
             // 
-            الصناديقToolStripMenuItem.Image = (Image)resources.GetObject("الصناديقToolStripMenuItem.Image");
-            الصناديقToolStripMenuItem.Name = "الصناديقToolStripMenuItem";
-            الصناديقToolStripMenuItem.Size = new Size(186, 28);
-            الصناديقToolStripMenuItem.Text = "الصناديق";
+            reportsMenu.DropDownItems.AddRange(new ToolStripItem[] { stockReportMenuItem, accountStatementMenuItem, قيوداليوميهToolStripMenuItem, قيوداليوميهToolStripMenuItem1 });
+            reportsMenu.Name = "reportsMenu";
+            reportsMenu.Size = new Size(71, 25);
+            reportsMenu.Text = "التقارير";
             // 
-            // البنوكToolStripMenuItem
+            // stockReportMenuItem
             // 
-            البنوكToolStripMenuItem.Image = (Image)resources.GetObject("البنوكToolStripMenuItem.Image");
-            البنوكToolStripMenuItem.Name = "البنوكToolStripMenuItem";
-            البنوكToolStripMenuItem.Size = new Size(186, 28);
-            البنوكToolStripMenuItem.Text = "البنوك";
+            stockReportMenuItem.Name = "stockReportMenuItem";
+            stockReportMenuItem.Size = new Size(236, 26);
+            stockReportMenuItem.Text = "تقرير مخزون الأصناف";
+            stockReportMenuItem.Click += stockReportMenuItem_Click;
             // 
-            // العملاتToolStripMenuItem
+            // accountStatementMenuItem
             // 
-            العملاتToolStripMenuItem.Image = (Image)resources.GetObject("العملاتToolStripMenuItem.Image");
-            العملاتToolStripMenuItem.Name = "العملاتToolStripMenuItem";
-            العملاتToolStripMenuItem.Size = new Size(186, 28);
-            العملاتToolStripMenuItem.Text = "العملات";
+            accountStatementMenuItem.Name = "accountStatementMenuItem";
+            accountStatementMenuItem.Size = new Size(236, 26);
+            accountStatementMenuItem.Text = "كشف حساب";
+            accountStatementMenuItem.Click += accountStatementMenuItem_Click;
             // 
-            // الحساباتToolStripMenuItem
+            // قيوداليوميهToolStripMenuItem
             // 
-            الحساباتToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { دليلالحساباتToolStripMenuItem, قيداليوميةالعامToolStripMenuItem, سندالصرقToolStripMenuItem, سندالقبضToolStripMenuItem });
-            الحساباتToolStripMenuItem.Font = new Font("Arial", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            الحساباتToolStripMenuItem.Image = (Image)resources.GetObject("الحساباتToolStripMenuItem.Image");
-            الحساباتToolStripMenuItem.Name = "الحساباتToolStripMenuItem";
-            الحساباتToolStripMenuItem.Size = new Size(103, 28);
-            الحساباتToolStripMenuItem.Text = "الحسابات";
+            قيوداليوميهToolStripMenuItem.Name = "قيوداليوميهToolStripMenuItem";
+            قيوداليوميهToolStripMenuItem.Size = new Size(236, 26);
+            قيوداليوميهToolStripMenuItem.Text = "قيود اليوميه";
+            قيوداليوميهToolStripMenuItem.Click += قيوداليوميهToolStripMenuItem_Click;
             // 
-            // دليلالحساباتToolStripMenuItem
+            // قيوداليوميهToolStripMenuItem1
             // 
-            دليلالحساباتToolStripMenuItem.Image = (Image)resources.GetObject("دليلالحساباتToolStripMenuItem.Image");
-            دليلالحساباتToolStripMenuItem.Name = "دليلالحساباتToolStripMenuItem";
-            دليلالحساباتToolStripMenuItem.Size = new Size(263, 28);
-            دليلالحساباتToolStripMenuItem.Text = "دليل الحسابات";
-            دليلالحساباتToolStripMenuItem.Click += دليلالحساباتToolStripMenuItem_Click;
-            // 
-            // قيداليوميةالعامToolStripMenuItem
-            // 
-            قيداليوميةالعامToolStripMenuItem.Image = (Image)resources.GetObject("قيداليوميةالعامToolStripMenuItem.Image");
-            قيداليوميةالعامToolStripMenuItem.Name = "قيداليوميةالعامToolStripMenuItem";
-            قيداليوميةالعامToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.J;
-            قيداليوميةالعامToolStripMenuItem.Size = new Size(263, 28);
-            قيداليوميةالعامToolStripMenuItem.Text = "قيد اليومية العام";
-            // 
-            // سندالصرقToolStripMenuItem
-            // 
-            سندالصرقToolStripMenuItem.Image = (Image)resources.GetObject("سندالصرقToolStripMenuItem.Image");
-            سندالصرقToolStripMenuItem.Name = "سندالصرقToolStripMenuItem";
-            سندالصرقToolStripMenuItem.Size = new Size(263, 28);
-            سندالصرقToolStripMenuItem.Text = "سند الصرق";
-            // 
-            // سندالقبضToolStripMenuItem
-            // 
-            سندالقبضToolStripMenuItem.Image = (Image)resources.GetObject("سندالقبضToolStripMenuItem.Image");
-            سندالقبضToolStripMenuItem.Name = "سندالقبضToolStripMenuItem";
-            سندالقبضToolStripMenuItem.Size = new Size(263, 28);
-            سندالقبضToolStripMenuItem.Text = "سند القبض";
-            // 
-            // التقاريرToolStripMenuItem
-            // 
-            التقاريرToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { طباعةالدليلالمحاسبيToolStripMenuItem, كشفحسابToolStripMenuItem, ميزانالمراجعةToolStripMenuItem, الميزانيةالعموميةToolStripMenuItem, الأرباحوالخسائرToolStripMenuItem });
-            التقاريرToolStripMenuItem.Font = new Font("Arial", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            التقاريرToolStripMenuItem.Image = (Image)resources.GetObject("التقاريرToolStripMenuItem.Image");
-            التقاريرToolStripMenuItem.Name = "التقاريرToolStripMenuItem";
-            التقاريرToolStripMenuItem.Size = new Size(92, 28);
-            التقاريرToolStripMenuItem.Text = "التقارير";
-            // 
-            // طباعةالدليلالمحاسبيToolStripMenuItem
-            // 
-            طباعةالدليلالمحاسبيToolStripMenuItem.Image = (Image)resources.GetObject("طباعةالدليلالمحاسبيToolStripMenuItem.Image");
-            طباعةالدليلالمحاسبيToolStripMenuItem.Name = "طباعةالدليلالمحاسبيToolStripMenuItem";
-            طباعةالدليلالمحاسبيToolStripMenuItem.Size = new Size(241, 28);
-            طباعةالدليلالمحاسبيToolStripMenuItem.Text = "طباعة الدليل المحاسبي";
-            // 
-            // كشفحسابToolStripMenuItem
-            // 
-            كشفحسابToolStripMenuItem.Image = (Image)resources.GetObject("كشفحسابToolStripMenuItem.Image");
-            كشفحسابToolStripMenuItem.Name = "كشفحسابToolStripMenuItem";
-            كشفحسابToolStripMenuItem.Size = new Size(241, 28);
-            كشفحسابToolStripMenuItem.Text = "حركة حساب معين";
-            // 
-            // ميزانالمراجعةToolStripMenuItem
-            // 
-            ميزانالمراجعةToolStripMenuItem.Image = (Image)resources.GetObject("ميزانالمراجعةToolStripMenuItem.Image");
-            ميزانالمراجعةToolStripMenuItem.Name = "ميزانالمراجعةToolStripMenuItem";
-            ميزانالمراجعةToolStripMenuItem.Size = new Size(241, 28);
-            ميزانالمراجعةToolStripMenuItem.Text = "ميزان المراجعة";
-            // 
-            // الميزانيةالعموميةToolStripMenuItem
-            // 
-            الميزانيةالعموميةToolStripMenuItem.Image = (Image)resources.GetObject("الميزانيةالعموميةToolStripMenuItem.Image");
-            الميزانيةالعموميةToolStripMenuItem.Name = "الميزانيةالعموميةToolStripMenuItem";
-            الميزانيةالعموميةToolStripMenuItem.Size = new Size(241, 28);
-            الميزانيةالعموميةToolStripMenuItem.Text = "الميزانية العمومية";
-            // 
-            // الأرباحوالخسائرToolStripMenuItem
-            // 
-            الأرباحوالخسائرToolStripMenuItem.Image = (Image)resources.GetObject("الأرباحوالخسائرToolStripMenuItem.Image");
-            الأرباحوالخسائرToolStripMenuItem.Name = "الأرباحوالخسائرToolStripMenuItem";
-            الأرباحوالخسائرToolStripMenuItem.Size = new Size(241, 28);
-            الأرباحوالخسائرToolStripMenuItem.Text = "الأرباح و الخسائر";
-            // 
-            // مساعدةToolStripMenuItem
-            // 
-            مساعدةToolStripMenuItem.Font = new Font("Arial", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            مساعدةToolStripMenuItem.Image = (Image)resources.GetObject("مساعدةToolStripMenuItem.Image");
-            مساعدةToolStripMenuItem.Name = "مساعدةToolStripMenuItem";
-            مساعدةToolStripMenuItem.Size = new Size(94, 28);
-            مساعدةToolStripMenuItem.Text = "مساعدة";
-            // 
-            // statusStrip1
-            // 
-            statusStrip1.ImageScalingSize = new Size(20, 20);
-            statusStrip1.Location = new Point(0, 585);
-            statusStrip1.Name = "statusStrip1";
-            statusStrip1.Padding = new Padding(23, 0, 2, 0);
-            statusStrip1.Size = new Size(1139, 22);
-            statusStrip1.TabIndex = 2;
-            statusStrip1.Text = "statusStrip1";
+            قيوداليوميهToolStripMenuItem1.Name = "قيوداليوميهToolStripMenuItem1";
+            قيوداليوميهToolStripMenuItem1.Size = new Size(236, 26);
+            قيوداليوميهToolStripMenuItem1.Text = "قيود اليوميه";
             // 
             // frm_Main
             // 
-            AutoScaleDimensions = new SizeF(12F, 24F);
+            AutoScaleDimensions = new SizeF(9F, 21F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1139, 607);
-            Controls.Add(statusStrip1);
-            Controls.Add(menuStrip1);
-            Font = new Font("Arial", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            Icon = (Icon)resources.GetObject("$this.Icon");
-            IsMdiContainer = true;
-            MainMenuStrip = menuStrip1;
-            Margin = new Padding(5, 4, 5, 4);
-            MaximizeBox = false;
-            MinimizeBox = false;
+            BackColor = Color.White;
+            ClientSize = new Size(1269, 854);
+            Controls.Add(mainMenuStrip);
+            Controls.Add(pnlHeader);
+            Font = new Font("Tahoma", 10F);
+            MainMenuStrip = mainMenuStrip;
+            MinimumSize = new Size(900, 550);
             Name = "frm_Main";
             RightToLeft = RightToLeft.Yes;
             RightToLeftLayout = true;
-            StartPosition = FormStartPosition.CenterParent;
-            Text = "النظام المحاسبي البسيط";
-            WindowState = FormWindowState.Maximized;
-            menuStrip1.ResumeLayout(false);
-            menuStrip1.PerformLayout();
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "نظام المحاسبة";
+            Load += frm_Main_Load;
+            mainMenuStrip.ResumeLayout(false);
+            mainMenuStrip.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
 
+            // =========================================================
+            // Events
+            // =========================================================
+
+
         }
 
-        #endregion
+        // =============================================================
+        // Icon Types
+        // =============================================================
 
-        private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem ملفToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem تبديلالمستخدمToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem النسخالإحتياطيToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem عمانسخةإحتاطيةToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem إسترجاعالنسخةالإحتياطيةToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem تسجيلخروجToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem تهيئةالنظامToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem بياناتالشركةToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem المستخدمينToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem بياناتالإتصالToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem الصناديقToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem البنوكToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem العملاتToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem الحساباتToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem دليلالحساباتToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem قيداليوميةالعامToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem سندالصرقToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem سندالقبضToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem التقاريرToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem طباعةالدليلالمحاسبيToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem كشفحسابToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem ميزانالمراجعةToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem الميزانيةالعموميةToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem الأرباحوالخسائرToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem مساعدةToolStripMenuItem;
-        private System.Windows.Forms.StatusStrip statusStrip1;
+        private enum MenuIconType
+        {
+            Book,
+            Money,
+            Invoice,
+            Report,
+            Accounts,
+            Items,
+            Receipt,
+            Payment,
+            Purchase,
+            Sales,
+            Stock,
+            Statement
+        }
+
+        // =============================================================
+        // Create Menu Icon
+        // =============================================================
+
+        private Bitmap CreateMenuIcon(MenuIconType type)
+        {
+            Bitmap bitmap =
+                new Bitmap(22, 22);
+
+            using (Graphics g =
+                Graphics.FromImage(bitmap))
+            {
+                g.SmoothingMode =
+                    System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+
+                g.Clear(Color.Transparent);
+
+                Color gold =
+                    Color.FromArgb(190, 145, 25);
+
+                Color dark =
+                    Color.FromArgb(70, 70, 70);
+
+                using Pen pen =
+                    new Pen(gold, 1.8F);
+
+                using Pen darkPen =
+                    new Pen(dark, 1.4F);
+
+                using Brush brush =
+                    new SolidBrush(gold);
+
+                // =====================================================
+                // دليل
+                // =====================================================
+
+                if (type == MenuIconType.Book)
+                {
+                    g.DrawRectangle(
+                        pen,
+                        3,
+                        3,
+                        7,
+                        16
+                    );
+
+                    g.DrawRectangle(
+                        pen,
+                        11,
+                        3,
+                        8,
+                        16
+                    );
+
+                    g.DrawLine(
+                        darkPen,
+                        11,
+                        4,
+                        11,
+                        19
+                    );
+                }
+
+                // =====================================================
+                // الحسابات
+                // =====================================================
+
+                else if (type == MenuIconType.Accounts)
+                {
+                    g.DrawRectangle(
+                        pen,
+                        3,
+                        3,
+                        16,
+                        17
+                    );
+
+                    g.DrawLine(
+                        pen,
+                        6,
+                        8,
+                        16,
+                        8
+                    );
+
+                    g.DrawLine(
+                        pen,
+                        6,
+                        12,
+                        16,
+                        12
+                    );
+
+                    g.DrawLine(
+                        pen,
+                        6,
+                        16,
+                        14,
+                        16
+                    );
+                }
+
+                // =====================================================
+                // الأصناف
+                // =====================================================
+
+                else if (type == MenuIconType.Items)
+                {
+                    g.DrawRectangle(
+                        pen,
+                        3,
+                        5,
+                        16,
+                        14
+                    );
+
+                    g.DrawLine(
+                        pen,
+                        3,
+                        9,
+                        19,
+                        9
+                    );
+
+                    g.DrawLine(
+                        pen,
+                        8,
+                        9,
+                        8,
+                        19
+                    );
+                }
+
+                // =====================================================
+                // السندات
+                // =====================================================
+
+                else if (type == MenuIconType.Money)
+                {
+                    g.DrawEllipse(
+                        pen,
+                        3,
+                        3,
+                        16,
+                        16
+                    );
+
+                    g.DrawString(
+                        "$",
+                        new Font(
+                            "Tahoma",
+                            10F,
+                            FontStyle.Bold
+                        ),
+                        brush,
+                        new PointF(7, 3)
+                    );
+                }
+
+                // =====================================================
+                // سند قبض
+                // =====================================================
+
+                else if (type == MenuIconType.Receipt)
+                {
+                    g.DrawRectangle(
+                        pen,
+                        4,
+                        2,
+                        14,
+                        18
+                    );
+
+                    g.DrawLine(
+                        pen,
+                        7,
+                        7,
+                        15,
+                        7
+                    );
+
+                    g.DrawLine(
+                        pen,
+                        7,
+                        11,
+                        15,
+                        11
+                    );
+
+                    g.DrawLine(
+                        pen,
+                        7,
+                        15,
+                        13,
+                        15
+                    );
+                }
+
+                // =====================================================
+                // سند صرف
+                // =====================================================
+
+                else if (type == MenuIconType.Payment)
+                {
+                    g.DrawEllipse(
+                        pen,
+                        3,
+                        3,
+                        16,
+                        16
+                    );
+
+                    g.DrawLine(
+                        pen,
+                        6,
+                        11,
+                        16,
+                        11
+                    );
+
+                    g.DrawLine(
+                        pen,
+                        11,
+                        6,
+                        11,
+                        16
+                    );
+                }
+
+                // =====================================================
+                // الفواتير
+                // =====================================================
+
+                else if (type == MenuIconType.Invoice)
+                {
+                    Point[] points =
+                    {
+                        new Point(4, 2),
+                        new Point(18, 2),
+                        new Point(18, 19),
+                        new Point(15, 17),
+                        new Point(12, 19),
+                        new Point(9, 17),
+                        new Point(6, 19),
+                        new Point(4, 17)
+                    };
+
+                    g.DrawPolygon(
+                        pen,
+                        points
+                    );
+
+                    g.DrawLine(
+                        pen,
+                        7,
+                        7,
+                        15,
+                        7
+                    );
+
+                    g.DrawLine(
+                        pen,
+                        7,
+                        11,
+                        15,
+                        11
+                    );
+
+                    g.DrawLine(
+                        pen,
+                        7,
+                        15,
+                        13,
+                        15
+                    );
+                }
+
+                // =====================================================
+                // مشتريات
+                // =====================================================
+
+                else if (type == MenuIconType.Purchase)
+                {
+                    g.DrawRectangle(
+                        pen,
+                        4,
+                        4,
+                        14,
+                        12
+                    );
+
+                    g.DrawLine(
+                        pen,
+                        4,
+                        8,
+                        18,
+                        8
+                    );
+
+                    g.DrawLine(
+                        pen,
+                        8,
+                        8,
+                        8,
+                        16
+                    );
+
+                    g.DrawLine(
+                        pen,
+                        11,
+                        11,
+                        16,
+                        11
+                    );
+                }
+
+                // =====================================================
+                // مبيعات
+                // =====================================================
+
+                else if (type == MenuIconType.Sales)
+                {
+                    g.DrawRectangle(
+                        pen,
+                        4,
+                        3,
+                        14,
+                        17
+                    );
+
+                    g.DrawLine(
+                        pen,
+                        7,
+                        8,
+                        15,
+                        8
+                    );
+
+                    g.DrawLine(
+                        pen,
+                        7,
+                        12,
+                        15,
+                        12
+                    );
+
+                    g.DrawLine(
+                        pen,
+                        7,
+                        16,
+                        13,
+                        16
+                    );
+                }
+
+                // =====================================================
+                // التقارير
+                // =====================================================
+
+                else if (type == MenuIconType.Report)
+                {
+                    g.DrawRectangle(
+                        pen,
+                        3,
+                        3,
+                        16,
+                        16
+                    );
+
+                    g.FillRectangle(
+                        brush,
+                        6,
+                        13,
+                        3,
+                        4
+                    );
+
+                    g.FillRectangle(
+                        brush,
+                        10,
+                        10,
+                        3,
+                        7
+                    );
+
+                    g.FillRectangle(
+                        brush,
+                        14,
+                        6,
+                        3,
+                        11
+                    );
+                }
+
+                // =====================================================
+                // المخزون
+                // =====================================================
+
+                else if (type == MenuIconType.Stock)
+                {
+                    g.DrawRectangle(
+                        pen,
+                        3,
+                        5,
+                        16,
+                        14
+                    );
+
+                    g.DrawLine(
+                        pen,
+                        3,
+                        9,
+                        19,
+                        9
+                    );
+
+                    g.DrawLine(
+                        pen,
+                        8,
+                        5,
+                        8,
+                        19
+                    );
+
+                    g.DrawLine(
+                        pen,
+                        14,
+                        5,
+                        14,
+                        19
+                    );
+                }
+
+                // =====================================================
+                // كشف الحساب
+                // =====================================================
+
+                else if (type == MenuIconType.Statement)
+                {
+                    g.DrawRectangle(
+                        pen,
+                        4,
+                        2,
+                        14,
+                        18
+                    );
+
+                    g.DrawLine(
+                        pen,
+                        7,
+                        7,
+                        15,
+                        7
+                    );
+
+                    g.DrawLine(
+                        pen,
+                        7,
+                        11,
+                        15,
+                        11
+                    );
+
+                    g.DrawLine(
+                        pen,
+                        7,
+                        15,
+                        15,
+                        15
+                    );
+                }
+            }
+
+            return bitmap;
+        }
+
+        private ToolStripMenuItem قيوداليوميهToolStripMenuItem;
+        private ToolStripMenuItem قيوداليوميهToolStripMenuItem1;
     }
 }

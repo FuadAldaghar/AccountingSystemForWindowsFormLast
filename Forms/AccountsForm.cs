@@ -11,6 +11,7 @@ namespace AccountingSystemForWindowsFormLast.Forms
         public AccountsForm()
         {
             InitializeComponent();
+            this.TopLevel = false;
 
             btnNew.Click += btnNew_Click;
             btnAdd.Click += btnAdd_Click;
