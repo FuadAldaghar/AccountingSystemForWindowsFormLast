@@ -180,6 +180,7 @@
             cmbUnit.Name = "cmbUnit";
             cmbUnit.Size = new Size(145, 31);
             cmbUnit.TabIndex = 2;
+            cmbUnit.SelectedIndexChanged += cmbUnit_SelectedIndexChanged;
             // 
             // btnNew
             // 

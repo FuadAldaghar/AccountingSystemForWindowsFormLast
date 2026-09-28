@@ -658,14 +658,14 @@ namespace AccountingSystemForWindowsFormLast.Forms
                 GetAccountId(
                     connection,
                     transaction,
-                    "41");
+                    "51");
 
             int inventoryAccountId =
                 GetAccountId(
                     connection,
                     transaction,
-                    "31");
-
+                    "114");
+            ///////نشوفه لاحقا
             int costOfGoodsAccountId =
                 GetAccountId(
                     connection,

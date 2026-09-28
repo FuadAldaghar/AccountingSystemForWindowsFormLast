@@ -1,4 +1,6 @@
-﻿namespace AccountingSystemForWindowsFormLast
+﻿using System.Drawing.Drawing2D;
+
+namespace AccountingSystemForWindowsFormLast
 {
     partial class frm_Main
     {
@@ -12,15 +14,29 @@
 
         private System.Windows.Forms.ToolStripMenuItem vouchersMenu;
         private System.Windows.Forms.ToolStripMenuItem receiptVoucherMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem receiptRegisterMenuItem;
         private System.Windows.Forms.ToolStripMenuItem paymentVoucherMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem paymentRegisterMenuItem;
 
         private System.Windows.Forms.ToolStripMenuItem invoicesMenu;
         private System.Windows.Forms.ToolStripMenuItem purchaseInvoiceMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem purchaseRegisterMenuItem;
         private System.Windows.Forms.ToolStripMenuItem salesInvoiceMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem salesRegisterMenuItem;
 
         private System.Windows.Forms.ToolStripMenuItem reportsMenu;
         private System.Windows.Forms.ToolStripMenuItem stockReportMenuItem;
         private System.Windows.Forms.ToolStripMenuItem accountStatementMenuItem;
+
+        private System.Windows.Forms.ToolStripMenuItem loginMenu;
+        private System.Windows.Forms.ToolStripMenuItem loginMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem logoutMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem changePasswordMenuItem;
+
+        private System.Windows.Forms.ToolStripMenuItem databaseMenu;
+        private System.Windows.Forms.ToolStripMenuItem connectionMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem backupMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem restoreMenuItem;
 
         private System.Windows.Forms.Panel contentPanel;
         private System.Windows.Forms.Panel pnlHeader;
@@ -43,78 +59,85 @@
         {
             contentPanel = new Panel();
             pnlHeader = new Panel();
-            pnlHeaderAccent = new Panel();
             lblBrand = new Label();
             lblSubTitle = new Label();
             lblTitle = new Label();
-
+            pnlHeaderAccent = new Panel();
             mainMenuStrip = new MenuStrip();
-
             systemMenu = new ToolStripMenuItem();
             accountTreeMenuItem = new ToolStripMenuItem();
             itemsMenuItem = new ToolStripMenuItem();
 
             vouchersMenu = new ToolStripMenuItem();
             receiptVoucherMenuItem = new ToolStripMenuItem();
+            receiptRegisterMenuItem = new ToolStripMenuItem();
             paymentVoucherMenuItem = new ToolStripMenuItem();
+            paymentRegisterMenuItem = new ToolStripMenuItem();
 
             invoicesMenu = new ToolStripMenuItem();
             purchaseInvoiceMenuItem = new ToolStripMenuItem();
+            purchaseRegisterMenuItem = new ToolStripMenuItem();
             salesInvoiceMenuItem = new ToolStripMenuItem();
+            salesRegisterMenuItem = new ToolStripMenuItem();
 
             reportsMenu = new ToolStripMenuItem();
             stockReportMenuItem = new ToolStripMenuItem();
             accountStatementMenuItem = new ToolStripMenuItem();
 
+            loginMenu = new ToolStripMenuItem();
+            loginMenuItem = new ToolStripMenuItem();
+            logoutMenuItem = new ToolStripMenuItem();
+            changePasswordMenuItem = new ToolStripMenuItem();
+
+            databaseMenu = new ToolStripMenuItem();
+            connectionMenuItem = new ToolStripMenuItem();
+            backupMenuItem = new ToolStripMenuItem();
+            restoreMenuItem = new ToolStripMenuItem();
+
             قيوداليوميهToolStripMenuItem = new ToolStripMenuItem();
             قيوداليوميهToolStripMenuItem1 = new ToolStripMenuItem();
-
-            contentPanel.SuspendLayout();
             pnlHeader.SuspendLayout();
             mainMenuStrip.SuspendLayout();
             SuspendLayout();
-
+            // 
             // contentPanel
-            // منطقة الشاشات الداخلية: تتمدد فقط في المساحة المتبقية.
+            // 
             contentPanel.BackColor = Color.FromArgb(246, 248, 247);
             contentPanel.Dock = DockStyle.Fill;
+            contentPanel.Location = new Point(0, 123);
             contentPanel.Name = "contentPanel";
             contentPanel.Padding = new Padding(10);
+            contentPanel.Size = new Size(1537, 731);
             contentPanel.TabIndex = 2;
-
+            // 
             // pnlHeader
+            // 
             pnlHeader.BackColor = Color.FromArgb(24, 78, 58);
-            pnlHeader.Dock = DockStyle.Top;
-            pnlHeader.Height = 78;
-            pnlHeader.Name = "pnlHeader";
-            pnlHeader.TabIndex = 0;
             pnlHeader.Controls.Add(lblBrand);
             pnlHeader.Controls.Add(lblSubTitle);
             pnlHeader.Controls.Add(lblTitle);
             pnlHeader.Controls.Add(pnlHeaderAccent);
-
-            // pnlHeaderAccent
-            pnlHeaderAccent.BackColor = Color.FromArgb(214, 170, 54);
-            pnlHeaderAccent.Dock = DockStyle.Bottom;
-            pnlHeaderAccent.Height = 4;
-            pnlHeaderAccent.Name = "pnlHeaderAccent";
-            pnlHeaderAccent.TabIndex = 0;
-
+            pnlHeader.Dock = DockStyle.Top;
+            pnlHeader.Location = new Point(0, 0);
+            pnlHeader.Name = "pnlHeader";
+            pnlHeader.Size = new Size(1537, 78);
+            pnlHeader.TabIndex = 0;
+            // 
             // lblBrand
-            lblBrand.AutoSize = false;
+            // 
             lblBrand.Dock = DockStyle.Right;
             lblBrand.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             lblBrand.ForeColor = Color.FromArgb(230, 240, 235);
-            lblBrand.Location = new Point(1060, 0);
+            lblBrand.Location = new Point(1327, 0);
             lblBrand.Name = "lblBrand";
             lblBrand.Padding = new Padding(0, 0, 24, 0);
             lblBrand.Size = new Size(210, 74);
             lblBrand.TabIndex = 0;
             lblBrand.Text = "Accounting System";
             lblBrand.TextAlign = ContentAlignment.MiddleRight;
-
+            // 
             // lblSubTitle
-            lblSubTitle.AutoSize = false;
+            // 
             lblSubTitle.Font = new Font("Segoe UI", 9F);
             lblSubTitle.ForeColor = Color.FromArgb(205, 225, 215);
             lblSubTitle.Location = new Point(24, 43);
@@ -123,9 +146,9 @@
             lblSubTitle.TabIndex = 2;
             lblSubTitle.Text = "إدارة الحسابات والفواتير والسندات والتقارير المالية";
             lblSubTitle.TextAlign = ContentAlignment.MiddleLeft;
-
+            // 
             // lblTitle
-            lblTitle.AutoSize = false;
+            // 
             lblTitle.Font = new Font("Segoe UI", 19F, FontStyle.Bold);
             lblTitle.ForeColor = Color.White;
             lblTitle.Location = new Point(24, 7);
@@ -134,133 +157,290 @@
             lblTitle.TabIndex = 1;
             lblTitle.Text = "نظام المحاسبة";
             lblTitle.TextAlign = ContentAlignment.MiddleLeft;
-
+            // 
+            // pnlHeaderAccent
+            // 
+            pnlHeaderAccent.BackColor = Color.FromArgb(214, 170, 54);
+            pnlHeaderAccent.Dock = DockStyle.Bottom;
+            pnlHeaderAccent.Location = new Point(0, 74);
+            pnlHeaderAccent.Name = "pnlHeaderAccent";
+            pnlHeaderAccent.Size = new Size(1537, 4);
+            pnlHeaderAccent.TabIndex = 0;
+            // 
             // mainMenuStrip
+            // 
             mainMenuStrip.BackColor = Color.White;
-            mainMenuStrip.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
+            mainMenuStrip.Font = new Font("Segoe UI", 10F);
             mainMenuStrip.ForeColor = Color.FromArgb(45, 45, 45);
             mainMenuStrip.ImageScalingSize = new Size(24, 24);
-            mainMenuStrip.Items.AddRange(new ToolStripItem[]
-            {
+            mainMenuStrip.Items.AddRange(new ToolStripItem[] {
+                loginMenu,
+                databaseMenu,
                 systemMenu,
                 vouchersMenu,
                 invoicesMenu,
                 reportsMenu
             });
-            mainMenuStrip.Dock = DockStyle.Top;
+            mainMenuStrip.Location = new Point(0, 78);
             mainMenuStrip.Name = "mainMenuStrip";
             mainMenuStrip.Padding = new Padding(16, 7, 16, 7);
             mainMenuStrip.RightToLeft = RightToLeft.Yes;
-            mainMenuStrip.Size = new Size(1269, 46);
+            mainMenuStrip.Size = new Size(1537, 45);
             mainMenuStrip.TabIndex = 1;
-
+            // 
             // systemMenu
-            systemMenu.DropDownItems.AddRange(new ToolStripItem[]
-            {
-                accountTreeMenuItem,
-                itemsMenuItem
-            });
+            // 
+            systemMenu.DropDownItems.AddRange(new ToolStripItem[] { accountTreeMenuItem, itemsMenuItem });
             systemMenu.Name = "systemMenu";
             systemMenu.Padding = new Padding(10, 2, 10, 2);
-            systemMenu.Size = new Size(78, 32);
+            systemMenu.Size = new Size(76, 31);
             systemMenu.Text = "الدليل";
-
+            // 
             // accountTreeMenuItem
+            // 
             accountTreeMenuItem.Name = "accountTreeMenuItem";
-            accountTreeMenuItem.Size = new Size(220, 30);
+            accountTreeMenuItem.Size = new Size(195, 28);
             accountTreeMenuItem.Text = "دليل الحسابات";
             accountTreeMenuItem.Click += accountTreeMenuItem_Click;
-
+            // 
             // itemsMenuItem
+            // 
             itemsMenuItem.Name = "itemsMenuItem";
-            itemsMenuItem.Size = new Size(220, 30);
+            itemsMenuItem.Size = new Size(195, 28);
             itemsMenuItem.Text = "دليل الأصناف";
             itemsMenuItem.Click += itemsMenuItem_Click;
-
+            // 
             // vouchersMenu
-            vouchersMenu.DropDownItems.AddRange(new ToolStripItem[]
-            {
+            // 
+            vouchersMenu.DropDownItems.AddRange(new ToolStripItem[] {
                 receiptVoucherMenuItem,
-                paymentVoucherMenuItem
+                receiptRegisterMenuItem,
+                paymentVoucherMenuItem,
+                paymentRegisterMenuItem
             });
             vouchersMenu.Name = "vouchersMenu";
             vouchersMenu.Padding = new Padding(10, 2, 10, 2);
-            vouchersMenu.Size = new Size(88, 32);
+            vouchersMenu.Size = new Size(93, 31);
             vouchersMenu.Text = "السندات";
-
+            // 
             // receiptVoucherMenuItem
+            // 
             receiptVoucherMenuItem.Name = "receiptVoucherMenuItem";
-            receiptVoucherMenuItem.Size = new Size(220, 30);
+            receiptVoucherMenuItem.Size = new Size(167, 28);
             receiptVoucherMenuItem.Text = "سند قبض";
             receiptVoucherMenuItem.Click += receiptVoucherMenuItem_Click;
 
+            // 
+            // receiptRegisterMenuItem
+            // 
+            receiptRegisterMenuItem.Name = "receiptRegisterMenuItem";
+            receiptRegisterMenuItem.Size = new Size(220, 28);
+            receiptRegisterMenuItem.Text = "سجل سندات القبض";
+
+            // 
             // paymentVoucherMenuItem
+            // 
             paymentVoucherMenuItem.Name = "paymentVoucherMenuItem";
-            paymentVoucherMenuItem.Size = new Size(220, 30);
+            paymentVoucherMenuItem.Size = new Size(167, 28);
             paymentVoucherMenuItem.Text = "سند صرف";
             paymentVoucherMenuItem.Click += paymentVoucherMenuItem_Click;
 
+            // 
+            // paymentRegisterMenuItem
+            // 
+            paymentRegisterMenuItem.Name = "paymentRegisterMenuItem";
+            paymentRegisterMenuItem.Size = new Size(220, 28);
+            paymentRegisterMenuItem.Text = "سجل سندات الصرف";
+
+            // 
             // invoicesMenu
-            invoicesMenu.DropDownItems.AddRange(new ToolStripItem[]
-            {
+            // 
+            invoicesMenu.DropDownItems.AddRange(new ToolStripItem[] {
                 purchaseInvoiceMenuItem,
-                salesInvoiceMenuItem
+                purchaseRegisterMenuItem,
+                salesInvoiceMenuItem,
+                salesRegisterMenuItem
             });
             invoicesMenu.Name = "invoicesMenu";
             invoicesMenu.Padding = new Padding(10, 2, 10, 2);
-            invoicesMenu.Size = new Size(82, 32);
+            invoicesMenu.Size = new Size(85, 31);
             invoicesMenu.Text = "الفواتير";
-
+            // 
             // purchaseInvoiceMenuItem
+            // 
             purchaseInvoiceMenuItem.Name = "purchaseInvoiceMenuItem";
-            purchaseInvoiceMenuItem.Size = new Size(220, 30);
+            purchaseInvoiceMenuItem.Size = new Size(206, 28);
             purchaseInvoiceMenuItem.Text = "فاتورة مشتريات";
             purchaseInvoiceMenuItem.Click += purchaseInvoiceMenuItem_Click;
 
+            // 
+            // purchaseRegisterMenuItem
+            // 
+            purchaseRegisterMenuItem.Name = "purchaseRegisterMenuItem";
+            purchaseRegisterMenuItem.Size = new Size(220, 28);
+            purchaseRegisterMenuItem.Text = "سجل المشتريات";
+
+            // 
             // salesInvoiceMenuItem
+            // 
             salesInvoiceMenuItem.Name = "salesInvoiceMenuItem";
-            salesInvoiceMenuItem.Size = new Size(220, 30);
+            salesInvoiceMenuItem.Size = new Size(206, 28);
             salesInvoiceMenuItem.Text = "فاتورة مبيعات";
             salesInvoiceMenuItem.Click += salesInvoiceMenuItem_Click;
 
+            // 
+            // salesRegisterMenuItem
+            // 
+            salesRegisterMenuItem.Name = "salesRegisterMenuItem";
+            salesRegisterMenuItem.Size = new Size(220, 28);
+            salesRegisterMenuItem.Text = "سجل المبيعات";
+
+            // 
             // reportsMenu
-            reportsMenu.DropDownItems.AddRange(new ToolStripItem[]
-            {
-                stockReportMenuItem,
-                accountStatementMenuItem,
-                قيوداليوميهToolStripMenuItem
-            });
+            // 
+            reportsMenu.DropDownItems.AddRange(new ToolStripItem[] { stockReportMenuItem, accountStatementMenuItem, قيوداليوميهToolStripMenuItem });
             reportsMenu.Name = "reportsMenu";
             reportsMenu.Padding = new Padding(10, 2, 10, 2);
-            reportsMenu.Size = new Size(82, 32);
+            reportsMenu.Size = new Size(84, 31);
             reportsMenu.Text = "التقارير";
-
-            // report items
+            // 
+            // stockReportMenuItem
+            // 
             stockReportMenuItem.Name = "stockReportMenuItem";
-            stockReportMenuItem.Size = new Size(240, 30);
+            stockReportMenuItem.Size = new Size(244, 28);
             stockReportMenuItem.Text = "تقرير مخزون الأصناف";
             stockReportMenuItem.Click += stockReportMenuItem_Click;
-
+            // 
+            // accountStatementMenuItem
+            // 
             accountStatementMenuItem.Name = "accountStatementMenuItem";
-            accountStatementMenuItem.Size = new Size(240, 30);
+            accountStatementMenuItem.Size = new Size(244, 28);
             accountStatementMenuItem.Text = "كشف حساب";
             accountStatementMenuItem.Click += accountStatementMenuItem_Click;
-
+            // 
+            // قيوداليوميهToolStripMenuItem
+            // 
             قيوداليوميهToolStripMenuItem.Name = "قيوداليوميهToolStripMenuItem";
-            قيوداليوميهToolStripMenuItem.Size = new Size(240, 30);
+            قيوداليوميهToolStripMenuItem.Size = new Size(244, 28);
             قيوداليوميهToolStripMenuItem.Text = "قيود اليومية";
             قيوداليوميهToolStripMenuItem.Click += قيوداليوميهToolStripMenuItem_Click;
-
-            // Hidden duplicate menu item kept for compatibility with existing code.
+            // 
+            // قيوداليوميهToolStripMenuItem1
+            // 
             قيوداليوميهToolStripMenuItem1.Name = "قيوداليوميهToolStripMenuItem1";
             قيوداليوميهToolStripMenuItem1.Size = new Size(240, 30);
             قيوداليوميهToolStripMenuItem1.Text = "قيود اليومية";
+            // 
+            // loginMenu
+            // 
+            loginMenu.DropDownItems.AddRange(new ToolStripItem[] {
+                loginMenuItem,
+                logoutMenuItem,
+                changePasswordMenuItem
+            });
+            loginMenu.Name = "loginMenu";
+            loginMenu.Padding = new Padding(10, 2, 10, 2);
+            loginMenu.Size = new Size(120, 31);
+            loginMenu.Text = "تسجيل الدخول";
 
+            // 
+            // loginMenuItem
+            // 
+            loginMenuItem.Name = "loginMenuItem";
+            loginMenuItem.Size = new Size(220, 28);
+            loginMenuItem.Text = "تسجيل الدخول";
+
+            // 
+            // logoutMenuItem
+            // 
+            logoutMenuItem.Name = "logoutMenuItem";
+            logoutMenuItem.Size = new Size(220, 28);
+            logoutMenuItem.Text = "تسجيل الخروج";
+
+            // 
+            // changePasswordMenuItem
+            // 
+            changePasswordMenuItem.Name = "changePasswordMenuItem";
+            changePasswordMenuItem.Size = new Size(220, 28);
+            changePasswordMenuItem.Text = "تغيير كلمة المرور";
+
+            // 
+            // databaseMenu
+            // 
+            databaseMenu.DropDownItems.AddRange(new ToolStripItem[] {
+                connectionMenuItem,
+                backupMenuItem,
+                restoreMenuItem
+            });
+            databaseMenu.Name = "databaseMenu";
+            databaseMenu.Padding = new Padding(10, 2, 10, 2);
+            databaseMenu.Size = new Size(180, 31);
+            databaseMenu.Text = "إعدادات قاعدة البيانات";
+
+            // 
+            // connectionMenuItem
+            // 
+            connectionMenuItem.Name = "connectionMenuItem";
+            connectionMenuItem.Size = new Size(240, 28);
+            connectionMenuItem.Text = "ربط قاعدة البيانات";
+
+            // 
+            // backupMenuItem
+            // 
+            backupMenuItem.Name = "backupMenuItem";
+            backupMenuItem.Size = new Size(240, 28);
+            backupMenuItem.Text = "نسخ احتياطي";
+
+            // 
+            // restoreMenuItem
+            // 
+            restoreMenuItem.Name = "restoreMenuItem";
+            restoreMenuItem.Size = new Size(240, 28);
+            restoreMenuItem.Text = "استعادة قاعدة البيانات";
+
+
+            // Icons - same green/gold visual language across all menus.
+            systemMenu.Image = CreateMenuIcon(MenuIconType.Book);
+            accountTreeMenuItem.Image = CreateMenuIcon(MenuIconType.Accounts);
+            itemsMenuItem.Image = CreateMenuIcon(MenuIconType.Items);
+
+            vouchersMenu.Image = CreateMenuIcon(MenuIconType.Money);
+            receiptVoucherMenuItem.Image = CreateMenuIcon(MenuIconType.Receipt);
+            receiptRegisterMenuItem.Image = CreateMenuIcon(MenuIconType.Register);
+            paymentVoucherMenuItem.Image = CreateMenuIcon(MenuIconType.Payment);
+            paymentRegisterMenuItem.Image = CreateMenuIcon(MenuIconType.Register);
+
+            invoicesMenu.Image = CreateMenuIcon(MenuIconType.Invoice);
+            purchaseInvoiceMenuItem.Image = CreateMenuIcon(MenuIconType.Purchase);
+            purchaseRegisterMenuItem.Image = CreateMenuIcon(MenuIconType.Register);
+            salesInvoiceMenuItem.Image = CreateMenuIcon(MenuIconType.Sales);
+            salesRegisterMenuItem.Image = CreateMenuIcon(MenuIconType.Register);
+
+            reportsMenu.Image = CreateMenuIcon(MenuIconType.Report);
+            stockReportMenuItem.Image = CreateMenuIcon(MenuIconType.Stock);
+            accountStatementMenuItem.Image = CreateMenuIcon(MenuIconType.Statement);
+            قيوداليوميهToolStripMenuItem.Image = CreateMenuIcon(MenuIconType.Journal);
+
+            loginMenu.Image = CreateMenuIcon(MenuIconType.Login);
+            loginMenuItem.Image = CreateMenuIcon(MenuIconType.Login);
+            logoutMenuItem.Image = CreateMenuIcon(MenuIconType.Logout);
+            changePasswordMenuItem.Image = CreateMenuIcon(MenuIconType.Password);
+
+            databaseMenu.Image = CreateMenuIcon(MenuIconType.Database);
+            connectionMenuItem.Image = CreateMenuIcon(MenuIconType.Connection);
+            backupMenuItem.Image = CreateMenuIcon(MenuIconType.Backup);
+            restoreMenuItem.Image = CreateMenuIcon(MenuIconType.Restore);
+
+            // 
             // frm_Main
-            AutoScaleDimensions = new SizeF(9F, 21F);
+            // 
+            AutoScaleDimensions = new SizeF(9F, 23F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(246, 248, 247);
-            ClientSize = new Size(1269, 854);
+            ClientSize = new Size(1537, 854);
+            Controls.Add(contentPanel);
+            Controls.Add(mainMenuStrip);
+            Controls.Add(pnlHeader);
             Font = new Font("Segoe UI", 10F);
             MainMenuStrip = mainMenuStrip;
             MinimumSize = new Size(1000, 650);
@@ -269,14 +449,7 @@
             RightToLeftLayout = true;
             StartPosition = FormStartPosition.CenterScreen;
             Text = "نظام المحاسبة";
-            // ترتيب الـ Dock: Content أولاً، ثم Menu، ثم Header.
-            // بهذا تبدأ كل شاشة داخلية أسفل الهيدر والقائمة.
-            Controls.Add(contentPanel);
-            Controls.Add(mainMenuStrip);
-            Controls.Add(pnlHeader);
             Load += frm_Main_Load;
-
-            contentPanel.ResumeLayout(false);
             pnlHeader.ResumeLayout(false);
             mainMenuStrip.ResumeLayout(false);
             mainMenuStrip.PerformLayout();
@@ -303,7 +476,16 @@
             Purchase,
             Sales,
             Stock,
-            Statement
+            Statement,
+            Login,
+            Logout,
+            Password,
+            Database,
+            Connection,
+            Backup,
+            Restore,
+            Register,
+            Journal
         }
 
         // =============================================================
@@ -312,474 +494,213 @@
 
         private Bitmap CreateMenuIcon(MenuIconType type)
         {
-            Bitmap bitmap =
-                new Bitmap(22, 22);
+            Bitmap bitmap = new Bitmap(22, 22);
 
-            using (Graphics g =
-                Graphics.FromImage(bitmap))
+            using (Graphics g = Graphics.FromImage(bitmap))
             {
-                g.SmoothingMode =
-                    System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-
+                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
                 g.Clear(Color.Transparent);
 
-                Color gold =
-                    Color.FromArgb(190, 145, 25);
+                // Accounting system palette: deep green + light gold.
+                Color green = Color.FromArgb(24, 78, 58);
+                Color gold = Color.FromArgb(214, 170, 54);
+                Color lightGold = Color.FromArgb(238, 211, 125);
+                Color dark = Color.FromArgb(70, 70, 70);
 
-                Color dark =
-                    Color.FromArgb(70, 70, 70);
+                using Pen greenPen = new Pen(green, 1.8F);
+                using Pen goldPen = new Pen(gold, 1.8F);
+                using Pen darkPen = new Pen(dark, 1.4F);
+                using Brush greenBrush = new SolidBrush(green);
+                using Brush goldBrush = new SolidBrush(gold);
+                using Brush lightGoldBrush = new SolidBrush(lightGold);
 
-                using Pen pen =
-                    new Pen(gold, 1.8F);
-
-                using Pen darkPen =
-                    new Pen(dark, 1.4F);
-
-                using Brush brush =
-                    new SolidBrush(gold);
-
-                // =====================================================
-                // دليل
-                // =====================================================
-
+                // General / existing icons
                 if (type == MenuIconType.Book)
                 {
-                    g.DrawRectangle(
-                        pen,
-                        3,
-                        3,
-                        7,
-                        16
-                    );
-
-                    g.DrawRectangle(
-                        pen,
-                        11,
-                        3,
-                        8,
-                        16
-                    );
-
-                    g.DrawLine(
-                        darkPen,
-                        11,
-                        4,
-                        11,
-                        19
-                    );
+                    g.DrawRectangle(greenPen, 3, 3, 7, 16);
+                    g.DrawRectangle(greenPen, 11, 3, 8, 16);
+                    g.DrawLine(darkPen, 11, 4, 11, 19);
                 }
-
-                // =====================================================
-                // الحسابات
-                // =====================================================
-
                 else if (type == MenuIconType.Accounts)
                 {
-                    g.DrawRectangle(
-                        pen,
-                        3,
-                        3,
-                        16,
-                        17
-                    );
-
-                    g.DrawLine(
-                        pen,
-                        6,
-                        8,
-                        16,
-                        8
-                    );
-
-                    g.DrawLine(
-                        pen,
-                        6,
-                        12,
-                        16,
-                        12
-                    );
-
-                    g.DrawLine(
-                        pen,
-                        6,
-                        16,
-                        14,
-                        16
-                    );
+                    g.DrawRectangle(greenPen, 3, 3, 16, 17);
+                    g.DrawLine(goldPen, 6, 8, 16, 8);
+                    g.DrawLine(goldPen, 6, 12, 16, 12);
+                    g.DrawLine(goldPen, 6, 16, 14, 16);
                 }
-
-                // =====================================================
-                // الأصناف
-                // =====================================================
-
                 else if (type == MenuIconType.Items)
                 {
-                    g.DrawRectangle(
-                        pen,
-                        3,
-                        5,
-                        16,
-                        14
-                    );
-
-                    g.DrawLine(
-                        pen,
-                        3,
-                        9,
-                        19,
-                        9
-                    );
-
-                    g.DrawLine(
-                        pen,
-                        8,
-                        9,
-                        8,
-                        19
-                    );
+                    g.DrawRectangle(greenPen, 3, 5, 16, 14);
+                    g.DrawLine(goldPen, 3, 9, 19, 9);
+                    g.DrawLine(goldPen, 8, 9, 8, 19);
                 }
-
-                // =====================================================
-                // السندات
-                // =====================================================
-
                 else if (type == MenuIconType.Money)
                 {
-                    g.DrawEllipse(
-                        pen,
-                        3,
-                        3,
-                        16,
-                        16
-                    );
-
-                    g.DrawString(
-                        "$",
-                        new Font(
-                            "Tahoma",
-                            10F,
-                            FontStyle.Bold
-                        ),
-                        brush,
-                        new PointF(7, 3)
-                    );
+                    g.FillEllipse(lightGoldBrush, 3, 3, 16, 16);
+                    g.DrawEllipse(greenPen, 3, 3, 16, 16);
+                    g.DrawString("$", new Font("Tahoma", 10F, FontStyle.Bold), greenBrush, new PointF(7, 3));
                 }
-
-                // =====================================================
-                // سند قبض
-                // =====================================================
-
                 else if (type == MenuIconType.Receipt)
                 {
-                    g.DrawRectangle(
-                        pen,
-                        4,
-                        2,
-                        14,
-                        18
-                    );
-
-                    g.DrawLine(
-                        pen,
-                        7,
-                        7,
-                        15,
-                        7
-                    );
-
-                    g.DrawLine(
-                        pen,
-                        7,
-                        11,
-                        15,
-                        11
-                    );
-
-                    g.DrawLine(
-                        pen,
-                        7,
-                        15,
-                        13,
-                        15
-                    );
+                    g.FillRectangle(lightGoldBrush, 4, 2, 14, 18);
+                    g.DrawRectangle(greenPen, 4, 2, 14, 18);
+                    g.DrawLine(goldPen, 7, 7, 15, 7);
+                    g.DrawLine(goldPen, 7, 11, 15, 11);
+                    g.DrawLine(goldPen, 7, 15, 13, 15);
                 }
-
-                // =====================================================
-                // سند صرف
-                // =====================================================
-
                 else if (type == MenuIconType.Payment)
                 {
-                    g.DrawEllipse(
-                        pen,
-                        3,
-                        3,
-                        16,
-                        16
-                    );
-
-                    g.DrawLine(
-                        pen,
-                        6,
-                        11,
-                        16,
-                        11
-                    );
-
-                    g.DrawLine(
-                        pen,
-                        11,
-                        6,
-                        11,
-                        16
-                    );
+                    g.FillEllipse(lightGoldBrush, 3, 3, 16, 16);
+                    g.DrawEllipse(greenPen, 3, 3, 16, 16);
+                    g.DrawLine(goldPen, 6, 11, 16, 11);
+                    g.DrawLine(goldPen, 11, 6, 11, 16);
                 }
-
-                // =====================================================
-                // الفواتير
-                // =====================================================
-
                 else if (type == MenuIconType.Invoice)
                 {
                     Point[] points =
                     {
-                        new Point(4, 2),
-                        new Point(18, 2),
-                        new Point(18, 19),
-                        new Point(15, 17),
-                        new Point(12, 19),
-                        new Point(9, 17),
-                        new Point(6, 19),
-                        new Point(4, 17)
+                        new Point(4, 2), new Point(18, 2), new Point(18, 19),
+                        new Point(15, 17), new Point(12, 19), new Point(9, 17),
+                        new Point(6, 19), new Point(4, 17)
                     };
-
-                    g.DrawPolygon(
-                        pen,
-                        points
-                    );
-
-                    g.DrawLine(
-                        pen,
-                        7,
-                        7,
-                        15,
-                        7
-                    );
-
-                    g.DrawLine(
-                        pen,
-                        7,
-                        11,
-                        15,
-                        11
-                    );
-
-                    g.DrawLine(
-                        pen,
-                        7,
-                        15,
-                        13,
-                        15
-                    );
+                    g.FillPolygon(lightGoldBrush, points);
+                    g.DrawPolygon(greenPen, points);
+                    g.DrawLine(goldPen, 7, 7, 15, 7);
+                    g.DrawLine(goldPen, 7, 11, 15, 11);
+                    g.DrawLine(goldPen, 7, 15, 13, 15);
                 }
-
-                // =====================================================
-                // مشتريات
-                // =====================================================
-
                 else if (type == MenuIconType.Purchase)
                 {
-                    g.DrawRectangle(
-                        pen,
-                        4,
-                        4,
-                        14,
-                        12
-                    );
-
-                    g.DrawLine(
-                        pen,
-                        4,
-                        8,
-                        18,
-                        8
-                    );
-
-                    g.DrawLine(
-                        pen,
-                        8,
-                        8,
-                        8,
-                        16
-                    );
-
-                    g.DrawLine(
-                        pen,
-                        11,
-                        11,
-                        16,
-                        11
-                    );
+                    g.FillRectangle(lightGoldBrush, 4, 4, 14, 12);
+                    g.DrawRectangle(greenPen, 4, 4, 14, 12);
+                    g.DrawLine(goldPen, 4, 8, 18, 8);
+                    g.DrawLine(goldPen, 8, 8, 8, 16);
+                    g.DrawLine(goldPen, 11, 11, 16, 11);
                 }
-
-                // =====================================================
-                // مبيعات
-                // =====================================================
-
                 else if (type == MenuIconType.Sales)
                 {
-                    g.DrawRectangle(
-                        pen,
-                        4,
-                        3,
-                        14,
-                        17
-                    );
-
-                    g.DrawLine(
-                        pen,
-                        7,
-                        8,
-                        15,
-                        8
-                    );
-
-                    g.DrawLine(
-                        pen,
-                        7,
-                        12,
-                        15,
-                        12
-                    );
-
-                    g.DrawLine(
-                        pen,
-                        7,
-                        16,
-                        13,
-                        16
-                    );
+                    g.FillRectangle(lightGoldBrush, 4, 3, 14, 17);
+                    g.DrawRectangle(greenPen, 4, 3, 14, 17);
+                    g.DrawLine(goldPen, 7, 8, 15, 8);
+                    g.DrawLine(goldPen, 7, 12, 15, 12);
+                    g.DrawLine(goldPen, 7, 16, 13, 16);
                 }
-
-                // =====================================================
-                // التقارير
-                // =====================================================
-
                 else if (type == MenuIconType.Report)
                 {
-                    g.DrawRectangle(
-                        pen,
-                        3,
-                        3,
-                        16,
-                        16
-                    );
-
-                    g.FillRectangle(
-                        brush,
-                        6,
-                        13,
-                        3,
-                        4
-                    );
-
-                    g.FillRectangle(
-                        brush,
-                        10,
-                        10,
-                        3,
-                        7
-                    );
-
-                    g.FillRectangle(
-                        brush,
-                        14,
-                        6,
-                        3,
-                        11
-                    );
+                    g.DrawRectangle(greenPen, 3, 3, 16, 16);
+                    g.FillRectangle(goldBrush, 6, 13, 3, 4);
+                    g.FillRectangle(goldBrush, 10, 10, 3, 7);
+                    g.FillRectangle(goldBrush, 14, 6, 3, 11);
                 }
-
-                // =====================================================
-                // المخزون
-                // =====================================================
-
                 else if (type == MenuIconType.Stock)
                 {
-                    g.DrawRectangle(
-                        pen,
-                        3,
-                        5,
-                        16,
-                        14
-                    );
-
-                    g.DrawLine(
-                        pen,
-                        3,
-                        9,
-                        19,
-                        9
-                    );
-
-                    g.DrawLine(
-                        pen,
-                        8,
-                        5,
-                        8,
-                        19
-                    );
-
-                    g.DrawLine(
-                        pen,
-                        14,
-                        5,
-                        14,
-                        19
-                    );
+                    g.FillRectangle(lightGoldBrush, 3, 5, 16, 14);
+                    g.DrawRectangle(greenPen, 3, 5, 16, 14);
+                    g.DrawLine(goldPen, 3, 9, 19, 9);
+                    g.DrawLine(goldPen, 8, 5, 8, 19);
+                    g.DrawLine(goldPen, 14, 5, 14, 19);
                 }
-
-                // =====================================================
-                // كشف الحساب
-                // =====================================================
-
                 else if (type == MenuIconType.Statement)
                 {
-                    g.DrawRectangle(
-                        pen,
-                        4,
-                        2,
-                        14,
-                        18
-                    );
-
-                    g.DrawLine(
-                        pen,
-                        7,
-                        7,
-                        15,
-                        7
-                    );
-
-                    g.DrawLine(
-                        pen,
-                        7,
-                        11,
-                        15,
-                        11
-                    );
-
-                    g.DrawLine(
-                        pen,
-                        7,
-                        15,
-                        15,
-                        15
-                    );
+                    g.FillRectangle(lightGoldBrush, 4, 2, 14, 18);
+                    g.DrawRectangle(greenPen, 4, 2, 14, 18);
+                    g.DrawLine(goldPen, 7, 7, 15, 7);
+                    g.DrawLine(goldPen, 7, 11, 15, 11);
+                    g.DrawLine(goldPen, 7, 15, 15, 15);
+                }
+                // New icons
+                else if (type == MenuIconType.Login)
+                {
+                    DrawRoundedRectangle(g, greenPen, 3, 3, 13, 16, 3);
+                    g.FillPolygon(goldBrush, new[] {
+                        new Point(11, 8), new Point(17, 8),
+                        new Point(17, 5), new Point(20, 11),
+                        new Point(17, 17), new Point(17, 14),
+                        new Point(11, 14)
+                    });
+                }
+                else if (type == MenuIconType.Logout)
+                {
+                    DrawRoundedRectangle(g, greenPen, 4, 3, 12, 16, 3);
+                    g.FillPolygon(goldBrush, new[] {
+                        new Point(10, 8), new Point(16, 8),
+                        new Point(16, 5), new Point(20, 11),
+                        new Point(16, 17), new Point(16, 14),
+                        new Point(10, 14)
+                    });
+                }
+                else if (type == MenuIconType.Password)
+                {
+                    g.FillRectangle(lightGoldBrush, 4, 9, 14, 10);
+                    g.DrawRectangle(greenPen, 4, 9, 14, 10);
+                    g.DrawArc(greenPen, 7, 3, 8, 10, 180, 180);
+                    g.FillEllipse(goldBrush, 10, 12, 3, 3);
+                }
+                else if (type == MenuIconType.Database)
+                {
+                    g.FillEllipse(lightGoldBrush, 3, 3, 16, 6);
+                    g.DrawEllipse(greenPen, 3, 3, 16, 6);
+                    g.DrawLine(greenPen, 3, 6, 3, 17);
+                    g.DrawLine(greenPen, 19, 6, 19, 17);
+                    g.DrawArc(greenPen, 3, 14, 16, 6, 0, 180);
+                }
+                else if (type == MenuIconType.Connection)
+                {
+                    g.DrawEllipse(greenPen, 3, 7, 7, 7);
+                    g.DrawEllipse(greenPen, 12, 7, 7, 7);
+                    g.DrawLine(goldPen, 9, 10, 13, 10);
+                    g.DrawLine(goldPen, 9, 12, 13, 12);
+                }
+                else if (type == MenuIconType.Backup)
+                {
+                    g.DrawRectangle(greenPen, 3, 3, 16, 15);
+                    g.FillPolygon(goldBrush, new[] {
+                        new Point(8, 11), new Point(11, 14),
+                        new Point(14, 11), new Point(12, 11),
+                        new Point(12, 6), new Point(10, 6),
+                        new Point(10, 11)
+                    });
+                }
+                else if (type == MenuIconType.Restore)
+                {
+                    g.DrawRectangle(greenPen, 3, 3, 16, 15);
+                    g.FillPolygon(goldBrush, new[] {
+                        new Point(14, 11), new Point(11, 8),
+                        new Point(8, 11), new Point(10, 11),
+                        new Point(10, 16), new Point(12, 16),
+                        new Point(12, 11)
+                    });
+                }
+                else if (type == MenuIconType.Register)
+                {
+                    g.DrawRectangle(greenPen, 4, 2, 14, 18);
+                    g.DrawLine(goldPen, 7, 7, 15, 7);
+                    g.DrawLine(goldPen, 7, 11, 15, 11);
+                    g.DrawLine(goldPen, 7, 15, 12, 15);
+                    g.FillEllipse(goldBrush, 15, 13, 5, 5);
+                }
+                else if (type == MenuIconType.Journal)
+                {
+                    g.DrawRectangle(greenPen, 3, 3, 16, 16);
+                    g.DrawLine(goldPen, 6, 7, 16, 7);
+                    g.DrawLine(goldPen, 6, 11, 16, 11);
+                    g.DrawLine(goldPen, 6, 15, 13, 15);
                 }
             }
 
             return bitmap;
+        }
+
+        private void DrawRoundedRectangle(Graphics g, Pen pen, int x, int y, int width, int height, int radius)
+        {
+            using GraphicsPath path = new GraphicsPath();
+            int d = radius * 2;
+            path.AddArc(x, y, d, d, 180, 90);
+            path.AddArc(x + width - d, y, d, d, 270, 90);
+            path.AddArc(x + width - d, y + height - d, d, d, 0, 90);
+            path.AddArc(x, y + height - d, d, d, 90, 90);
+            path.CloseFigure();
+            g.DrawPath(pen, path);
         }
 
         private ToolStripMenuItem قيوداليوميهToolStripMenuItem;

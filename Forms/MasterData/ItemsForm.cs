@@ -486,5 +486,10 @@ namespace AccountingSystemForWindowsFormLast.Forms
         {
 
         }
+
+        private void cmbUnit_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
