@@ -52,11 +52,50 @@ namespace AccountingSystemForWindowsFormLast
             قيوداليوميهToolStripMenuItem.Image = CreateMenuIcon(MenuIconType.Report);
         }
 
+        //اعدادات قاعدة البيانات
+        private DatabaseSettingsForm databaseSettingsForm;
+        //ربط قاعدة البيانات
+        private void connectionMenuItem_Click_1(object sender, EventArgs e)
+        {
+          //  OpenDatabaseSettingsForm();
+        }
+        //private void connectionMenuItem_Click(object? sender, EventArgs e)
+        //{
+        //    OpenDatabaseSettingsForm();
+        //}
+
+        private void backupMenuItem_Click_1(object sender, EventArgs e)
+        {
+           // OpenDatabaseSettingsForm();
+        }
+        //private void backupMenuItem_Click(object? sender, EventArgs e)
+        //{
+        //    OpenDatabaseSettingsForm();
+        //}
+        private void restoreMenuItem_Click_1(object sender, EventArgs e)
+        {
+          //  OpenDatabaseSettingsForm();
+        }
+        //private void restoreMenuItem_Click(object? sender, EventArgs e)
+        //{
+        //    OpenDatabaseSettingsForm();
+        //}
+
+        private void OpenDatabaseSettingsForm()
+        {
+            if (databaseSettingsForm == null || databaseSettingsForm.IsDisposed)
+                databaseSettingsForm = new DatabaseSettingsForm();
+
+            databaseSettingsForm.ShowDialog(this);
+        }
+        //----------------------------------------------------نهاية اعداد قاعدة البيانات
+
+
         private void frm_Main_Load(object sender, EventArgs e)
         {
             // Keep the content area responsive to the main window size.
             //mainMenuStrip.BringToFront();
-           // pnlHeader.BringToFront();
+            // pnlHeader.BringToFront();
         }
 
         private void OpenForm(Form form)
@@ -144,5 +183,7 @@ namespace AccountingSystemForWindowsFormLast
 
             OpenForm(paymentVoucherForm);
         }
+
+     
     }
 }

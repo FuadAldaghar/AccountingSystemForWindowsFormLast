@@ -929,5 +929,10 @@ namespace AccountingSystemForWindowsFormLast.Forms
 
             dgvDetails.ClearSelection();
         }
+
+        private void cmbPaymentType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

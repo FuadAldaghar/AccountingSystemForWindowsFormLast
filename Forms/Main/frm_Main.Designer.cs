@@ -64,36 +64,30 @@ namespace AccountingSystemForWindowsFormLast
             lblTitle = new Label();
             pnlHeaderAccent = new Panel();
             mainMenuStrip = new MenuStrip();
+            loginMenu = new ToolStripMenuItem();
+            loginMenuItem = new ToolStripMenuItem();
+            logoutMenuItem = new ToolStripMenuItem();
+            changePasswordMenuItem = new ToolStripMenuItem();
+            databaseMenu = new ToolStripMenuItem();
+            connectionMenuItem = new ToolStripMenuItem();
+            backupMenuItem = new ToolStripMenuItem();
+            restoreMenuItem = new ToolStripMenuItem();
             systemMenu = new ToolStripMenuItem();
             accountTreeMenuItem = new ToolStripMenuItem();
             itemsMenuItem = new ToolStripMenuItem();
-
             vouchersMenu = new ToolStripMenuItem();
             receiptVoucherMenuItem = new ToolStripMenuItem();
             receiptRegisterMenuItem = new ToolStripMenuItem();
             paymentVoucherMenuItem = new ToolStripMenuItem();
             paymentRegisterMenuItem = new ToolStripMenuItem();
-
             invoicesMenu = new ToolStripMenuItem();
             purchaseInvoiceMenuItem = new ToolStripMenuItem();
             purchaseRegisterMenuItem = new ToolStripMenuItem();
             salesInvoiceMenuItem = new ToolStripMenuItem();
             salesRegisterMenuItem = new ToolStripMenuItem();
-
             reportsMenu = new ToolStripMenuItem();
             stockReportMenuItem = new ToolStripMenuItem();
             accountStatementMenuItem = new ToolStripMenuItem();
-
-            loginMenu = new ToolStripMenuItem();
-            loginMenuItem = new ToolStripMenuItem();
-            logoutMenuItem = new ToolStripMenuItem();
-            changePasswordMenuItem = new ToolStripMenuItem();
-
-            databaseMenu = new ToolStripMenuItem();
-            connectionMenuItem = new ToolStripMenuItem();
-            backupMenuItem = new ToolStripMenuItem();
-            restoreMenuItem = new ToolStripMenuItem();
-
             قيوداليوميهToolStripMenuItem = new ToolStripMenuItem();
             قيوداليوميهToolStripMenuItem1 = new ToolStripMenuItem();
             pnlHeader.SuspendLayout();
@@ -173,20 +167,68 @@ namespace AccountingSystemForWindowsFormLast
             mainMenuStrip.Font = new Font("Segoe UI", 10F);
             mainMenuStrip.ForeColor = Color.FromArgb(45, 45, 45);
             mainMenuStrip.ImageScalingSize = new Size(24, 24);
-            mainMenuStrip.Items.AddRange(new ToolStripItem[] {
-                loginMenu,
-                databaseMenu,
-                systemMenu,
-                vouchersMenu,
-                invoicesMenu,
-                reportsMenu
-            });
+            mainMenuStrip.Items.AddRange(new ToolStripItem[] { loginMenu, databaseMenu, systemMenu, vouchersMenu, invoicesMenu, reportsMenu });
             mainMenuStrip.Location = new Point(0, 78);
             mainMenuStrip.Name = "mainMenuStrip";
             mainMenuStrip.Padding = new Padding(16, 7, 16, 7);
             mainMenuStrip.RightToLeft = RightToLeft.Yes;
             mainMenuStrip.Size = new Size(1537, 45);
             mainMenuStrip.TabIndex = 1;
+            // 
+            // loginMenu
+            // 
+            loginMenu.DropDownItems.AddRange(new ToolStripItem[] { loginMenuItem, logoutMenuItem, changePasswordMenuItem });
+            loginMenu.Name = "loginMenu";
+            loginMenu.Padding = new Padding(10, 2, 10, 2);
+            loginMenu.Size = new Size(135, 31);
+            loginMenu.Text = "تسجيل الدخول";
+            // 
+            // loginMenuItem
+            // 
+            loginMenuItem.Name = "loginMenuItem";
+            loginMenuItem.Size = new Size(215, 28);
+            loginMenuItem.Text = "تسجيل الدخول";
+            // 
+            // logoutMenuItem
+            // 
+            logoutMenuItem.Name = "logoutMenuItem";
+            logoutMenuItem.Size = new Size(215, 28);
+            logoutMenuItem.Text = "تسجيل الخروج";
+            // 
+            // changePasswordMenuItem
+            // 
+            changePasswordMenuItem.Name = "changePasswordMenuItem";
+            changePasswordMenuItem.Size = new Size(215, 28);
+            changePasswordMenuItem.Text = "تغيير كلمة المرور";
+            // 
+            // databaseMenu
+            // 
+            databaseMenu.DropDownItems.AddRange(new ToolStripItem[] { connectionMenuItem, backupMenuItem, restoreMenuItem });
+            databaseMenu.Name = "databaseMenu";
+            databaseMenu.Padding = new Padding(10, 2, 10, 2);
+            databaseMenu.Size = new Size(193, 31);
+            databaseMenu.Text = "إعدادات قاعدة البيانات";
+            // 
+            // connectionMenuItem
+            // 
+            connectionMenuItem.Name = "connectionMenuItem";
+            connectionMenuItem.Size = new Size(253, 28);
+            connectionMenuItem.Text = "ربط قاعدة البيانات";
+            connectionMenuItem.Click += connectionMenuItem_Click_1;
+            // 
+            // backupMenuItem
+            // 
+            backupMenuItem.Name = "backupMenuItem";
+            backupMenuItem.Size = new Size(253, 28);
+            backupMenuItem.Text = "نسخ احتياطي";
+            backupMenuItem.Click += backupMenuItem_Click_1;
+            // 
+            // restoreMenuItem
+            // 
+            restoreMenuItem.Name = "restoreMenuItem";
+            restoreMenuItem.Size = new Size(253, 28);
+            restoreMenuItem.Text = "استعادة قاعدة البيانات";
+            restoreMenuItem.Click += restoreMenuItem_Click_1;
             // 
             // systemMenu
             // 
@@ -212,12 +254,7 @@ namespace AccountingSystemForWindowsFormLast
             // 
             // vouchersMenu
             // 
-            vouchersMenu.DropDownItems.AddRange(new ToolStripItem[] {
-                receiptVoucherMenuItem,
-                receiptRegisterMenuItem,
-                paymentVoucherMenuItem,
-                paymentRegisterMenuItem
-            });
+            vouchersMenu.DropDownItems.AddRange(new ToolStripItem[] { receiptVoucherMenuItem, receiptRegisterMenuItem, paymentVoucherMenuItem, paymentRegisterMenuItem });
             vouchersMenu.Name = "vouchersMenu";
             vouchersMenu.Padding = new Padding(10, 2, 10, 2);
             vouchersMenu.Size = new Size(93, 31);
@@ -226,41 +263,32 @@ namespace AccountingSystemForWindowsFormLast
             // receiptVoucherMenuItem
             // 
             receiptVoucherMenuItem.Name = "receiptVoucherMenuItem";
-            receiptVoucherMenuItem.Size = new Size(167, 28);
+            receiptVoucherMenuItem.Size = new Size(237, 28);
             receiptVoucherMenuItem.Text = "سند قبض";
             receiptVoucherMenuItem.Click += receiptVoucherMenuItem_Click;
-
             // 
             // receiptRegisterMenuItem
             // 
             receiptRegisterMenuItem.Name = "receiptRegisterMenuItem";
-            receiptRegisterMenuItem.Size = new Size(220, 28);
+            receiptRegisterMenuItem.Size = new Size(237, 28);
             receiptRegisterMenuItem.Text = "سجل سندات القبض";
-
             // 
             // paymentVoucherMenuItem
             // 
             paymentVoucherMenuItem.Name = "paymentVoucherMenuItem";
-            paymentVoucherMenuItem.Size = new Size(167, 28);
+            paymentVoucherMenuItem.Size = new Size(237, 28);
             paymentVoucherMenuItem.Text = "سند صرف";
             paymentVoucherMenuItem.Click += paymentVoucherMenuItem_Click;
-
             // 
             // paymentRegisterMenuItem
             // 
             paymentRegisterMenuItem.Name = "paymentRegisterMenuItem";
-            paymentRegisterMenuItem.Size = new Size(220, 28);
+            paymentRegisterMenuItem.Size = new Size(237, 28);
             paymentRegisterMenuItem.Text = "سجل سندات الصرف";
-
             // 
             // invoicesMenu
             // 
-            invoicesMenu.DropDownItems.AddRange(new ToolStripItem[] {
-                purchaseInvoiceMenuItem,
-                purchaseRegisterMenuItem,
-                salesInvoiceMenuItem,
-                salesRegisterMenuItem
-            });
+            invoicesMenu.DropDownItems.AddRange(new ToolStripItem[] { purchaseInvoiceMenuItem, purchaseRegisterMenuItem, salesInvoiceMenuItem, salesRegisterMenuItem });
             invoicesMenu.Name = "invoicesMenu";
             invoicesMenu.Padding = new Padding(10, 2, 10, 2);
             invoicesMenu.Size = new Size(85, 31);
@@ -269,32 +297,28 @@ namespace AccountingSystemForWindowsFormLast
             // purchaseInvoiceMenuItem
             // 
             purchaseInvoiceMenuItem.Name = "purchaseInvoiceMenuItem";
-            purchaseInvoiceMenuItem.Size = new Size(206, 28);
+            purchaseInvoiceMenuItem.Size = new Size(208, 28);
             purchaseInvoiceMenuItem.Text = "فاتورة مشتريات";
             purchaseInvoiceMenuItem.Click += purchaseInvoiceMenuItem_Click;
-
             // 
             // purchaseRegisterMenuItem
             // 
             purchaseRegisterMenuItem.Name = "purchaseRegisterMenuItem";
-            purchaseRegisterMenuItem.Size = new Size(220, 28);
+            purchaseRegisterMenuItem.Size = new Size(208, 28);
             purchaseRegisterMenuItem.Text = "سجل المشتريات";
-
             // 
             // salesInvoiceMenuItem
             // 
             salesInvoiceMenuItem.Name = "salesInvoiceMenuItem";
-            salesInvoiceMenuItem.Size = new Size(206, 28);
+            salesInvoiceMenuItem.Size = new Size(208, 28);
             salesInvoiceMenuItem.Text = "فاتورة مبيعات";
             salesInvoiceMenuItem.Click += salesInvoiceMenuItem_Click;
-
             // 
             // salesRegisterMenuItem
             // 
             salesRegisterMenuItem.Name = "salesRegisterMenuItem";
-            salesRegisterMenuItem.Size = new Size(220, 28);
+            salesRegisterMenuItem.Size = new Size(208, 28);
             salesRegisterMenuItem.Text = "سجل المبيعات";
-
             // 
             // reportsMenu
             // 
@@ -330,107 +354,6 @@ namespace AccountingSystemForWindowsFormLast
             قيوداليوميهToolStripMenuItem1.Name = "قيوداليوميهToolStripMenuItem1";
             قيوداليوميهToolStripMenuItem1.Size = new Size(240, 30);
             قيوداليوميهToolStripMenuItem1.Text = "قيود اليومية";
-            // 
-            // loginMenu
-            // 
-            loginMenu.DropDownItems.AddRange(new ToolStripItem[] {
-                loginMenuItem,
-                logoutMenuItem,
-                changePasswordMenuItem
-            });
-            loginMenu.Name = "loginMenu";
-            loginMenu.Padding = new Padding(10, 2, 10, 2);
-            loginMenu.Size = new Size(120, 31);
-            loginMenu.Text = "تسجيل الدخول";
-
-            // 
-            // loginMenuItem
-            // 
-            loginMenuItem.Name = "loginMenuItem";
-            loginMenuItem.Size = new Size(220, 28);
-            loginMenuItem.Text = "تسجيل الدخول";
-
-            // 
-            // logoutMenuItem
-            // 
-            logoutMenuItem.Name = "logoutMenuItem";
-            logoutMenuItem.Size = new Size(220, 28);
-            logoutMenuItem.Text = "تسجيل الخروج";
-
-            // 
-            // changePasswordMenuItem
-            // 
-            changePasswordMenuItem.Name = "changePasswordMenuItem";
-            changePasswordMenuItem.Size = new Size(220, 28);
-            changePasswordMenuItem.Text = "تغيير كلمة المرور";
-
-            // 
-            // databaseMenu
-            // 
-            databaseMenu.DropDownItems.AddRange(new ToolStripItem[] {
-                connectionMenuItem,
-                backupMenuItem,
-                restoreMenuItem
-            });
-            databaseMenu.Name = "databaseMenu";
-            databaseMenu.Padding = new Padding(10, 2, 10, 2);
-            databaseMenu.Size = new Size(180, 31);
-            databaseMenu.Text = "إعدادات قاعدة البيانات";
-
-            // 
-            // connectionMenuItem
-            // 
-            connectionMenuItem.Name = "connectionMenuItem";
-            connectionMenuItem.Size = new Size(240, 28);
-            connectionMenuItem.Text = "ربط قاعدة البيانات";
-
-            // 
-            // backupMenuItem
-            // 
-            backupMenuItem.Name = "backupMenuItem";
-            backupMenuItem.Size = new Size(240, 28);
-            backupMenuItem.Text = "نسخ احتياطي";
-
-            // 
-            // restoreMenuItem
-            // 
-            restoreMenuItem.Name = "restoreMenuItem";
-            restoreMenuItem.Size = new Size(240, 28);
-            restoreMenuItem.Text = "استعادة قاعدة البيانات";
-
-
-            // Icons - same green/gold visual language across all menus.
-            systemMenu.Image = CreateMenuIcon(MenuIconType.Book);
-            accountTreeMenuItem.Image = CreateMenuIcon(MenuIconType.Accounts);
-            itemsMenuItem.Image = CreateMenuIcon(MenuIconType.Items);
-
-            vouchersMenu.Image = CreateMenuIcon(MenuIconType.Money);
-            receiptVoucherMenuItem.Image = CreateMenuIcon(MenuIconType.Receipt);
-            receiptRegisterMenuItem.Image = CreateMenuIcon(MenuIconType.Register);
-            paymentVoucherMenuItem.Image = CreateMenuIcon(MenuIconType.Payment);
-            paymentRegisterMenuItem.Image = CreateMenuIcon(MenuIconType.Register);
-
-            invoicesMenu.Image = CreateMenuIcon(MenuIconType.Invoice);
-            purchaseInvoiceMenuItem.Image = CreateMenuIcon(MenuIconType.Purchase);
-            purchaseRegisterMenuItem.Image = CreateMenuIcon(MenuIconType.Register);
-            salesInvoiceMenuItem.Image = CreateMenuIcon(MenuIconType.Sales);
-            salesRegisterMenuItem.Image = CreateMenuIcon(MenuIconType.Register);
-
-            reportsMenu.Image = CreateMenuIcon(MenuIconType.Report);
-            stockReportMenuItem.Image = CreateMenuIcon(MenuIconType.Stock);
-            accountStatementMenuItem.Image = CreateMenuIcon(MenuIconType.Statement);
-            قيوداليوميهToolStripMenuItem.Image = CreateMenuIcon(MenuIconType.Journal);
-
-            loginMenu.Image = CreateMenuIcon(MenuIconType.Login);
-            loginMenuItem.Image = CreateMenuIcon(MenuIconType.Login);
-            logoutMenuItem.Image = CreateMenuIcon(MenuIconType.Logout);
-            changePasswordMenuItem.Image = CreateMenuIcon(MenuIconType.Password);
-
-            databaseMenu.Image = CreateMenuIcon(MenuIconType.Database);
-            connectionMenuItem.Image = CreateMenuIcon(MenuIconType.Connection);
-            backupMenuItem.Image = CreateMenuIcon(MenuIconType.Backup);
-            restoreMenuItem.Image = CreateMenuIcon(MenuIconType.Restore);
-
             // 
             // frm_Main
             // 
