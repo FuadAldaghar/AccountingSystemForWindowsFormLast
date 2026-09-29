@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 using AccountingSystemForWindowsFormLast.Forms;
-
+using AccountingSystemForWindowsFormLast.Helpers;
 namespace AccountingSystemForWindowsFormLast
 {
     public partial class frm_Main : Form
@@ -30,6 +30,7 @@ namespace AccountingSystemForWindowsFormLast
             // pnlHeader.BringToFront();
             //contentPanel.BringToFront();
             InitializeMenuIcons();
+            ApplyPermissions();
         }
 
         private void InitializeMenuIcons()
@@ -97,7 +98,64 @@ namespace AccountingSystemForWindowsFormLast
             //mainMenuStrip.BringToFront();
             // pnlHeader.BringToFront();
         }
+        // =========================================================
+        // الصلاحيات
+        // =========================================================
 
+        private void ApplyPermissions()
+        {
+            // الحسابات
+            accountTreeMenuItem.Visible =
+                CurrentUser.HasPermission("Accounts");
+
+            // الأصناف
+            itemsMenuItem.Visible =
+                CurrentUser.HasPermission("Items");
+
+            // القيود اليومية
+            قيوداليوميهToolStripMenuItem.Visible =
+                CurrentUser.HasPermission("Journal");
+
+            // سندات القبض
+            receiptVoucherMenuItem.Visible =
+                CurrentUser.HasPermission("Receipt");
+
+            // سندات الصرف
+            paymentVoucherMenuItem.Visible =
+                CurrentUser.HasPermission("Payment");
+
+            // فواتير المشتريات
+            purchaseInvoiceMenuItem.Visible =
+                CurrentUser.HasPermission("Purchase");
+
+            // فواتير المبيعات
+            salesInvoiceMenuItem.Visible =
+                CurrentUser.HasPermission("Sales");
+
+            // التقارير
+            stockReportMenuItem.Visible =
+                CurrentUser.HasPermission("Reports");
+
+            accountStatementMenuItem.Visible =
+                CurrentUser.HasPermission("Reports");
+
+            // إعدادات النظام
+            systemMenu.Visible =
+                CurrentUser.HasPermission("Settings");
+
+            // إخفاء القوائم الرئيسية إذا لم يبقَ فيها أي عنصر
+            vouchersMenu.Visible =
+                receiptVoucherMenuItem.Visible ||
+                paymentVoucherMenuItem.Visible;
+
+            invoicesMenu.Visible =
+                purchaseInvoiceMenuItem.Visible ||
+                salesInvoiceMenuItem.Visible;
+
+            reportsMenu.Visible =
+                stockReportMenuItem.Visible ||
+                accountStatementMenuItem.Visible;
+        }
         private void OpenForm(Form form)
         {
             form.TopLevel = false;
