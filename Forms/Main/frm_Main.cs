@@ -53,7 +53,7 @@ namespace AccountingSystemForWindowsFormLast
         }
 
         //اعدادات قاعدة البيانات
-        private DatabaseSettingsForm databaseSettingsForm;
+        //private DatabaseSettingsForm databaseSettingsForm;
         //ربط قاعدة البيانات
         private void connectionMenuItem_Click_1(object sender, EventArgs e)
         {
@@ -81,13 +81,13 @@ namespace AccountingSystemForWindowsFormLast
         //    OpenDatabaseSettingsForm();
         //}
 
-        private void OpenDatabaseSettingsForm()
-        {
-            if (databaseSettingsForm == null || databaseSettingsForm.IsDisposed)
-                databaseSettingsForm = new DatabaseSettingsForm();
+        //private void OpenDatabaseSettingsForm()
+        //{
+        //    if (databaseSettingsForm == null || databaseSettingsForm.IsDisposed)
+        //        databaseSettingsForm = new DatabaseSettingsForm();
 
-            databaseSettingsForm.ShowDialog(this);
-        }
+        //    databaseSettingsForm.ShowDialog(this);
+        //}
         //----------------------------------------------------نهاية اعداد قاعدة البيانات
 
 
