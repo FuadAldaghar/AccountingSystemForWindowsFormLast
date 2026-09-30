@@ -2,7 +2,8 @@
 using System.Drawing;
 using System.Windows.Forms;
 using AccountingSystemForWindowsFormLast.Forms;
-using AccountingSystemForWindowsFormLast.Helpers;
+using AccountingSystemForWindowsFormLast.Forms.Authentication;
+using AccountingSystemForWindowsFormLast.Helpers.users;
 namespace AccountingSystemForWindowsFormLast
 {
     public partial class frm_Main : Form
@@ -38,6 +39,7 @@ namespace AccountingSystemForWindowsFormLast
             systemMenu.Image = CreateMenuIcon(MenuIconType.Book);
             accountTreeMenuItem.Image = CreateMenuIcon(MenuIconType.Accounts);
             itemsMenuItem.Image = CreateMenuIcon(MenuIconType.Items);
+            usersMenuItem.Image = CreateMenuIcon(MenuIconType.Users);
 
             vouchersMenu.Image = CreateMenuIcon(MenuIconType.Money);
             receiptVoucherMenuItem.Image = CreateMenuIcon(MenuIconType.Receipt);
@@ -58,7 +60,7 @@ namespace AccountingSystemForWindowsFormLast
         //ربط قاعدة البيانات
         private void connectionMenuItem_Click_1(object sender, EventArgs e)
         {
-          //  OpenDatabaseSettingsForm();
+            //  OpenDatabaseSettingsForm();
         }
         //private void connectionMenuItem_Click(object? sender, EventArgs e)
         //{
@@ -67,7 +69,7 @@ namespace AccountingSystemForWindowsFormLast
 
         private void backupMenuItem_Click_1(object sender, EventArgs e)
         {
-           // OpenDatabaseSettingsForm();
+            // OpenDatabaseSettingsForm();
         }
         //private void backupMenuItem_Click(object? sender, EventArgs e)
         //{
@@ -75,7 +77,7 @@ namespace AccountingSystemForWindowsFormLast
         //}
         private void restoreMenuItem_Click_1(object sender, EventArgs e)
         {
-          //  OpenDatabaseSettingsForm();
+            //  OpenDatabaseSettingsForm();
         }
         //private void restoreMenuItem_Click(object? sender, EventArgs e)
         //{
@@ -101,61 +103,162 @@ namespace AccountingSystemForWindowsFormLast
         // =========================================================
         // الصلاحيات
         // =========================================================
-
         private void ApplyPermissions()
         {
-            // الحسابات
-            accountTreeMenuItem.Visible =
-                CurrentUser.HasPermission("Accounts");
+            bool canAccounts = CurrentUser.HasPermission("Accounts");
+            bool canItems = CurrentUser.HasPermission("Items");
 
-            // الأصناف
-            itemsMenuItem.Visible =
-                CurrentUser.HasPermission("Items");
+            bool canReceipt = CurrentUser.HasPermission("Receipt");
+            bool canPayment = CurrentUser.HasPermission("Payment");
 
-            // القيود اليومية
-            قيوداليوميهToolStripMenuItem.Visible =
-                CurrentUser.HasPermission("Journal");
+            bool canPurchase = CurrentUser.HasPermission("Purchase");
+            bool canSales = CurrentUser.HasPermission("Sales");
 
-            // سندات القبض
-            receiptVoucherMenuItem.Visible =
-                CurrentUser.HasPermission("Receipt");
+            bool canReports = CurrentUser.HasPermission("Reports");
+            bool canJournal = CurrentUser.HasPermission("Journal");
 
-            // سندات الصرف
-            paymentVoucherMenuItem.Visible =
-                CurrentUser.HasPermission("Payment");
+            bool canSettings = CurrentUser.HasPermission("Settings");
+            bool canUsers = CurrentUser.HasPermission("Users");
 
-            // فواتير المشتريات
-            purchaseInvoiceMenuItem.Visible =
-                CurrentUser.HasPermission("Purchase");
 
-            // فواتير المبيعات
-            salesInvoiceMenuItem.Visible =
-                CurrentUser.HasPermission("Sales");
+            // =========================
+            // دليل الحسابات والأصناف
+            // =========================
 
-            // التقارير
-            stockReportMenuItem.Visible =
-                CurrentUser.HasPermission("Reports");
+            accountTreeMenuItem.Visible = canAccounts;
+            itemsMenuItem.Visible = canItems;
 
-            accountStatementMenuItem.Visible =
-                CurrentUser.HasPermission("Reports");
+            usersMenuItem.Visible = canUsers;
 
-            // إعدادات النظام
             systemMenu.Visible =
-                CurrentUser.HasPermission("Settings");
+                canAccounts || canItems || canUsers;
 
-            // إخفاء القوائم الرئيسية إذا لم يبقَ فيها أي عنصر
+
+            // =========================
+            // السندات
+            // =========================
+
+            receiptVoucherMenuItem.Visible = canReceipt;
+            paymentVoucherMenuItem.Visible = canPayment;
+
             vouchersMenu.Visible =
-                receiptVoucherMenuItem.Visible ||
-                paymentVoucherMenuItem.Visible;
+                canReceipt || canPayment;
+
+
+            // =========================
+            // الفواتير
+            // =========================
+
+            purchaseInvoiceMenuItem.Visible = canPurchase;
+            salesInvoiceMenuItem.Visible = canSales;
 
             invoicesMenu.Visible =
-                purchaseInvoiceMenuItem.Visible ||
-                salesInvoiceMenuItem.Visible;
+                canPurchase || canSales;
+
+
+            // =========================
+            // التقارير
+            // =========================
+
+            stockReportMenuItem.Visible = canReports;
+            accountStatementMenuItem.Visible = canReports;
+            قيوداليوميهToolStripMenuItem.Visible = canJournal;
 
             reportsMenu.Visible =
-                stockReportMenuItem.Visible ||
-                accountStatementMenuItem.Visible;
+                canReports || canJournal;
+
+
+            // =========================
+            // إعدادات قاعدة البيانات
+            // =========================
+
+            databaseMenu.Visible = canSettings;
         }
+        //private void ApplyPermissions()
+        //{
+        //    // =========================
+        //    // دليل الحسابات والأصناف
+        //    // =========================
+
+        //    accountTreeMenuItem.Visible =
+        //        CurrentUser.HasPermission("Accounts");
+
+        //    itemsMenuItem.Visible =
+        //        CurrentUser.HasPermission("Items");
+
+        //    systemMenu.Visible =
+        //        accountTreeMenuItem.Visible ||
+        //        itemsMenuItem.Visible;
+
+
+        //    // =========================
+        //    // السندات
+        //    // =========================
+
+        //    receiptVoucherMenuItem.Visible =
+        //        CurrentUser.HasPermission("Receipt");
+
+        //    paymentVoucherMenuItem.Visible =
+        //        CurrentUser.HasPermission("Payment");
+
+        //    vouchersMenu.Visible =
+        //        receiptVoucherMenuItem.Visible ||
+        //        paymentVoucherMenuItem.Visible;
+
+
+        //    // =========================
+        //    // الفواتير
+        //    // =========================
+
+        //    purchaseInvoiceMenuItem.Visible =
+        //        CurrentUser.HasPermission("Purchase");
+
+        //    salesInvoiceMenuItem.Visible =
+        //        CurrentUser.HasPermission("Sales");
+
+        //    invoicesMenu.Visible =
+        //        purchaseInvoiceMenuItem.Visible ||
+        //        salesInvoiceMenuItem.Visible;
+
+
+        //    // =========================
+        //    // التقارير
+        //    // =========================
+
+        //    stockReportMenuItem.Visible =
+        //        CurrentUser.HasPermission("Reports");
+
+        //    accountStatementMenuItem.Visible =
+        //        CurrentUser.HasPermission("Reports");
+
+        //    قيوداليوميهToolStripMenuItem.Visible =
+        //        CurrentUser.HasPermission("Journal");
+
+        //    reportsMenu.Visible =
+        //        stockReportMenuItem.Visible ||
+        //        accountStatementMenuItem.Visible ||
+        //        قيوداليوميهToolStripMenuItem.Visible;
+
+
+        //    // =========================
+        //    // إعدادات النظام
+        //    // =========================
+
+        //    databaseMenu.Visible =
+        //        CurrentUser.HasPermission("Settings");
+
+
+        //    MessageBox.Show(
+        //    "Accounts Permission = " + CurrentUser.HasPermission("Accounts") + "\n" +
+        //    "Account Item Visible = " + accountTreeMenuItem.Visible + "\n" +
+        //    "Items Permission = " + CurrentUser.HasPermission("Items") + "\n" +
+        //    "Items Item Visible = " + itemsMenuItem.Visible + "\n\n" +
+        //    "System Menu Visible = " + systemMenu.Visible,
+        //    "DEBUG",
+        //    MessageBoxButtons.OK,
+        //    MessageBoxIcon.Information);
+        //}
+        //فتح الواجهات الفرعية داخل الفورم الرئيسي
         private void OpenForm(Form form)
         {
             form.TopLevel = false;
@@ -242,6 +345,74 @@ namespace AccountingSystemForWindowsFormLast
             OpenForm(paymentVoucherForm);
         }
 
-     
+        private void loginMenuItem_Click(object sender, EventArgs e)
+        {
+            using (LoginForm loginForm = new LoginForm())
+            {
+                if (loginForm.ShowDialog() == DialogResult.OK)
+                {
+                    ApplyPermissions();
+                }
+            }
+
+        }
+
+        private void logoutMenuItem_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show(
+     "هل تريد تسجيل الخروج؟",
+     "تسجيل الخروج",
+     MessageBoxButtons.YesNo,
+     MessageBoxIcon.Question);
+
+            if (result != DialogResult.Yes)
+                return;
+
+            CurrentUser.Logout();
+
+            Hide();
+
+            using (LoginForm loginForm = new LoginForm())
+            {
+                if (loginForm.ShowDialog() == DialogResult.OK)
+                {
+                    ApplyPermissions();
+                    Show();
+                }
+                else
+                {
+                    Close();
+                }
+            }
+
+        }
+
+        private void changePasswordMenuItem_Click(object sender, EventArgs e)
+        {
+
+            using (ChangePasswordForm form = new ChangePasswordForm())
+            {
+                form.ShowDialog(this);
+            }
+        }
+
+        private void usersMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!CurrentUser.HasPermission("Users"))
+            {
+                MessageBox.Show(
+                    "ليس لديك صلاحية للوصول إلى إدارة المستخدمين.",
+                    "صلاحية غير متاحة",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                return;
+            }
+
+            using (AddUserForm form = new AddUserForm())
+            {
+                form.ShowDialog(this);
+            }
+        }
     }
 }

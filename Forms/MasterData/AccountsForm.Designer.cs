@@ -44,19 +44,22 @@
             ((System.ComponentModel.ISupportInitialize)dgvAccounts).BeginInit();
             grpAccountTree.SuspendLayout();
             SuspendLayout();
-
+            // 
             // lblTitle
+            // 
             lblTitle.AutoSize = true;
             lblTitle.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
-            lblTitle.Location = new Point(1040, 30);
+            lblTitle.ForeColor = Color.FromArgb(25, 105, 65);
+            lblTitle.Location = new Point(1059, 30);
             lblTitle.Name = "lblTitle";
             lblTitle.Size = new Size(196, 41);
             lblTitle.TabIndex = 0;
             lblTitle.Text = "دليل الحسابات";
             lblTitle.TextAlign = ContentAlignment.MiddleRight;
-            lblTitle.ForeColor = Color.FromArgb(25, 105, 65);
-
+            // 
             // grpAccountData
+            // 
+            grpAccountData.BackColor = Color.FromArgb(248, 252, 249);
             grpAccountData.Controls.Add(chkIsGroup);
             grpAccountData.Controls.Add(txtAccountNature);
             grpAccountData.Controls.Add(lblAccountNature);
@@ -69,16 +72,16 @@
             grpAccountData.Controls.Add(lblAccountName);
             grpAccountData.Controls.Add(lblAccountNumber);
             grpAccountData.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            grpAccountData.Location = new Point(25, 80);
+            grpAccountData.Location = new Point(20, 30);
             grpAccountData.Name = "grpAccountData";
             grpAccountData.RightToLeft = RightToLeft.Yes;
             grpAccountData.Size = new Size(900, 210);
             grpAccountData.TabIndex = 1;
             grpAccountData.TabStop = false;
             grpAccountData.Text = "بيانات الحساب";
-            grpAccountData.BackColor = Color.FromArgb(248, 252, 249);
-
+            // 
             // chkIsGroup
+            // 
             chkIsGroup.AutoSize = true;
             chkIsGroup.Location = new Point(690, 164);
             chkIsGroup.Name = "chkIsGroup";
@@ -87,8 +90,9 @@
             chkIsGroup.TabIndex = 8;
             chkIsGroup.Text = "حساب مجموعة";
             chkIsGroup.UseVisualStyleBackColor = true;
-
+            // 
             // txtAccountNature
+            // 
             txtAccountNature.BackColor = SystemColors.Control;
             txtAccountNature.Location = new Point(70, 116);
             txtAccountNature.Name = "txtAccountNature";
@@ -97,16 +101,18 @@
             txtAccountNature.Size = new Size(220, 30);
             txtAccountNature.TabIndex = 10;
             txtAccountNature.TabStop = false;
-
+            // 
             // lblAccountNature
+            // 
             lblAccountNature.AutoSize = true;
             lblAccountNature.Location = new Point(310, 120);
             lblAccountNature.Name = "lblAccountNature";
-            lblAccountNature.Size = new Size(103, 23);
+            lblAccountNature.Size = new Size(119, 23);
             lblAccountNature.TabIndex = 9;
             lblAccountNature.Text = "طبيعة الحساب:";
-
+            // 
             // cmbParentAccount
+            // 
             cmbParentAccount.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbParentAccount.FormattingEnabled = true;
             cmbParentAccount.Location = new Point(70, 75);
@@ -114,8 +120,9 @@
             cmbParentAccount.RightToLeft = RightToLeft.Yes;
             cmbParentAccount.Size = new Size(220, 31);
             cmbParentAccount.TabIndex = 7;
-
+            // 
             // cmbAccountType
+            // 
             cmbAccountType.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbAccountType.FormattingEnabled = true;
             cmbAccountType.Items.AddRange(new object[] { "أصل", "خصم", "حقوق ملكية", "إيراد", "مصروف" });
@@ -124,15 +131,17 @@
             cmbAccountType.RightToLeft = RightToLeft.Yes;
             cmbAccountType.Size = new Size(220, 31);
             cmbAccountType.TabIndex = 5;
-
+            // 
             // txtAccountName
+            // 
             txtAccountName.Location = new Point(450, 75);
             txtAccountName.Name = "txtAccountName";
             txtAccountName.RightToLeft = RightToLeft.Yes;
             txtAccountName.Size = new Size(220, 30);
             txtAccountName.TabIndex = 3;
-
+            // 
             // txtAccountNumber
+            // 
             txtAccountNumber.BackColor = SystemColors.Control;
             txtAccountNumber.Location = new Point(450, 34);
             txtAccountNumber.Name = "txtAccountNumber";
@@ -141,108 +150,118 @@
             txtAccountNumber.Size = new Size(220, 30);
             txtAccountNumber.TabIndex = 1;
             txtAccountNumber.TabStop = false;
-
+            // 
             // lblParentAccount
+            // 
             lblParentAccount.AutoSize = true;
             lblParentAccount.Location = new Point(310, 79);
             lblParentAccount.Name = "lblParentAccount";
             lblParentAccount.Size = new Size(104, 23);
             lblParentAccount.TabIndex = 6;
             lblParentAccount.Text = "الحساب الأب:";
-
+            // 
             // lblAccountType
+            // 
             lblAccountType.AutoSize = true;
             lblAccountType.Location = new Point(310, 38);
             lblAccountType.Name = "lblAccountType";
             lblAccountType.Size = new Size(99, 23);
             lblAccountType.TabIndex = 4;
             lblAccountType.Text = "نوع الحساب:";
-
+            // 
             // lblAccountName
+            // 
             lblAccountName.AutoSize = true;
             lblAccountName.Location = new Point(690, 79);
             lblAccountName.Name = "lblAccountName";
             lblAccountName.Size = new Size(102, 23);
             lblAccountName.TabIndex = 2;
             lblAccountName.Text = "اسم الحساب:";
-
+            // 
             // lblAccountNumber
+            // 
             lblAccountNumber.AutoSize = true;
             lblAccountNumber.Location = new Point(690, 38);
             lblAccountNumber.Name = "lblAccountNumber";
             lblAccountNumber.Size = new Size(99, 23);
             lblAccountNumber.TabIndex = 0;
             lblAccountNumber.Text = "رقم الحساب:";
-
+            // 
             // btnNew
+            // 
+            btnNew.BackColor = Color.FromArgb(25, 105, 65);
+            btnNew.Cursor = Cursors.Hand;
+            btnNew.FlatAppearance.BorderSize = 0;
+            btnNew.FlatStyle = FlatStyle.Flat;
             btnNew.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            btnNew.Location = new Point(700, 305);
+            btnNew.ForeColor = Color.White;
+            btnNew.Location = new Point(707, 255);
             btnNew.Name = "btnNew";
             btnNew.Size = new Size(200, 44);
             btnNew.TabIndex = 2;
             btnNew.Text = "حساب جديد";
             btnNew.UseVisualStyleBackColor = false;
-            btnNew.BackColor = Color.FromArgb(25, 105, 65);
-            btnNew.ForeColor = Color.White;
-            btnNew.FlatStyle = FlatStyle.Flat;
-            btnNew.FlatAppearance.BorderSize = 0;
-            btnNew.Cursor = Cursors.Hand;
-
+            // 
             // btnAdd
+            // 
+            btnAdd.BackColor = Color.FromArgb(46, 125, 80);
+            btnAdd.Cursor = Cursors.Hand;
+            btnAdd.FlatAppearance.BorderSize = 0;
+            btnAdd.FlatStyle = FlatStyle.Flat;
             btnAdd.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            btnAdd.Location = new Point(485, 305);
+            btnAdd.ForeColor = Color.White;
+            btnAdd.Location = new Point(492, 255);
             btnAdd.Name = "btnAdd";
             btnAdd.Size = new Size(200, 44);
             btnAdd.TabIndex = 3;
             btnAdd.Text = "إضافة الحساب";
             btnAdd.UseVisualStyleBackColor = false;
-            btnAdd.BackColor = Color.FromArgb(46, 125, 80);
-            btnAdd.ForeColor = Color.White;
-            btnAdd.FlatStyle = FlatStyle.Flat;
-            btnAdd.FlatAppearance.BorderSize = 0;
-            btnAdd.Cursor = Cursors.Hand;
-
+            // 
             // btnEdit
+            // 
+            btnEdit.BackColor = Color.FromArgb(224, 170, 45);
+            btnEdit.Cursor = Cursors.Hand;
+            btnEdit.FlatAppearance.BorderSize = 0;
+            btnEdit.FlatStyle = FlatStyle.Flat;
             btnEdit.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            btnEdit.Location = new Point(270, 305);
+            btnEdit.ForeColor = Color.White;
+            btnEdit.Location = new Point(277, 255);
             btnEdit.Name = "btnEdit";
             btnEdit.Size = new Size(200, 44);
             btnEdit.TabIndex = 4;
             btnEdit.Text = "حفظ التعديل";
             btnEdit.UseVisualStyleBackColor = false;
-            btnEdit.BackColor = Color.FromArgb(224, 170, 45);
-            btnEdit.ForeColor = Color.White;
-            btnEdit.FlatStyle = FlatStyle.Flat;
-            btnEdit.FlatAppearance.BorderSize = 0;
-            btnEdit.Cursor = Cursors.Hand;
-
+            // 
             // btnDelete
+            // 
+            btnDelete.BackColor = Color.FromArgb(185, 60, 60);
+            btnDelete.Cursor = Cursors.Hand;
+            btnDelete.FlatAppearance.BorderSize = 0;
+            btnDelete.FlatStyle = FlatStyle.Flat;
             btnDelete.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            btnDelete.Location = new Point(55, 305);
+            btnDelete.ForeColor = Color.White;
+            btnDelete.Location = new Point(62, 255);
             btnDelete.Name = "btnDelete";
             btnDelete.Size = new Size(200, 44);
             btnDelete.TabIndex = 5;
             btnDelete.Text = "حذف الحساب";
             btnDelete.UseVisualStyleBackColor = false;
-            btnDelete.BackColor = Color.FromArgb(185, 60, 60);
-            btnDelete.ForeColor = Color.White;
-            btnDelete.FlatStyle = FlatStyle.Flat;
-            btnDelete.FlatAppearance.BorderSize = 0;
-            btnDelete.Cursor = Cursors.Hand;
-
+            // 
             // grpAccountsList
+            // 
+            grpAccountsList.BackColor = Color.FromArgb(248, 252, 249);
             grpAccountsList.Controls.Add(dgvAccounts);
             grpAccountsList.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            grpAccountsList.Location = new Point(20, 365);
+            grpAccountsList.Location = new Point(20, 305);
             grpAccountsList.Name = "grpAccountsList";
             grpAccountsList.RightToLeft = RightToLeft.Yes;
             grpAccountsList.Size = new Size(905, 360);
             grpAccountsList.TabIndex = 6;
             grpAccountsList.TabStop = false;
             grpAccountsList.Text = "قائمة الحسابات";
-            grpAccountsList.BackColor = Color.FromArgb(248, 252, 249);
-
+            // 
             // dgvAccounts
+            // 
             dgvAccounts.AllowUserToAddRows = false;
             dgvAccounts.AllowUserToDeleteRows = false;
             dgvAccounts.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
@@ -251,29 +270,33 @@
             dgvAccounts.ColumnHeadersHeight = 38;
             dgvAccounts.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             dgvAccounts.Dock = DockStyle.Fill;
+            dgvAccounts.Location = new Point(3, 26);
             dgvAccounts.MultiSelect = false;
             dgvAccounts.Name = "dgvAccounts";
             dgvAccounts.ReadOnly = true;
             dgvAccounts.RightToLeft = RightToLeft.Yes;
             dgvAccounts.RowHeadersVisible = false;
+            dgvAccounts.RowHeadersWidth = 51;
             dgvAccounts.RowTemplate.Height = 34;
             dgvAccounts.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvAccounts.Size = new Size(899, 331);
             dgvAccounts.TabIndex = 0;
-
+            // 
             // grpAccountTree
+            // 
+            grpAccountTree.BackColor = Color.FromArgb(248, 252, 249);
             grpAccountTree.Controls.Add(treeAccounts);
             grpAccountTree.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            grpAccountTree.Location = new Point(950, 80);
+            grpAccountTree.Location = new Point(943, 87);
             grpAccountTree.Name = "grpAccountTree";
             grpAccountTree.RightToLeft = RightToLeft.Yes;
-            grpAccountTree.Size = new Size(400, 645);
+            grpAccountTree.Size = new Size(439, 557);
             grpAccountTree.TabIndex = 7;
             grpAccountTree.TabStop = false;
             grpAccountTree.Text = "شجرة الحسابات";
-            grpAccountTree.BackColor = Color.FromArgb(248, 252, 249);
-
+            // 
             // treeAccounts
+            // 
             treeAccounts.Dock = DockStyle.Fill;
             treeAccounts.Font = new Font("Segoe UI", 10F);
             treeAccounts.HideSelection = false;
@@ -281,11 +304,12 @@
             treeAccounts.Name = "treeAccounts";
             treeAccounts.RightToLeft = RightToLeft.Yes;
             treeAccounts.RightToLeftLayout = true;
-            treeAccounts.Size = new Size(394, 616);
+            treeAccounts.Size = new Size(433, 528);
             treeAccounts.TabIndex = 0;
             treeAccounts.AfterSelect += treeAccounts_AfterSelect;
-
+            // 
             // AccountsForm
+            // 
             AutoScaleDimensions = new SizeF(9F, 23F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;

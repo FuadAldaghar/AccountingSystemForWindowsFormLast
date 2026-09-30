@@ -62,6 +62,12 @@ namespace AccountingSystemForWindowsFormLast.Forms
 
                 dgvItems.DataSource = table;
 
+                //BeginInvoke(new Action(() =>
+                //{
+                //    dgvItems.ClearSelection();
+                //   // dgvItems.CurrentCell = null;
+                //}));
+
                 if (dgvItems.Columns["ItemId"] != null)
                     dgvItems.Columns["ItemId"].Visible = false;
 
@@ -83,7 +89,7 @@ namespace AccountingSystemForWindowsFormLast.Forms
                     dgvItems.Columns["Unit"].Width = 200;
                 }
 
-                dgvItems.ClearSelection();
+              dgvItems.ClearSelection();
             }
             catch (Exception ex)
             {

@@ -40,6 +40,7 @@
         private void InitializeComponent()
         {
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             panelHeader = new Panel();
             lblTitle = new Label();
             lblSubtitle = new Label();
@@ -275,12 +276,17 @@
             dgvItems.AllowUserToAddRows = false;
             dgvItems.AllowUserToDeleteRows = false;
             dgvItems.AllowUserToResizeRows = false;
+            dataGridViewCellStyle1.BackColor = Color.White;
+            dataGridViewCellStyle1.ForeColor = Color.Black;
+            dataGridViewCellStyle1.Padding = new Padding(2);
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            dgvItems.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             dgvItems.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvItems.BackgroundColor = Color.White;
             dgvItems.BorderStyle = BorderStyle.None;
             dgvItems.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
             dgvItems.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
-            dgvItems.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dgvItems.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             dgvItems.ColumnHeadersHeight = 42;
             dgvItems.EnableHeadersVisualStyles = false;
             dgvItems.GridColor = Color.FromArgb(225, 230, 227);

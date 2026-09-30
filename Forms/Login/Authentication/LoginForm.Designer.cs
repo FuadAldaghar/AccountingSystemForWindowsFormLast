@@ -107,6 +107,7 @@ namespace AccountingSystemForWindowsFormLast.Forms.Authentication
             btnLogin.TabIndex = 2;
             btnLogin.Text = "تسجيل الدخول";
             btnLogin.UseVisualStyleBackColor = false;
+            btnLogin.Click += btnLogin_Click_1;
             // 
             // chkShowPassword
             // 

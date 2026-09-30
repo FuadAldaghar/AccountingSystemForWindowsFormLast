@@ -58,8 +58,8 @@
 
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
             panelHeader = new Panel();
             lblTitle = new Label();
             lblSubtitle = new Label();
@@ -167,18 +167,18 @@
             // txtInvoiceNumber
             // 
             txtInvoiceNumber.BackColor = Color.WhiteSmoke;
-            txtInvoiceNumber.Location = new Point(823, 43);
+            txtInvoiceNumber.Location = new Point(966, 43);
             txtInvoiceNumber.Margin = new Padding(3, 4, 3, 4);
             txtInvoiceNumber.Name = "txtInvoiceNumber";
             txtInvoiceNumber.ReadOnly = true;
-            txtInvoiceNumber.Size = new Size(262, 30);
+            txtInvoiceNumber.Size = new Size(119, 30);
             txtInvoiceNumber.TabIndex = 1;
             txtInvoiceNumber.TabStop = false;
             // 
             // lblInvoiceDate
             // 
             lblInvoiceDate.AutoSize = true;
-            lblInvoiceDate.Location = new Point(743, 47);
+            lblInvoiceDate.Location = new Point(206, 47);
             lblInvoiceDate.Name = "lblInvoiceDate";
             lblInvoiceDate.Size = new Size(54, 23);
             lblInvoiceDate.TabIndex = 2;
@@ -187,7 +187,7 @@
             // dtpInvoiceDate
             // 
             dtpInvoiceDate.Format = DateTimePickerFormat.Short;
-            dtpInvoiceDate.Location = new Point(537, 43);
+            dtpInvoiceDate.Location = new Point(4, 43);
             dtpInvoiceDate.Margin = new Padding(3, 4, 3, 4);
             dtpInvoiceDate.Name = "dtpInvoiceDate";
             dtpInvoiceDate.Size = new Size(182, 30);
@@ -196,7 +196,7 @@
             // lblPaymentType
             // 
             lblPaymentType.AutoSize = true;
-            lblPaymentType.Location = new Point(457, 47);
+            lblPaymentType.Location = new Point(868, 47);
             lblPaymentType.Name = "lblPaymentType";
             lblPaymentType.Size = new Size(78, 23);
             lblPaymentType.TabIndex = 4;
@@ -206,17 +206,17 @@
             // 
             cmbPaymentType.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbPaymentType.Items.AddRange(new object[] { "نقد", "أجل" });
-            cmbPaymentType.Location = new Point(251, 43);
+            cmbPaymentType.Location = new Point(701, 43);
             cmbPaymentType.Margin = new Padding(3, 4, 3, 4);
             cmbPaymentType.Name = "cmbPaymentType";
-            cmbPaymentType.Size = new Size(182, 31);
+            cmbPaymentType.Size = new Size(143, 31);
             cmbPaymentType.TabIndex = 5;
             cmbPaymentType.SelectedIndexChanged += cmbPaymentType_SelectedIndexChanged;
             // 
             // lblAccount
             // 
             lblAccount.AutoSize = true;
-            lblAccount.Location = new Point(1109, 107);
+            lblAccount.Location = new Point(584, 49);
             lblAccount.Name = "lblAccount";
             lblAccount.Size = new Size(64, 23);
             lblAccount.TabIndex = 6;
@@ -225,10 +225,10 @@
             // cmbAccount
             // 
             cmbAccount.DropDownStyle = ComboBoxStyle.DropDownList;
-            cmbAccount.Location = new Point(251, 103);
+            cmbAccount.Location = new Point(315, 49);
             cmbAccount.Margin = new Padding(3, 4, 3, 4);
             cmbAccount.Name = "cmbAccount";
-            cmbAccount.Size = new Size(834, 31);
+            cmbAccount.Size = new Size(251, 31);
             cmbAccount.TabIndex = 7;
             // 
             // groupDetails
@@ -248,7 +248,7 @@
             groupDetails.Controls.Add(btnRemoveRow);
             groupDetails.Controls.Add(dgvDetails);
             groupDetails.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            groupDetails.Location = new Point(29, 320);
+            groupDetails.Location = new Point(29, 321);
             groupDetails.Margin = new Padding(3, 4, 3, 4);
             groupDetails.Name = "groupDetails";
             groupDetails.Padding = new Padding(3, 4, 3, 4);
@@ -260,7 +260,7 @@
             // lblItem
             // 
             lblItem.AutoSize = true;
-            lblItem.Location = new Point(1166, 47);
+            lblItem.Location = new Point(1198, 50);
             lblItem.Name = "lblItem";
             lblItem.Size = new Size(60, 23);
             lblItem.TabIndex = 0;
@@ -269,7 +269,7 @@
             // cmbItem
             // 
             cmbItem.DropDownStyle = ComboBoxStyle.DropDownList;
-            cmbItem.Location = new Point(857, 43);
+            cmbItem.Location = new Point(907, 39);
             cmbItem.Margin = new Padding(3, 4, 3, 4);
             cmbItem.Name = "cmbItem";
             cmbItem.Size = new Size(285, 31);
@@ -278,7 +278,7 @@
             // lblUnit
             // 
             lblUnit.AutoSize = true;
-            lblUnit.Location = new Point(806, 47);
+            lblUnit.Location = new Point(825, 47);
             lblUnit.Name = "lblUnit";
             lblUnit.Size = new Size(57, 23);
             lblUnit.TabIndex = 2;
@@ -287,7 +287,7 @@
             // txtUnit
             // 
             txtUnit.BackColor = Color.WhiteSmoke;
-            txtUnit.Location = new Point(657, 43);
+            txtUnit.Location = new Point(694, 43);
             txtUnit.Margin = new Padding(3, 4, 3, 4);
             txtUnit.Name = "txtUnit";
             txtUnit.ReadOnly = true;
@@ -297,7 +297,7 @@
             // lblQuantity
             // 
             lblQuantity.AutoSize = true;
-            lblQuantity.Location = new Point(594, 47);
+            lblQuantity.Location = new Point(621, 47);
             lblQuantity.Name = "lblQuantity";
             lblQuantity.Size = new Size(54, 23);
             lblQuantity.TabIndex = 4;
@@ -306,7 +306,7 @@
             // nudQuantity
             // 
             nudQuantity.DecimalPlaces = 2;
-            nudQuantity.Location = new Point(446, 43);
+            nudQuantity.Location = new Point(489, 45);
             nudQuantity.Margin = new Padding(3, 4, 3, 4);
             nudQuantity.Maximum = new decimal(new int[] { 100000000, 0, 0, 0 });
             nudQuantity.Minimum = new decimal(new int[] { 1, 0, 0, 131072 });
@@ -315,11 +315,12 @@
             nudQuantity.TabIndex = 5;
             nudQuantity.ThousandsSeparator = true;
             nudQuantity.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            nudQuantity.ValueChanged += nudQuantity_ValueChanged;
             // 
             // lblUnitPrice
             // 
             lblUnitPrice.AutoSize = true;
-            lblUnitPrice.Location = new Point(377, 47);
+            lblUnitPrice.Location = new Point(375, 46);
             lblUnitPrice.Name = "lblUnitPrice";
             lblUnitPrice.Size = new Size(93, 23);
             lblUnitPrice.TabIndex = 6;
@@ -328,18 +329,18 @@
             // nudUnitPrice
             // 
             nudUnitPrice.DecimalPlaces = 2;
-            nudUnitPrice.Location = new Point(211, 43);
+            nudUnitPrice.Location = new Point(250, 39);
             nudUnitPrice.Margin = new Padding(3, 4, 3, 4);
             nudUnitPrice.Maximum = new decimal(new int[] { 1000000000, 0, 0, 0 });
             nudUnitPrice.Name = "nudUnitPrice";
-            nudUnitPrice.Size = new Size(137, 30);
+            nudUnitPrice.Size = new Size(119, 30);
             nudUnitPrice.TabIndex = 7;
             nudUnitPrice.ThousandsSeparator = true;
             // 
             // lblLineTotal
             // 
             lblLineTotal.AutoSize = true;
-            lblLineTotal.Location = new Point(137, 47);
+            lblLineTotal.Location = new Point(176, 47);
             lblLineTotal.Name = "lblLineTotal";
             lblLineTotal.Size = new Size(68, 23);
             lblLineTotal.TabIndex = 8;
@@ -348,11 +349,11 @@
             // txtLineTotal
             // 
             txtLineTotal.BackColor = Color.WhiteSmoke;
-            txtLineTotal.Location = new Point(17, 43);
+            txtLineTotal.Location = new Point(0, 40);
             txtLineTotal.Margin = new Padding(3, 4, 3, 4);
             txtLineTotal.Name = "txtLineTotal";
             txtLineTotal.ReadOnly = true;
-            txtLineTotal.Size = new Size(102, 30);
+            txtLineTotal.Size = new Size(170, 30);
             txtLineTotal.TabIndex = 9;
             txtLineTotal.Text = "0.00";
             // 
@@ -362,12 +363,12 @@
             btnAddRow.FlatStyle = FlatStyle.Flat;
             btnAddRow.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnAddRow.ForeColor = Color.White;
-            btnAddRow.Location = new Point(989, 91);
+            btnAddRow.Location = new Point(1127, 98);
             btnAddRow.Margin = new Padding(3, 4, 3, 4);
             btnAddRow.Name = "btnAddRow";
             btnAddRow.Size = new Size(131, 47);
             btnAddRow.TabIndex = 10;
-            btnAddRow.Text = "إضافة سطر";
+            btnAddRow.Text = "إضافة";
             btnAddRow.UseVisualStyleBackColor = false;
             // 
             // btnRemoveRow
@@ -376,12 +377,12 @@
             btnRemoveRow.FlatStyle = FlatStyle.Flat;
             btnRemoveRow.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnRemoveRow.ForeColor = Color.White;
-            btnRemoveRow.Location = new Point(840, 91);
+            btnRemoveRow.Location = new Point(991, 98);
             btnRemoveRow.Margin = new Padding(3, 4, 3, 4);
             btnRemoveRow.Name = "btnRemoveRow";
             btnRemoveRow.Size = new Size(131, 47);
             btnRemoveRow.TabIndex = 11;
-            btnRemoveRow.Text = "حذف سطر";
+            btnRemoveRow.Text = "حذف";
             btnRemoveRow.UseVisualStyleBackColor = false;
             // 
             // dgvDetails
@@ -392,23 +393,23 @@
             dgvDetails.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvDetails.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvDetails.BackgroundColor = Color.White;
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = Color.FromArgb(35, 125, 85);
-            dataGridViewCellStyle1.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            dataGridViewCellStyle1.ForeColor = Color.White;
-            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            dgvDetails.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = Color.FromArgb(35, 125, 85);
+            dataGridViewCellStyle3.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            dataGridViewCellStyle3.ForeColor = Color.White;
+            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
+            dgvDetails.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             dgvDetails.ColumnHeadersHeight = 38;
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = SystemColors.Window;
-            dataGridViewCellStyle2.Font = new Font("Segoe UI", 10F);
-            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(220, 240, 225);
-            dataGridViewCellStyle2.SelectionForeColor = Color.Black;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
-            dgvDetails.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = SystemColors.Window;
+            dataGridViewCellStyle4.Font = new Font("Segoe UI", 10F);
+            dataGridViewCellStyle4.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle4.SelectionBackColor = Color.FromArgb(220, 240, 225);
+            dataGridViewCellStyle4.SelectionForeColor = Color.Black;
+            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.False;
+            dgvDetails.DefaultCellStyle = dataGridViewCellStyle4;
             dgvDetails.EnableHeadersVisualStyles = false;
             dgvDetails.Location = new Point(17, 153);
             dgvDetails.Margin = new Padding(3, 4, 3, 4);
@@ -463,7 +464,7 @@
             btnNew.Location = new Point(206, 20);
             btnNew.Margin = new Padding(3, 4, 3, 4);
             btnNew.Name = "btnNew";
-            btnNew.Size = new Size(137, 56);
+            btnNew.Size = new Size(163, 56);
             btnNew.TabIndex = 2;
             btnNew.Text = "جديد";
             btnNew.UseVisualStyleBackColor = false;
@@ -474,10 +475,10 @@
             btnSave.FlatStyle = FlatStyle.Flat;
             btnSave.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             btnSave.ForeColor = Color.White;
-            btnSave.Location = new Point(40, 20);
+            btnSave.Location = new Point(17, 20);
             btnSave.Margin = new Padding(3, 4, 3, 4);
             btnSave.Name = "btnSave";
-            btnSave.Size = new Size(149, 56);
+            btnSave.Size = new Size(172, 56);
             btnSave.TabIndex = 3;
             btnSave.Text = "حفظ الفاتورة";
             btnSave.UseVisualStyleBackColor = false;

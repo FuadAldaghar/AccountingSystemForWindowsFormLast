@@ -35,6 +35,7 @@ namespace AccountingSystemForWindowsFormLast.Forms
         // الحسابات - الجدول
         // =========================================
 
+
         private void LoadAccounts()
         {
             try
@@ -133,16 +134,16 @@ namespace AccountingSystemForWindowsFormLast.Forms
                 }
 
                 foreach (AccountNode account in accounts.Where(x => x.ParentId == null))
-                {
+                {//دمج نص الرقم مع الاسم
                     TreeNode node = new($"{account.Number} - {account.Name}")
                     {
                         Tag = account.Id
                     };
-
+                    //بناء الفروع الابناء
                     AddChildNodes(node, account.Id, accounts);
                     treeAccounts.Nodes.Add(node);
                 }
-
+                //فتح فروع الشجره
                 treeAccounts.ExpandAll();
             }
             catch (Exception ex)
@@ -154,11 +155,8 @@ namespace AccountingSystemForWindowsFormLast.Forms
                     MessageBoxIcon.Error);
             }
         }
-
-        private void AddChildNodes(
-            TreeNode parent,
-            int parentId,
-            List<AccountNode> accounts)
+        //دالة لاضافة الابناء في الشجرة وتستخدم الاستدعاء الذاتي
+        private void AddChildNodes( TreeNode parent,int parentId, List<AccountNode> accounts)
         {
             foreach (AccountNode account in accounts.Where(x => x.ParentId == parentId))
             {
@@ -166,15 +164,13 @@ namespace AccountingSystemForWindowsFormLast.Forms
                 {
                     Tag = account.Id
                 };
-
+                //استدعاء ذاتي
                 AddChildNodes(node, account.Id, accounts);
                 parent.Nodes.Add(node);
             }
         }
-
-        private void treeAccounts_AfterSelect(
-            object sender,
-            TreeViewEventArgs e)
+        //بعد الضغط على عنصر في الشجره
+        private void treeAccounts_AfterSelect(object sender, TreeViewEventArgs e)
         {
             if (e.Node?.Tag == null)
                 return;
@@ -185,10 +181,7 @@ namespace AccountingSystemForWindowsFormLast.Forms
             LoadAccountDetails(accountId);
         }
 
-        // =========================================
-        // تحميل تفاصيل الحساب
-        // =========================================
-
+      //تحميل تفاصيل الحساب الى الحقول وصناديق الاختيار وضبطها
         private void LoadAccountDetails(int accountId)
         {
             try
@@ -212,6 +205,7 @@ namespace AccountingSystemForWindowsFormLast.Forms
                     WHERE AccountId = @Id";
 
                 using SqlCommand cmd = new(query, con);
+                //اعطاء قيمة للمتغير idالموجود في الاستعلام السابق
                 cmd.Parameters.Add("@Id", SqlDbType.Int).Value = accountId;
 
                 using SqlDataReader reader = cmd.ExecuteReader();
@@ -237,7 +231,7 @@ namespace AccountingSystemForWindowsFormLast.Forms
 
                 chkIsGroup.Checked =
                     Convert.ToBoolean(reader["IsGroup"]);
-
+                //ضبط صندوق اختيار الاب للحساب
                 if (reader["ParentAccountId"] == DBNull.Value)
                 {
                     cmbParentAccount.SelectedIndex = -1;
@@ -324,18 +318,17 @@ namespace AccountingSystemForWindowsFormLast.Forms
         // تغيير الأب
         // =========================================
 
-        private void cmbParentAccount_SelectedIndexChanged(
-            object? sender,
-            EventArgs e)
+        private void cmbParentAccount_SelectedIndexChanged(object? sender, EventArgs e)
         {
             if (isLoadingAccount)
                 return;
 
             if (selectedAccountId != null)
                 return;
-
+            //يعني هذي الداله تطبق في حين  تكون العمليه اضافه او تعديل
             ApplyParentRules();
         }
+        //تطبيق الواعد في حال تم اختيار الحساب الاب
 
         private void ApplyParentRules()
         {
@@ -400,9 +393,7 @@ namespace AccountingSystemForWindowsFormLast.Forms
             GenerateAndShowAccountNumber(parentId);
         }
 
-        private void cmbAccountType_SelectedIndexChanged(
-            object? sender,
-            EventArgs e)
+        private void cmbAccountType_SelectedIndexChanged(object? sender, EventArgs e)
         {
             if (isLoadingAccount)
                 return;
@@ -417,12 +408,8 @@ namespace AccountingSystemForWindowsFormLast.Forms
                 GenerateAndShowAccountNumber(null);
         }
 
-        // =========================================
-        // توليد رقم الحساب تلقائيًا
-        // يدعم مستويات متعددة:
-        // 1 -> 11 -> 111 -> 1111
-        // =========================================
-
+   
+        //عرض رقم الحساب تلقائيا
         private void GenerateAndShowAccountNumber(int? parentId)
         {
             try
@@ -442,11 +429,9 @@ namespace AccountingSystemForWindowsFormLast.Forms
                     MessageBoxIcon.Error);
             }
         }
+        //توليد رقم الحساب
+        private string GenerateAccountNumber(SqlConnection con, int? parentId, int? excludeAccountId = null)
 
-        private string GenerateAccountNumber(
-            SqlConnection con,
-            int? parentId,
-            int? excludeAccountId = null)
         {
             string prefix = "";
 
@@ -539,10 +524,7 @@ namespace AccountingSystemForWindowsFormLast.Forms
             return next.ToString();
         }
 
-        // =========================================
-        // طبيعة الحساب تلقائيًا
-        // =========================================
-
+        //توليد طبيعة الحساب بناءً على نوع الحساب
         private string GetNatureByAccountType(string accountType)
         {
             return accountType switch
@@ -556,9 +538,7 @@ namespace AccountingSystemForWindowsFormLast.Forms
             };
         }
 
-        // =========================================
-        // حساب جديد
-        // =========================================
+        //زر جديد لإضافة حساب جديد
 
         private void btnNew_Click(object? sender, EventArgs e)
         {
@@ -574,10 +554,7 @@ namespace AccountingSystemForWindowsFormLast.Forms
             txtAccountName.Focus();
         }
 
-        // =========================================
-        // إضافة حساب
-        // =========================================
-
+        //زر إضافة الحساب الجديد
         private void btnAdd_Click(object? sender, EventArgs e)
         {
             if (!ValidateAccount())
@@ -870,7 +847,7 @@ namespace AccountingSystemForWindowsFormLast.Forms
 
             return Convert.ToInt32(cmd.ExecuteScalar()) > 0;
         }
-
+        //هل الحساب يحتوي على حسابات فرعية
         private bool HasChildren(SqlConnection con, int accountId)
         {
             string query = @"

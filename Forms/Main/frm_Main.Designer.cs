@@ -11,6 +11,7 @@ namespace AccountingSystemForWindowsFormLast
         private System.Windows.Forms.ToolStripMenuItem systemMenu;
         private System.Windows.Forms.ToolStripMenuItem accountTreeMenuItem;
         private System.Windows.Forms.ToolStripMenuItem itemsMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem usersMenuItem;
 
         private System.Windows.Forms.ToolStripMenuItem vouchersMenu;
         private System.Windows.Forms.ToolStripMenuItem receiptVoucherMenuItem;
@@ -75,6 +76,7 @@ namespace AccountingSystemForWindowsFormLast
             systemMenu = new ToolStripMenuItem();
             accountTreeMenuItem = new ToolStripMenuItem();
             itemsMenuItem = new ToolStripMenuItem();
+            usersMenuItem = new ToolStripMenuItem();
             vouchersMenu = new ToolStripMenuItem();
             receiptVoucherMenuItem = new ToolStripMenuItem();
             receiptRegisterMenuItem = new ToolStripMenuItem();
@@ -101,7 +103,7 @@ namespace AccountingSystemForWindowsFormLast
             contentPanel.Location = new Point(0, 123);
             contentPanel.Name = "contentPanel";
             contentPanel.Padding = new Padding(10);
-            contentPanel.Size = new Size(1537, 731);
+            contentPanel.Size = new Size(1390, 731);
             contentPanel.TabIndex = 2;
             // 
             // pnlHeader
@@ -114,7 +116,7 @@ namespace AccountingSystemForWindowsFormLast
             pnlHeader.Dock = DockStyle.Top;
             pnlHeader.Location = new Point(0, 0);
             pnlHeader.Name = "pnlHeader";
-            pnlHeader.Size = new Size(1537, 78);
+            pnlHeader.Size = new Size(1390, 78);
             pnlHeader.TabIndex = 0;
             // 
             // lblBrand
@@ -122,7 +124,7 @@ namespace AccountingSystemForWindowsFormLast
             lblBrand.Dock = DockStyle.Right;
             lblBrand.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             lblBrand.ForeColor = Color.FromArgb(230, 240, 235);
-            lblBrand.Location = new Point(1327, 0);
+            lblBrand.Location = new Point(1180, 0);
             lblBrand.Name = "lblBrand";
             lblBrand.Padding = new Padding(0, 0, 24, 0);
             lblBrand.Size = new Size(210, 74);
@@ -158,7 +160,7 @@ namespace AccountingSystemForWindowsFormLast
             pnlHeaderAccent.Dock = DockStyle.Bottom;
             pnlHeaderAccent.Location = new Point(0, 74);
             pnlHeaderAccent.Name = "pnlHeaderAccent";
-            pnlHeaderAccent.Size = new Size(1537, 4);
+            pnlHeaderAccent.Size = new Size(1390, 4);
             pnlHeaderAccent.TabIndex = 0;
             // 
             // mainMenuStrip
@@ -172,7 +174,7 @@ namespace AccountingSystemForWindowsFormLast
             mainMenuStrip.Name = "mainMenuStrip";
             mainMenuStrip.Padding = new Padding(16, 7, 16, 7);
             mainMenuStrip.RightToLeft = RightToLeft.Yes;
-            mainMenuStrip.Size = new Size(1537, 45);
+            mainMenuStrip.Size = new Size(1390, 45);
             mainMenuStrip.TabIndex = 1;
             // 
             // loginMenu
@@ -186,20 +188,23 @@ namespace AccountingSystemForWindowsFormLast
             // loginMenuItem
             // 
             loginMenuItem.Name = "loginMenuItem";
-            loginMenuItem.Size = new Size(215, 28);
+            loginMenuItem.Size = new Size(224, 28);
             loginMenuItem.Text = "تسجيل الدخول";
+            loginMenuItem.Click += loginMenuItem_Click;
             // 
             // logoutMenuItem
             // 
             logoutMenuItem.Name = "logoutMenuItem";
-            logoutMenuItem.Size = new Size(215, 28);
+            logoutMenuItem.Size = new Size(224, 28);
             logoutMenuItem.Text = "تسجيل الخروج";
+            logoutMenuItem.Click += logoutMenuItem_Click;
             // 
             // changePasswordMenuItem
             // 
             changePasswordMenuItem.Name = "changePasswordMenuItem";
-            changePasswordMenuItem.Size = new Size(215, 28);
+            changePasswordMenuItem.Size = new Size(224, 28);
             changePasswordMenuItem.Text = "تغيير كلمة المرور";
+            changePasswordMenuItem.Click += changePasswordMenuItem_Click;
             // 
             // databaseMenu
             // 
@@ -232,7 +237,7 @@ namespace AccountingSystemForWindowsFormLast
             // 
             // systemMenu
             // 
-            systemMenu.DropDownItems.AddRange(new ToolStripItem[] { accountTreeMenuItem, itemsMenuItem });
+            systemMenu.DropDownItems.AddRange(new ToolStripItem[] { accountTreeMenuItem, itemsMenuItem, usersMenuItem });
             systemMenu.Name = "systemMenu";
             systemMenu.Padding = new Padding(10, 2, 10, 2);
             systemMenu.Size = new Size(76, 31);
@@ -241,16 +246,23 @@ namespace AccountingSystemForWindowsFormLast
             // accountTreeMenuItem
             // 
             accountTreeMenuItem.Name = "accountTreeMenuItem";
-            accountTreeMenuItem.Size = new Size(195, 28);
+            accountTreeMenuItem.Size = new Size(224, 28);
             accountTreeMenuItem.Text = "دليل الحسابات";
             accountTreeMenuItem.Click += accountTreeMenuItem_Click;
             // 
             // itemsMenuItem
             // 
             itemsMenuItem.Name = "itemsMenuItem";
-            itemsMenuItem.Size = new Size(195, 28);
+            itemsMenuItem.Size = new Size(224, 28);
             itemsMenuItem.Text = "دليل الأصناف";
             itemsMenuItem.Click += itemsMenuItem_Click;
+            // 
+            // usersMenuItem
+            // 
+            usersMenuItem.Name = "usersMenuItem";
+            usersMenuItem.Size = new Size(224, 28);
+            usersMenuItem.Text = "إدارة المستخدمين";
+            usersMenuItem.Click += usersMenuItem_Click;
             // 
             // vouchersMenu
             // 
@@ -360,7 +372,7 @@ namespace AccountingSystemForWindowsFormLast
             AutoScaleDimensions = new SizeF(9F, 23F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(246, 248, 247);
-            ClientSize = new Size(1537, 854);
+            ClientSize = new Size(1390, 854);
             Controls.Add(contentPanel);
             Controls.Add(mainMenuStrip);
             Controls.Add(pnlHeader);
@@ -394,6 +406,7 @@ namespace AccountingSystemForWindowsFormLast
             Report,
             Accounts,
             Items,
+            Users,
             Receipt,
             Payment,
             Purchase,
@@ -456,6 +469,13 @@ namespace AccountingSystemForWindowsFormLast
                     g.DrawRectangle(greenPen, 3, 5, 16, 14);
                     g.DrawLine(goldPen, 3, 9, 19, 9);
                     g.DrawLine(goldPen, 8, 9, 8, 19);
+                }
+                else if (type == MenuIconType.Users)
+                {
+                    g.DrawEllipse(greenPen, 3, 3, 7, 7);
+                    g.DrawEllipse(greenPen, 12, 3, 7, 7);
+                    g.DrawArc(goldPen, 2, 9, 9, 9, 180, 180);
+                    g.DrawArc(goldPen, 11, 9, 9, 9, 180, 180);
                 }
                 else if (type == MenuIconType.Money)
                 {

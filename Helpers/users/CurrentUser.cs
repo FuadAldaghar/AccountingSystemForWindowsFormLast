@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using AccountingSystemForWindowsFormLast.Services;
 
-namespace AccountingSystemForWindowsFormLast.Helpers
+namespace AccountingSystemForWindowsFormLast.Helpers.users
 {
     public static class CurrentUser
     {

@@ -336,16 +336,17 @@ namespace AccountingSystemForWindowsFormLast.Forms
         // حفظ الفاتورة
         // =========================================================
         private void btnSave_Click(object? sender, EventArgs e)
-        {
+        {//التحقق من صحة الفاتورة قبل الحفظ
             if (!ValidateInvoice())
                 return;
-
+            // الحصول على إجمالي الفاتورة
             decimal invoiceTotal = GetInvoiceTotal();
-
+            // الحصول على معرف الحساب ونوع الدفع
             int accountId =
                 Convert.ToInt32(cmbAccount.SelectedValue);
 
             string paymentType = cmbPaymentType.Text;
+            ///
 
             try
             {
@@ -353,7 +354,7 @@ namespace AccountingSystemForWindowsFormLast.Forms
                     DatabaseConnection.GetConnection();
 
                 connection.Open();
-
+                // بدء معاملة قاعدة البيانات
                 using SqlTransaction transaction =
                     connection.BeginTransaction();
 
@@ -379,7 +380,7 @@ namespace AccountingSystemForWindowsFormLast.Forms
                         );
 
                         SELECT SCOPE_IDENTITY();";
-
+                    // تنفيذ الاستعلام والحصول على معرف الفاتورة الجديدة
                     int invoiceId;
 
                     using (SqlCommand command =
@@ -931,6 +932,11 @@ namespace AccountingSystemForWindowsFormLast.Forms
         }
 
         private void cmbPaymentType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void nudQuantity_ValueChanged(object sender, EventArgs e)
         {
 
         }
