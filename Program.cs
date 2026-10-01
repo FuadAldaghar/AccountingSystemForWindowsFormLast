@@ -11,13 +11,13 @@ namespace AccountingSystemForWindowsFormLast
         {
             ApplicationConfiguration.Initialize();
 
-            using (LoginForm loginForm = new LoginForm())
-            {
-                if (loginForm.ShowDialog() != DialogResult.OK)
-                {
-                    return;
-                }
-            }
+            //using (LoginForm loginForm = new LoginForm())
+            //{
+            //    if (loginForm.ShowDialog() != DialogResult.OK)
+            //    {
+            //        return;
+            //    }
+            //}
 
             Application.Run(new frm_Main());
         }

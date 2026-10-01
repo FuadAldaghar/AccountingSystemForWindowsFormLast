@@ -1,159 +1,163 @@
+
 using System.Data;
 using AccountingSystemForWindowsFormLast.Data;
 using AccountingSystemForWindowsFormLast.Models;
+
 using Microsoft.Data.SqlClient;
 
 namespace AccountingSystemForWindowsFormLast.Services
 {
     public class AccountService
     {
-        public List<Account> GetAll()
+        public DataTable GetDataTable()
         {
-            const string sql = @"
+            using SqlConnection con = DatabaseConnection.GetConnection();
+            con.Open();
+
+            const string query = @"
                 SELECT
                     AccountId,
                     AccountNumber,
                     AccountName,
                     AccountType,
+                    AccountNature,
                     ParentAccountId,
                     IsGroup,
-                    IsSystem,
-                    AccountNature
+                    IsSystem
                 FROM Accounts
-                ORDER BY AccountNumber";
+                ORDER BY
+                    LEN(AccountNumber),
+                    AccountNumber";
 
-            List<Account> accounts = new();
-
-            using SqlConnection connection =
-                DatabaseConnection.GetConnection();
-
-            connection.Open();
-
-            using SqlCommand command =
-                new SqlCommand(sql, connection);
-
-            using SqlDataReader reader =
-                command.ExecuteReader();
-
-            while (reader.Read())
-            {
-                accounts.Add(MapAccount(reader));
-            }
-
-            return accounts;
+            using SqlDataAdapter adapter = new SqlDataAdapter(query, con);
+            DataTable table = new DataTable();
+            adapter.Fill(table);
+            return table;
         }
 
-        public List<Account> GetLeafAccounts()
+        public List<Account> GetAll()
         {
-            const string sql = @"
+            List<Account> list = new List<Account>();
+            using SqlConnection con = DatabaseConnection.GetConnection();
+            con.Open();
+
+            const string query = @"
                 SELECT
                     AccountId,
                     AccountNumber,
                     AccountName,
                     AccountType,
+                    AccountNature,
                     ParentAccountId,
                     IsGroup,
-                    IsSystem,
+                    IsSystem
+                FROM Accounts
+                ORDER BY
+                    LEN(AccountNumber),
+                    AccountNumber";
+
+            using SqlCommand cmd = new SqlCommand(query, con);
+            using SqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                list.Add(MapAccount(reader));
+            }
+
+            return list;
+        }
+
+        public List<AccountItem> GetLeafAccounts()
+        {
+            List<AccountItem> list = new List<AccountItem>();
+            using SqlConnection con = DatabaseConnection.GetConnection();
+            con.Open();
+
+            const string query = @"
+                SELECT
+                    AccountId,
+                    AccountNumber,
+                    AccountName,
                     AccountNature
                 FROM Accounts
                 WHERE IsGroup = 0
                 ORDER BY AccountNumber";
 
-            return ExecuteList(sql);
+            using SqlCommand cmd = new SqlCommand(query, con);
+            using SqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                list.Add(new AccountItem
+                {
+                    AccountId = Convert.ToInt32(reader["AccountId"]),
+                    AccountNumber = reader["AccountNumber"]?.ToString() ?? "",
+                    AccountName = reader["AccountName"]?.ToString() ?? "",
+                    AccountNature = reader["AccountNature"]?.ToString() ?? ""
+                });
+            }
+
+            return list;
         }
 
-        public List<Account> GetGroupAccounts()
+        public List<AccountItem> GetParentAccounts()
         {
-            const string sql = @"
+            List<AccountItem> list = new List<AccountItem>();
+            using SqlConnection con = DatabaseConnection.GetConnection();
+            con.Open();
+
+            const string query = @"
                 SELECT
                     AccountId,
                     AccountNumber,
                     AccountName,
-                    AccountType,
-                    ParentAccountId,
-                    IsGroup,
-                    IsSystem,
                     AccountNature
                 FROM Accounts
                 WHERE IsGroup = 1
-                ORDER BY AccountNumber";
+                ORDER BY
+                    LEN(AccountNumber),
+                    AccountNumber";
 
-            return ExecuteList(sql);
+            using SqlCommand cmd = new SqlCommand(query, con);
+            using SqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                list.Add(new AccountItem
+                {
+                    AccountId = Convert.ToInt32(reader["AccountId"]),
+                    AccountNumber = reader["AccountNumber"]?.ToString() ?? "",
+                    AccountName = reader["AccountName"]?.ToString() ?? "",
+                    AccountNature = reader["AccountNature"]?.ToString() ?? ""
+                });
+            }
+
+            return list;
         }
 
         public Account? GetById(int accountId)
         {
-            const string sql = @"
+            using SqlConnection con = DatabaseConnection.GetConnection();
+            con.Open();
+
+            const string query = @"
                 SELECT
                     AccountId,
                     AccountNumber,
                     AccountName,
                     AccountType,
+                    AccountNature,
                     ParentAccountId,
                     IsGroup,
-                    IsSystem,
-                    AccountNature
+                    IsSystem
                 FROM Accounts
                 WHERE AccountId = @AccountId";
 
-            using SqlConnection connection =
-                DatabaseConnection.GetConnection();
+            using SqlCommand cmd = new SqlCommand(query, con);
+            cmd.Parameters.Add("@AccountId", SqlDbType.Int).Value = accountId;
 
-            connection.Open();
-
-            using SqlCommand command =
-                new SqlCommand(sql, connection);
-
-            command.Parameters.Add("@AccountId", SqlDbType.Int)
-                .Value = accountId;
-
-            using SqlDataReader reader =
-                command.ExecuteReader();
-
+            using SqlDataReader reader = cmd.ExecuteReader();
             if (!reader.Read())
                 return null;
 
             return MapAccount(reader);
-        }
-
-        public List<AccountItem> GetAccountItems(bool onlyLeafAccounts = true)
-        {
-            const string sql = @"
-                SELECT
-                    AccountId,
-                    AccountNumber,
-                    AccountName
-                FROM Accounts
-                WHERE (@OnlyLeaf = 0 OR IsGroup = 0)
-                ORDER BY AccountNumber";
-
-            List<AccountItem> accounts = new();
-
-            using SqlConnection connection =
-                DatabaseConnection.GetConnection();
-
-            connection.Open();
-
-            using SqlCommand command =
-                new SqlCommand(sql, connection);
-
-            command.Parameters.Add("@OnlyLeaf", SqlDbType.Bit)
-                .Value = onlyLeafAccounts;
-
-            using SqlDataReader reader =
-                command.ExecuteReader();
-
-            while (reader.Read())
-            {
-                accounts.Add(new AccountItem
-                {
-                    AccountId = Convert.ToInt32(reader["AccountId"]),
-                    AccountNumber = reader["AccountNumber"].ToString() ?? "",
-                    AccountName = reader["AccountName"].ToString() ?? ""
-                });
-            }
-
-            return accounts;
         }
 
         public int? GetIdByNumber(
@@ -162,67 +166,156 @@ namespace AccountingSystemForWindowsFormLast.Services
             SqlTransaction? transaction = null)
         {
             const string sql = @"
-                SELECT AccountId
+                SELECT TOP 1 AccountId
                 FROM Accounts
                 WHERE AccountNumber = @AccountNumber";
 
             bool ownsConnection = connection == null;
-
             connection ??= DatabaseConnection.GetConnection();
 
             if (ownsConnection)
                 connection.Open();
 
-            using SqlCommand command =
-                new SqlCommand(sql, connection, transaction);
+            try
+            {
+                using SqlCommand command = new SqlCommand(sql, connection, transaction);
+                command.Parameters.Add("@AccountNumber", SqlDbType.NVarChar, 50).Value = accountNumber.Trim();
 
-            command.Parameters.Add("@AccountNumber", SqlDbType.NVarChar, 50)
-                .Value = accountNumber;
+                object? result = command.ExecuteScalar();
+                return result == null || result == DBNull.Value ? null : Convert.ToInt32(result);
+            }
+            finally
+            {
+                if (ownsConnection)
+                    connection.Dispose();
+            }
+        }
 
-            object? result = command.ExecuteScalar();
+        public string GetNatureByAccountType(string accountType)
+        {
+            return accountType switch
+            {
+                "أصول" => "مدين",
+                "مصروفات" => "مدين",
+                "خصوم" => "دائن",
+                "حقوق ملكية" => "دائن",
+                "إيرادات" => "دائن",
+                _ => "مدين"
+            };
+        }
 
-            if (ownsConnection)
-                connection.Dispose();
+        public string GenerateAccountNumber(int? parentId, int? excludeAccountId = null)
+        {
+            using SqlConnection con = DatabaseConnection.GetConnection();
+            con.Open();
 
-            return result == null || result == DBNull.Value
-                ? null
-                : Convert.ToInt32(result);
+            string prefix = "";
+
+            if (parentId.HasValue && parentId.Value > 0)
+            {
+                const string parentQuery = "SELECT AccountNumber FROM Accounts WHERE AccountId = @ParentAccountId";
+                using SqlCommand parentCmd = new SqlCommand(parentQuery, con);
+                parentCmd.Parameters.Add("@ParentAccountId", SqlDbType.Int).Value = parentId.Value;
+
+                object? parentResult = parentCmd.ExecuteScalar();
+                if (parentResult != null && parentResult != DBNull.Value)
+                {
+                    prefix = parentResult.ToString()?.Trim() ?? "";
+                }
+            }
+
+            string query;
+            if (string.IsNullOrEmpty(prefix))
+            {
+                query = @"
+                    SELECT AccountNumber
+                    FROM Accounts
+                    WHERE ParentAccountId IS NULL
+                      AND (@ExcludeAccountId IS NULL OR AccountId <> @ExcludeAccountId)";
+            }
+            else
+            {
+                query = @"
+                    SELECT AccountNumber
+                    FROM Accounts
+                    WHERE ParentAccountId = @ParentAccountId
+                      AND (@ExcludeAccountId IS NULL OR AccountId <> @ExcludeAccountId)";
+            }
+
+            using SqlCommand cmd = new SqlCommand(query, con);
+            cmd.Parameters.Add("@ExcludeAccountId", SqlDbType.Int).Value =
+                excludeAccountId.HasValue ? excludeAccountId.Value : DBNull.Value;
+
+            if (!string.IsNullOrEmpty(prefix))
+            {
+                cmd.Parameters.Add("@ParentAccountId", SqlDbType.Int).Value = parentId!.Value;
+            }
+
+            HashSet<int> usedNumbers = new HashSet<int>();
+            using SqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                string number = reader["AccountNumber"]?.ToString() ?? "";
+                if (string.IsNullOrEmpty(prefix))
+                {
+                    if (int.TryParse(number, out int val))
+                        usedNumbers.Add(val);
+                }
+                else
+                {
+                    if (number.StartsWith(prefix) && number.Length > prefix.Length)
+                    {
+                        string suffix = number[prefix.Length..];
+                        if (int.TryParse(suffix, out int val))
+                            usedNumbers.Add(val);
+                    }
+                }
+            }
+
+            int next = 1;
+            while (usedNumbers.Contains(next))
+            {
+                next++;
+            }
+
+            return prefix + next;
         }
 
         public int Add(Account account)
         {
+            if (string.IsNullOrWhiteSpace(account.AccountNature))
+            {
+                account.AccountNature = GetNatureByAccountType(account.AccountType);
+            }
+
             const string sql = @"
                 INSERT INTO Accounts
                 (
                     AccountNumber,
                     AccountName,
                     AccountType,
+                    AccountNature,
                     ParentAccountId,
                     IsGroup,
-                    IsSystem,
-                    AccountNature
+                    IsSystem
                 )
                 VALUES
                 (
                     @AccountNumber,
                     @AccountName,
                     @AccountType,
+                    @AccountNature,
                     @ParentAccountId,
                     @IsGroup,
-                    @IsSystem,
-                    @AccountNature
+                    @IsSystem
                 );
 
                 SELECT CAST(SCOPE_IDENTITY() AS INT);";
 
-            using SqlConnection connection =
-                DatabaseConnection.GetConnection();
-
+            using SqlConnection connection = DatabaseConnection.GetConnection();
             connection.Open();
 
-            using SqlCommand command =
-                new SqlCommand(sql, connection);
-
+            using SqlCommand command = new SqlCommand(sql, connection);
             AddParameters(command, account);
 
             return Convert.ToInt32(command.ExecuteScalar());
@@ -230,74 +323,121 @@ namespace AccountingSystemForWindowsFormLast.Services
 
         public void Update(Account account)
         {
+            if (string.IsNullOrWhiteSpace(account.AccountNature))
+            {
+                account.AccountNature = GetNatureByAccountType(account.AccountType);
+            }
+
             const string sql = @"
                 UPDATE Accounts
                 SET
                     AccountNumber = @AccountNumber,
                     AccountName = @AccountName,
                     AccountType = @AccountType,
+                    AccountNature = @AccountNature,
                     ParentAccountId = @ParentAccountId,
-                    IsGroup = @IsGroup,
-                    AccountNature = @AccountNature
+                    IsGroup = @IsGroup
                 WHERE AccountId = @AccountId";
 
-            using SqlConnection connection =
-                DatabaseConnection.GetConnection();
-
+            using SqlConnection connection = DatabaseConnection.GetConnection();
             connection.Open();
 
-            using SqlCommand command =
-                new SqlCommand(sql, connection);
-
+            using SqlCommand command = new SqlCommand(sql, connection);
             AddParameters(command, account);
-
-            command.Parameters.Add("@AccountId", SqlDbType.Int)
-                .Value = account.AccountId;
+            command.Parameters.Add("@AccountId", SqlDbType.Int).Value = account.AccountId;
 
             command.ExecuteNonQuery();
         }
 
         public void Delete(int accountId)
         {
-            const string sql = @"
-                DELETE FROM Accounts
-                WHERE AccountId = @AccountId";
+            using SqlConnection con = DatabaseConnection.GetConnection();
+            con.Open();
 
-            using SqlConnection connection =
-                DatabaseConnection.GetConnection();
-
-            connection.Open();
-
-            using SqlCommand command =
-                new SqlCommand(sql, connection);
-
-            command.Parameters.Add("@AccountId", SqlDbType.Int)
-                .Value = accountId;
-
-            command.ExecuteNonQuery();
-        }
-
-        private List<Account> ExecuteList(string sql)
-        {
-            List<Account> accounts = new();
-
-            using SqlConnection connection =
-                DatabaseConnection.GetConnection();
-
-            connection.Open();
-
-            using SqlCommand command =
-                new SqlCommand(sql, connection);
-
-            using SqlDataReader reader =
-                command.ExecuteReader();
-
-            while (reader.Read())
+            if (IsSystemAccount(con, accountId))
             {
-                accounts.Add(MapAccount(reader));
+                throw new InvalidOperationException("لا يمكن حذف حساب نظام أساسي.");
             }
 
-            return accounts;
+            if (HasChildren(con, accountId))
+            {
+                throw new InvalidOperationException("لا يمكن حذف هذا الحساب لأنه يحتوي على حسابات فرعية.");
+            }
+
+            if (IsAccountUsed(con, accountId))
+            {
+                throw new InvalidOperationException("لا يمكن حذف هذا الحساب لأنه مرتبط بعمليات مالية سابقة (قيود، فواتير، أو سندات).");
+            }
+
+            const string query = "DELETE FROM Accounts WHERE AccountId = @AccountId";
+            using SqlCommand cmd = new SqlCommand(query, con);
+            cmd.Parameters.Add("@AccountId", SqlDbType.Int).Value = accountId;
+            cmd.ExecuteNonQuery();
+        }
+
+        public bool IsSystemAccount(int accountId)
+        {
+            using SqlConnection con = DatabaseConnection.GetConnection();
+            con.Open();
+            return IsSystemAccount(con, accountId);
+        }
+
+        private static bool IsSystemAccount(SqlConnection con, int accountId)
+        {
+            const string query = "SELECT IsSystem FROM Accounts WHERE AccountId = @AccountId";
+            using SqlCommand cmd = new SqlCommand(query, con);
+            cmd.Parameters.Add("@AccountId", SqlDbType.Int).Value = accountId;
+            object? result = cmd.ExecuteScalar();
+            return result != null && result != DBNull.Value && Convert.ToBoolean(result);
+        }
+
+        public bool HasChildren(int accountId)
+        {
+            using SqlConnection con = DatabaseConnection.GetConnection();
+            con.Open();
+            return HasChildren(con, accountId);
+        }
+
+        private static bool HasChildren(SqlConnection con, int accountId)
+        {
+            const string query = "SELECT COUNT(*) FROM Accounts WHERE ParentAccountId = @AccountId";
+            using SqlCommand cmd = new SqlCommand(query, con);
+            cmd.Parameters.Add("@AccountId", SqlDbType.Int).Value = accountId;
+            return Convert.ToInt32(cmd.ExecuteScalar()) > 0;
+        }
+
+        public bool IsAccountUsed(int accountId)
+        {
+            using SqlConnection con = DatabaseConnection.GetConnection();
+            con.Open();
+            return IsAccountUsed(con, accountId);
+        }
+
+        private static bool IsAccountUsed(SqlConnection con, int accountId)
+        {
+            const string query = @"
+                SELECT
+                    (SELECT COUNT(*) FROM JournalEntryDetails WHERE AccountId = @AccountId) +
+                    (SELECT COUNT(*) FROM PurchaseInvoices WHERE AccountId = @AccountId) +
+                    (SELECT COUNT(*) FROM SalesInvoices WHERE AccountId = @AccountId) +
+                    (SELECT COUNT(*) FROM PaymentVouchers WHERE AccountId = @AccountId) +
+                    (SELECT COUNT(*) FROM ReceiptVouchers WHERE AccountId = @AccountId)";
+
+            using SqlCommand cmd = new SqlCommand(query, con);
+            cmd.Parameters.Add("@AccountId", SqlDbType.Int).Value = accountId;
+            return Convert.ToInt32(cmd.ExecuteScalar()) > 0;
+        }
+
+        public string? GetParentAccountType(int parentId)
+        {
+            using SqlConnection con = DatabaseConnection.GetConnection();
+            con.Open();
+
+            const string query = "SELECT AccountType FROM Accounts WHERE AccountId = @AccountId";
+            using SqlCommand cmd = new SqlCommand(query, con);
+            cmd.Parameters.Add("@AccountId", SqlDbType.Int).Value = parentId;
+            object? result = cmd.ExecuteScalar();
+            return result?.ToString();
         }
 
         private static Account MapAccount(SqlDataReader reader)
@@ -305,50 +445,27 @@ namespace AccountingSystemForWindowsFormLast.Services
             return new Account
             {
                 AccountId = Convert.ToInt32(reader["AccountId"]),
-                AccountNumber = reader["AccountNumber"].ToString() ?? "",
-                AccountName = reader["AccountName"].ToString() ?? "",
-                AccountType = reader["AccountType"].ToString() ?? "",
-                ParentAccountId =
-                    reader["ParentAccountId"] == DBNull.Value
-                        ? null
-                        : Convert.ToInt32(reader["ParentAccountId"]),
+                AccountNumber = reader["AccountNumber"]?.ToString() ?? "",
+                AccountName = reader["AccountName"]?.ToString() ?? "",
+                AccountType = reader["AccountType"]?.ToString() ?? "",
+                AccountNature = reader["AccountNature"] == DBNull.Value ? "" : reader["AccountNature"]?.ToString() ?? "",
+                ParentAccountId = reader["ParentAccountId"] == DBNull.Value ? null : Convert.ToInt32(reader["ParentAccountId"]),
                 IsGroup = Convert.ToBoolean(reader["IsGroup"]),
-                IsSystem = Convert.ToBoolean(reader["IsSystem"]),
-                AccountNature =
-                    reader["AccountNature"] == DBNull.Value
-                        ? ""
-                        : reader["AccountNature"].ToString() ?? ""
+                IsSystem = Convert.ToBoolean(reader["IsSystem"])
             };
         }
 
-        private static void AddParameters(
-            SqlCommand command,
-            Account account)
+        private static void AddParameters(SqlCommand command, Account account)
         {
-            command.Parameters.Add("@AccountNumber", SqlDbType.NVarChar, 50)
-                .Value = account.AccountNumber.Trim();
-
-            command.Parameters.Add("@AccountName", SqlDbType.NVarChar, 200)
-                .Value = account.AccountName.Trim();
-
-            command.Parameters.Add("@AccountType", SqlDbType.NVarChar, 50)
-                .Value = account.AccountType.Trim();
-
-            command.Parameters.Add("@ParentAccountId", SqlDbType.Int)
-                .Value = account.ParentAccountId.HasValue
-                    ? account.ParentAccountId.Value
-                    : DBNull.Value;
-
-            command.Parameters.Add("@IsGroup", SqlDbType.Bit)
-                .Value = account.IsGroup;
-
-            command.Parameters.Add("@IsSystem", SqlDbType.Bit)
-                .Value = account.IsSystem;
-
-            command.Parameters.Add("@AccountNature", SqlDbType.NVarChar, 10)
-                .Value = string.IsNullOrWhiteSpace(account.AccountNature)
-                    ? DBNull.Value
-                    : account.AccountNature.Trim();
+            command.Parameters.Add("@AccountNumber", SqlDbType.NVarChar, 50).Value = account.AccountNumber.Trim();
+            command.Parameters.Add("@AccountName", SqlDbType.NVarChar, 200).Value = account.AccountName.Trim();
+            command.Parameters.Add("@AccountType", SqlDbType.NVarChar, 50).Value = account.AccountType.Trim();
+            command.Parameters.Add("@AccountNature", SqlDbType.NVarChar, 20).Value =
+                string.IsNullOrWhiteSpace(account.AccountNature) ? DBNull.Value : account.AccountNature.Trim();
+            command.Parameters.Add("@ParentAccountId", SqlDbType.Int).Value =
+                account.ParentAccountId.HasValue ? account.ParentAccountId.Value : DBNull.Value;
+            command.Parameters.Add("@IsGroup", SqlDbType.Bit).Value = account.IsGroup;
+            command.Parameters.Add("@IsSystem", SqlDbType.Bit).Value = account.IsSystem;
         }
     }
 }

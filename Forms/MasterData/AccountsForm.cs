@@ -1,18 +1,33 @@
-﻿using System.Data;
-using AccountingSystemForWindowsFormLast.Data;
-using Microsoft.Data.SqlClient;
-
+﻿
+using System.Data;
+using AccountingSystemForWindowsFormLast.Helpers;
+using AccountingSystemForWindowsFormLast.Models;
+using AccountingSystemForWindowsFormLast.Services;
 namespace AccountingSystemForWindowsFormLast.Forms
 {
     public partial class AccountsForm : Form
     {
+        private readonly AccountService _accountService;
         private int? selectedAccountId = null;
         private bool isLoadingAccount = false;
 
         public AccountsForm()
         {
             InitializeComponent();
+            _accountService = new AccountService();
+            UiTheme.Apply(this);
+            UiTheme.StyleButton(btnAdd, Accent.Primary);
+            UiTheme.StyleButton(btnEdit, Accent.Warning);
+            UiTheme.StyleButton(btnDelete, Accent.Danger);
+            UiTheme.StyleButton(btnNew, Accent.Neutral);
 
+        }
+
+        private void AccountsForm_Load(object sender, EventArgs e)
+        {
+          
+
+          
             TopLevel = false;
 
             btnNew.Click += btnNew_Click;
@@ -29,150 +44,113 @@ namespace AccountingSystemForWindowsFormLast.Forms
             LoadParentAccounts();
 
             ClearFields();
+            // Initial load completed in constructor
         }
 
         // =========================================
         // الحسابات - الجدول
         // =========================================
-
-
         private void LoadAccounts()
         {
             try
             {
-                using SqlConnection con = DatabaseConnection.GetConnection();
-                con.Open();
-
-                string query = @"
-                    SELECT
-                        AccountId,
-                        AccountNumber,
-                        AccountName,
-                        AccountType,
-                        AccountNature,
-                        ParentAccountId,
-                        IsGroup,
-                        IsSystem
-                    FROM Accounts
-                    ORDER BY
-                        LEN(AccountNumber),
-                        AccountNumber";
-
-                using SqlDataAdapter adapter = new(query, con);
-
-                DataTable table = new();
-                adapter.Fill(table);
-
+                DataTable table = _accountService.GetDataTable();
                 dgvAccounts.DataSource = table;
 
                 if (dgvAccounts.Columns.Count == 0)
                     return;
 
-                dgvAccounts.Columns["AccountId"].Visible = false;
-                dgvAccounts.Columns["ParentAccountId"].Visible = false;
-                dgvAccounts.Columns["IsGroup"].Visible = false;
-                dgvAccounts.Columns["IsSystem"].Visible = false;
+                if (dgvAccounts.Columns["AccountId"] != null) dgvAccounts.Columns["AccountId"].Visible = false;
+                if (dgvAccounts.Columns["ParentAccountId"] != null) dgvAccounts.Columns["ParentAccountId"].Visible = false;
+                if (dgvAccounts.Columns["IsGroup"] != null) dgvAccounts.Columns["IsGroup"].Visible = false;
+                if (dgvAccounts.Columns["IsSystem"] != null) dgvAccounts.Columns["IsSystem"].Visible = false;
 
-                dgvAccounts.Columns["AccountNumber"].HeaderText = "رقم الحساب";
-                dgvAccounts.Columns["AccountName"].HeaderText = "اسم الحساب";
-                dgvAccounts.Columns["AccountType"].HeaderText = "نوع الحساب";
-                dgvAccounts.Columns["AccountNature"].HeaderText = "طبيعة الحساب";
+                if (dgvAccounts.Columns["AccountNumber"] != null)
+                {
+                    dgvAccounts.Columns["AccountNumber"].HeaderText = "رقم الحساب";
+                    dgvAccounts.Columns["AccountNumber"].DisplayIndex = 0;
+                }
 
-                dgvAccounts.Columns["AccountNumber"].DisplayIndex = 0;
-                dgvAccounts.Columns["AccountName"].DisplayIndex = 1;
-                dgvAccounts.Columns["AccountType"].DisplayIndex = 2;
-                dgvAccounts.Columns["AccountNature"].DisplayIndex = 3;
+                if (dgvAccounts.Columns["AccountName"] != null)
+                {
+                    dgvAccounts.Columns["AccountName"].HeaderText = "اسم الحساب";
+                    dgvAccounts.Columns["AccountName"].DisplayIndex = 1;
+                }
+
+                if (dgvAccounts.Columns["AccountType"] != null)
+                {
+                    dgvAccounts.Columns["AccountType"].HeaderText = "نوع الحساب";
+                    dgvAccounts.Columns["AccountType"].DisplayIndex = 2;
+                }
+
+                if (dgvAccounts.Columns["AccountNature"] != null)
+                {
+                    dgvAccounts.Columns["AccountNature"].HeaderText = "طبيعة الحساب";
+                    dgvAccounts.Columns["AccountNature"].DisplayIndex = 3;
+                }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(
-                    ex.Message,
-                    "خطأ في تحميل الحسابات",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+                MessageHelper.ShowError($"خطأ في تحميل الحسابات:\n{ex.Message}", "خطأ");
             }
         }
 
         // =========================================
         // شجرة الحسابات
         // =========================================
-
         private void LoadAccountTree()
         {
             try
             {
                 treeAccounts.Nodes.Clear();
+                List<Account> accounts = _accountService.GetAll();
 
-                using SqlConnection con = DatabaseConnection.GetConnection();
-                con.Open();
+                var rootAccounts = accounts
+                    .Where(a => a.ParentAccountId == null || a.ParentAccountId == 0)
+                    .OrderBy(a => a.AccountNumber.Length)
+                    .ThenBy(a => a.AccountNumber);
 
-                string query = @"
-                    SELECT
-                        AccountId,
-                        AccountNumber,
-                        AccountName,
-                        ParentAccountId
-                    FROM Accounts
-                    ORDER BY LEN(AccountNumber), AccountNumber";
-
-                using SqlCommand cmd = new(query, con);
-                using SqlDataReader reader = cmd.ExecuteReader();
-
-                List<AccountNode> accounts = new();
-
-                while (reader.Read())
+                foreach (var acc in rootAccounts)
                 {
-                    accounts.Add(new AccountNode
+                    TreeNode rootNode = new TreeNode($"{acc.AccountNumber} - {acc.AccountName}")
                     {
-                        Id = Convert.ToInt32(reader["AccountId"]),
-                        Number = reader["AccountNumber"]?.ToString() ?? "",
-                        Name = reader["AccountName"]?.ToString() ?? "",
-                        ParentId = reader["ParentAccountId"] == DBNull.Value
-                            ? null
-                            : Convert.ToInt32(reader["ParentAccountId"])
-                    });
+                        Tag = acc.AccountId
+                    };
+
+                    AddChildNodes(rootNode, acc.AccountId, accounts);
+                    treeAccounts.Nodes.Add(rootNode);
                 }
 
-                foreach (AccountNode account in accounts.Where(x => x.ParentId == null))
-                {//دمج نص الرقم مع الاسم
-                    TreeNode node = new($"{account.Number} - {account.Name}")
-                    {
-                        Tag = account.Id
-                    };
-                    //بناء الفروع الابناء
-                    AddChildNodes(node, account.Id, accounts);
-                    treeAccounts.Nodes.Add(node);
-                }
-                //فتح فروع الشجره
-                treeAccounts.ExpandAll();
+                treeAccounts.CollapseAll();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(
-                    ex.Message,
-                    "خطأ في شجرة الحسابات",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+                MessageHelper.ShowError($"خطأ في تحميل شجرة الحسابات:\n{ex.Message}", "خطأ");
             }
         }
-        //دالة لاضافة الابناء في الشجرة وتستخدم الاستدعاء الذاتي
-        private void AddChildNodes( TreeNode parent,int parentId, List<AccountNode> accounts)
+
+        private void AddChildNodes(TreeNode parentNode, int parentId, List<Account> accounts)
         {
-            foreach (AccountNode account in accounts.Where(x => x.ParentId == parentId))
+            var children = accounts
+                .Where(a => a.ParentAccountId == parentId)
+                .OrderBy(a => a.AccountNumber.Length)
+                .ThenBy(a => a.AccountNumber);
+
+            foreach (var child in children)
             {
-                TreeNode node = new($"{account.Number} - {account.Name}")
+                TreeNode childNode = new TreeNode($"{child.AccountNumber} - {child.AccountName}")
                 {
-                    Tag = account.Id
+                    Tag = child.AccountId
                 };
-                //استدعاء ذاتي
-                AddChildNodes(node, account.Id, accounts);
-                parent.Nodes.Add(node);
+
+                AddChildNodes(childNode, child.AccountId, accounts);
+                parentNode.Nodes.Add(childNode);
             }
         }
-        //بعد الضغط على عنصر في الشجره
+
         private void treeAccounts_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            if (e.Node?.Tag == null)
+            if (e.Node == null || e.Node.Tag == null)
                 return;
 
             if (!int.TryParse(e.Node.Tag.ToString(), out int accountId))
@@ -181,82 +159,46 @@ namespace AccountingSystemForWindowsFormLast.Forms
             LoadAccountDetails(accountId);
         }
 
-      //تحميل تفاصيل الحساب الى الحقول وصناديق الاختيار وضبطها
         private void LoadAccountDetails(int accountId)
         {
             try
             {
                 isLoadingAccount = true;
+                Account? acc = _accountService.GetById(accountId);
 
-                using SqlConnection con = DatabaseConnection.GetConnection();
-                con.Open();
-
-                string query = @"
-                    SELECT
-                        AccountId,
-                        AccountNumber,
-                        AccountName,
-                        AccountType,
-                        AccountNature,
-                        ParentAccountId,
-                        IsGroup,
-                        IsSystem
-                    FROM Accounts
-                    WHERE AccountId = @Id";
-
-                using SqlCommand cmd = new(query, con);
-                //اعطاء قيمة للمتغير idالموجود في الاستعلام السابق
-                cmd.Parameters.Add("@Id", SqlDbType.Int).Value = accountId;
-
-                using SqlDataReader reader = cmd.ExecuteReader();
-
-                if (!reader.Read())
+                if (acc == null)
                     return;
 
-                selectedAccountId = accountId;
+                selectedAccountId = acc.AccountId;
+                txtAccountNumber.Text = acc.AccountNumber;
+                txtAccountName.Text = acc.AccountName;
+                cmbAccountType.Text = acc.AccountType;
+                txtAccountNature.Text = string.IsNullOrWhiteSpace(acc.AccountNature)
+                    ? _accountService.GetNatureByAccountType(acc.AccountType)
+                    : acc.AccountNature;
 
-                txtAccountNumber.Text =
-                    reader["AccountNumber"]?.ToString() ?? "";
+                chkIsGroup.Checked = acc.IsGroup;
 
-                txtAccountName.Text =
-                    reader["AccountName"]?.ToString() ?? "";
-
-                cmbAccountType.Text =
-                    reader["AccountType"]?.ToString() ?? "";
-
-                txtAccountNature.Text =
-                    reader["AccountNature"] == DBNull.Value
-                        ? GetNatureByAccountType(cmbAccountType.Text)
-                        : reader["AccountNature"].ToString() ?? "";
-
-                chkIsGroup.Checked =
-                    Convert.ToBoolean(reader["IsGroup"]);
-                //ضبط صندوق اختيار الاب للحساب
-                if (reader["ParentAccountId"] == DBNull.Value)
+                if (acc.ParentAccountId.HasValue)
                 {
-                    cmbParentAccount.SelectedIndex = -1;
-                    cmbParentAccount.Enabled = false;
-                    cmbAccountType.Enabled = true;
+                    cmbParentAccount.SelectedValue = acc.ParentAccountId.Value;
                 }
                 else
                 {
-                    int parentId = Convert.ToInt32(reader["ParentAccountId"]);
-                    cmbParentAccount.SelectedValue = parentId;
-
-                    cmbParentAccount.Enabled = false;
-                    cmbAccountType.Enabled = false;
+                    cmbParentAccount.SelectedIndex = -1;
                 }
 
-                txtAccountNumber.ReadOnly = true;
-                txtAccountNature.ReadOnly = true;
+                bool hasChildren = _accountService.HasChildren(accountId);
+                chkIsGroup.Enabled = !hasChildren;
+                cmbParentAccount.Enabled = !hasChildren;
+
+                btnAdd.Enabled = false;
+                btnEdit.Enabled = true;
+                btnDelete.Enabled = !acc.IsSystem;
             }
             catch (Exception ex)
             {
-                MessageBox.Show(
-                    ex.Message,
-                    "خطأ في تحميل بيانات الحساب",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+                MessageHelper.ShowError($"خطأ في تحميل تفاصيل الحساب:\n{ex.Message}", "خطأ");
             }
             finally
             {
@@ -265,132 +207,66 @@ namespace AccountingSystemForWindowsFormLast.Forms
         }
 
         // =========================================
-        // الحسابات التي يمكن أن تكون آباء
+        // الحساب الأب
         // =========================================
-
         private void LoadParentAccounts()
         {
             try
             {
-                using SqlConnection con = DatabaseConnection.GetConnection();
-                con.Open();
+                List<AccountItem> list = _accountService.GetParentAccounts();
 
-                string query = @"
-                    SELECT
-                        AccountId,
-                        AccountNumber,
-                        AccountName
-                    FROM Accounts
-                    WHERE IsGroup = 1
-                    ORDER BY LEN(AccountNumber), AccountNumber";
-
-                using SqlCommand cmd = new(query, con);
-                using SqlDataReader reader = cmd.ExecuteReader();
-
-                List<ParentAccountItem> items = new();
-
-                while (reader.Read())
-                {
-                    items.Add(new ParentAccountItem
-                    {
-                        Id = Convert.ToInt32(reader["AccountId"]),
-                        Text =
-                            $"{reader["AccountNumber"]} - {reader["AccountName"]}"
-                    });
-                }
-
-                cmbParentAccount.DisplayMember = "Text";
-                cmbParentAccount.ValueMember = "Id";
-                cmbParentAccount.DataSource = items;
+                cmbParentAccount.DataSource = null;
+                cmbParentAccount.DisplayMember = "DisplayText";
+                cmbParentAccount.ValueMember = "AccountId";
+                cmbParentAccount.DataSource = list;
                 cmbParentAccount.SelectedIndex = -1;
             }
             catch (Exception ex)
             {
-                MessageBox.Show(
-                    ex.Message,
-                    "خطأ في تحميل الحسابات الأب",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+                MessageHelper.ShowError($"خطأ في تحميل الحسابات الرئيسية:\n{ex.Message}", "خطأ");
             }
         }
-
-        // =========================================
-        // تغيير الأب
-        // =========================================
 
         private void cmbParentAccount_SelectedIndexChanged(object? sender, EventArgs e)
         {
             if (isLoadingAccount)
                 return;
 
-            if (selectedAccountId != null)
-                return;
-            //يعني هذي الداله تطبق في حين  تكون العمليه اضافه او تعديل
             ApplyParentRules();
+
+            int? parentId = null;
+            if (cmbParentAccount.SelectedValue != null &&
+                int.TryParse(cmbParentAccount.SelectedValue.ToString(), out int pid))
+            {
+                parentId = pid;
+            }
+
+            GenerateAndShowAccountNumber(parentId);
         }
-        //تطبيق الواعد في حال تم اختيار الحساب الاب
 
         private void ApplyParentRules()
         {
-            if (cmbParentAccount.SelectedIndex == -1)
+            if (cmbParentAccount.SelectedValue == null ||
+                !int.TryParse(cmbParentAccount.SelectedValue.ToString(), out int parentId))
             {
                 cmbAccountType.Enabled = true;
-                txtAccountNature.Text =
-                    GetNatureByAccountType(cmbAccountType.Text);
-
-                GenerateAndShowAccountNumber(null);
                 return;
             }
 
-            if (!int.TryParse(
-                    cmbParentAccount.SelectedValue?.ToString(),
-                    out int parentId))
-                return;
-
-            string parentType = "";
-            string parentNature = "";
-
-            try
+            Account? parent = _accountService.GetById(parentId);
+            if (parent != null)
             {
-                using SqlConnection con = DatabaseConnection.GetConnection();
-                con.Open();
+                cmbAccountType.Text = parent.AccountType;
+                txtAccountNature.Text = string.IsNullOrWhiteSpace(parent.AccountNature)
+                    ? _accountService.GetNatureByAccountType(parent.AccountType)
+                    : parent.AccountNature;
 
-                string query = @"
-                    SELECT AccountType, AccountNature
-                    FROM Accounts
-                    WHERE AccountId = @Id";
-
-                using SqlCommand cmd = new(query, con);
-                cmd.Parameters.Add("@Id", SqlDbType.Int).Value = parentId;
-
-                using SqlDataReader reader = cmd.ExecuteReader();
-
-                if (!reader.Read())
-                    return;
-
-                parentType = reader["AccountType"]?.ToString() ?? "";
-                parentNature = reader["AccountNature"]?.ToString() ?? "";
-
-                if (string.IsNullOrWhiteSpace(parentNature))
-                    parentNature = GetNatureByAccountType(parentType);
+                cmbAccountType.Enabled = false;
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox.Show(
-                    ex.Message,
-                    "خطأ في قراءة بيانات الحساب الأب",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-
-                return;
+                cmbAccountType.Enabled = true;
             }
-
-            cmbAccountType.Text = parentType;
-            cmbAccountType.Enabled = false;
-
-            txtAccountNature.Text = parentNature;
-
-            GenerateAndShowAccountNumber(parentId);
         }
 
         private void cmbAccountType_SelectedIndexChanged(object? sender, EventArgs e)
@@ -398,163 +274,42 @@ namespace AccountingSystemForWindowsFormLast.Forms
             if (isLoadingAccount)
                 return;
 
-            if (cmbParentAccount.SelectedIndex != -1)
-                return;
+            string accountType = cmbAccountType.Text.Trim();
+            txtAccountNature.Text = _accountService.GetNatureByAccountType(accountType);
 
-            txtAccountNature.Text =
-                GetNatureByAccountType(cmbAccountType.Text);
+            int? parentId = null;
+            if (cmbParentAccount.SelectedValue != null &&
+                int.TryParse(cmbParentAccount.SelectedValue.ToString(), out int pid))
+            {
+                parentId = pid;
+            }
 
-            if (selectedAccountId == null)
-                GenerateAndShowAccountNumber(null);
+            GenerateAndShowAccountNumber(parentId);
         }
 
-   
-        //عرض رقم الحساب تلقائيا
         private void GenerateAndShowAccountNumber(int? parentId)
         {
+            if (selectedAccountId.HasValue)
+                return;
+
             try
             {
-                using SqlConnection con = DatabaseConnection.GetConnection();
-                con.Open();
-
-                txtAccountNumber.Text =
-                    GenerateAccountNumber(con, parentId);
+                txtAccountNumber.Text = _accountService.GenerateAccountNumber(parentId);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(
-                    ex.Message,
-                    "خطأ في توليد رقم الحساب",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+                MessageHelper.ShowError($"خطأ أثناء توليد رقم الحساب:\n{ex.Message}", "خطأ");
             }
         }
-        //توليد رقم الحساب
-        private string GenerateAccountNumber(SqlConnection con, int? parentId, int? excludeAccountId = null)
 
-        {
-            string prefix = "";
-
-            if (parentId.HasValue)
-            {
-                string parentQuery = @"
-                    SELECT AccountNumber
-                    FROM Accounts
-                    WHERE AccountId = @ParentId";
-
-                using SqlCommand parentCmd = new(parentQuery, con);
-                parentCmd.Parameters.Add("@ParentId", SqlDbType.Int)
-                    .Value = parentId.Value;
-
-                prefix = parentCmd.ExecuteScalar()?.ToString() ?? "";
-
-                if (string.IsNullOrWhiteSpace(prefix))
-                    throw new InvalidOperationException(
-                        "تعذر قراءة رقم الحساب الأب.");
-            }
-
-            string query;
-
-            if (parentId.HasValue)
-            {
-                query = @"
-                    SELECT AccountNumber
-                    FROM Accounts
-                    WHERE ParentAccountId = @ParentId
-                      AND LEN(AccountNumber) = LEN(@Prefix) + 1";
-
-            }
-            else
-            {
-                query = @"
-                    SELECT AccountNumber
-                    FROM Accounts
-                    WHERE ParentAccountId IS NULL";
-            }
-
-            using SqlCommand cmd = new(query, con);
-
-            if (parentId.HasValue)
-            {
-                cmd.Parameters.Add("@ParentId", SqlDbType.Int)
-                    .Value = parentId.Value;
-
-                cmd.Parameters.Add("@Prefix", SqlDbType.NVarChar, 50)
-                    .Value = prefix;
-            }
-
-            List<int> usedNumbers = new();
-
-            using SqlDataReader reader = cmd.ExecuteReader();
-
-            while (reader.Read())
-            {
-                string number = reader["AccountNumber"]?.ToString() ?? "";
-
-                if (parentId.HasValue)
-                {
-                    if (!number.StartsWith(prefix))
-                        continue;
-
-                    string suffix = number[prefix.Length..];
-
-                    if (int.TryParse(suffix, out int value))
-                        usedNumbers.Add(value);
-                }
-                else
-                {
-                    if (int.TryParse(number, out int value))
-                        usedNumbers.Add(value);
-                }
-            }
-
-            int next = usedNumbers.Count == 0
-                ? 1
-                : usedNumbers.Max() + 1;
-
-            if (parentId.HasValue)
-            {
-                if (next > 9)
-                    throw new InvalidOperationException(
-                        "تم الوصول إلى الحد الأقصى للحسابات المباشرة تحت هذا الأب.");
-
-                return prefix + next;
-            }
-
-            return next.ToString();
-        }
-
-        //توليد طبيعة الحساب بناءً على نوع الحساب
-        private string GetNatureByAccountType(string accountType)
-        {
-            return accountType switch
-            {
-                "أصل" => "مدين",
-                "مصروف" => "مدين",
-                "خصم" => "دائن",
-                "حقوق ملكية" => "دائن",
-                "إيراد" => "دائن",
-                _ => ""
-            };
-        }
-
-        //زر جديد لإضافة حساب جديد
-
+        // =========================================
+        // أزرار العمليات
+        // =========================================
         private void btnNew_Click(object? sender, EventArgs e)
         {
             ClearFields();
-
-            cmbParentAccount.Enabled = true;
-            cmbAccountType.Enabled = true;
-            txtAccountNumber.ReadOnly = true;
-            txtAccountNature.ReadOnly = true;
-
-            GenerateAndShowAccountNumber(null);
-
-            txtAccountName.Focus();
         }
 
-        //زر إضافة الحساب الجديد
         private void btnAdd_Click(object? sender, EventArgs e)
         {
             if (!ValidateAccount())
@@ -562,121 +317,48 @@ namespace AccountingSystemForWindowsFormLast.Forms
 
             try
             {
-                using SqlConnection con = DatabaseConnection.GetConnection();
-                con.Open();
-
-                int? parentId =
-                    cmbParentAccount.SelectedIndex == -1
-                        ? null
-                        : Convert.ToInt32(cmbParentAccount.SelectedValue);
-
-                string accountNumber =
-                    GenerateAccountNumber(con, parentId);
+                int? parentId = null;
+                if (cmbParentAccount.SelectedValue != null &&
+                    int.TryParse(cmbParentAccount.SelectedValue.ToString(), out int pid))
+                {
+                    parentId = pid;
+                }
 
                 string accountType = cmbAccountType.Text.Trim();
-
-                if (parentId.HasValue)
-                {
-                    accountType = GetParentAccountType(con, parentId.Value);
-
-                    if (string.IsNullOrWhiteSpace(accountType))
-                    {
-                        MessageBox.Show("تعذر تحديد نوع الحساب الأب.");
-                        return;
-                    }
-                }
-
-                string accountNature =
-                    GetNatureByAccountType(accountType);
-
+                string accountNature = txtAccountNature.Text.Trim();
                 if (string.IsNullOrWhiteSpace(accountNature))
                 {
-                    MessageBox.Show("تعذر تحديد طبيعة الحساب.");
-                    return;
+                    accountNature = _accountService.GetNatureByAccountType(accountType);
                 }
 
-                string query = @"
-                    INSERT INTO Accounts
-                    (
-                        AccountNumber,
-                        AccountName,
-                        AccountType,
-                        AccountNature,
-                        ParentAccountId,
-                        IsGroup,
-                        IsSystem
-                    )
-                    VALUES
-                    (
-                        @Number,
-                        @Name,
-                        @Type,
-                        @Nature,
-                        @Parent,
-                        @Group,
-                        0
-                    )";
+                Account newAccount = new Account
+                {
+                    AccountNumber = txtAccountNumber.Text.Trim(),
+                    AccountName = txtAccountName.Text.Trim(),
+                    AccountType = accountType,
+                    AccountNature = accountNature,
+                    ParentAccountId = parentId,
+                    IsGroup = chkIsGroup.Checked,
+                    IsSystem = false
+                };
 
-                using SqlCommand cmd = new(query, con);
+                _accountService.Add(newAccount);
 
-                cmd.Parameters.Add("@Number", SqlDbType.NVarChar, 50)
-                    .Value = accountNumber;
-
-                cmd.Parameters.Add("@Name", SqlDbType.NVarChar, 200)
-                    .Value = txtAccountName.Text.Trim();
-
-                cmd.Parameters.Add("@Type", SqlDbType.NVarChar, 50)
-                    .Value = accountType;
-
-                cmd.Parameters.Add("@Nature", SqlDbType.NVarChar, 10)
-                    .Value = accountNature;
-
-                cmd.Parameters.Add("@Parent", SqlDbType.Int).Value =
-                    parentId.HasValue
-                        ? parentId.Value
-                        : DBNull.Value;
-
-                cmd.Parameters.Add("@Group", SqlDbType.Bit)
-                    .Value = chkIsGroup.Checked;
-
-                cmd.ExecuteNonQuery();
-
-                MessageBox.Show(
-                    $"تمت إضافة الحساب بنجاح\nرقم الحساب: {accountNumber}",
-                    "نجاح",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
-
+                MessageHelper.ShowInfo("تمت إضافة الحساب بنجاح.", "نجاح");
                 RefreshAccounts();
                 ClearFields();
             }
-            catch (SqlException ex) when (ex.Number == 2601 || ex.Number == 2627)
-            {
-                MessageBox.Show(
-                    "رقم الحساب موجود مسبقًا. أعد المحاولة.",
-                    "رقم حساب مكرر",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-            }
             catch (Exception ex)
             {
-                MessageBox.Show(
-                    ex.Message,
-                    "خطأ في إضافة الحساب",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+                MessageHelper.ShowError($"خطأ في إضافة الحساب:\n{ex.Message}", "خطأ");
             }
         }
 
-        // =========================================
-        // تعديل الحساب
-        // =========================================
-
         private void btnEdit_Click(object? sender, EventArgs e)
         {
-            if (selectedAccountId == null)
+            if (!selectedAccountId.HasValue)
             {
-                MessageBox.Show("اختر حسابًا أولاً.");
+                MessageHelper.ShowWarning("يرجى اختيار حساب للتعديل.", "تنبيه");
                 return;
             }
 
@@ -685,347 +367,133 @@ namespace AccountingSystemForWindowsFormLast.Forms
 
             try
             {
-                using SqlConnection con = DatabaseConnection.GetConnection();
-                con.Open();
+                int? parentId = null;
+                if (cmbParentAccount.SelectedValue != null &&
+                    int.TryParse(cmbParentAccount.SelectedValue.ToString(), out int pid))
+                {
+                    parentId = pid;
+                }
 
                 string accountType = cmbAccountType.Text.Trim();
-                string accountNature = GetNatureByAccountType(accountType);
-
+                string accountNature = txtAccountNature.Text.Trim();
                 if (string.IsNullOrWhiteSpace(accountNature))
                 {
-                    MessageBox.Show("تعذر تحديد طبيعة الحساب.");
-                    return;
+                    accountNature = _accountService.GetNatureByAccountType(accountType);
                 }
 
-                string query = @"
-                    UPDATE Accounts
-                    SET
-                        AccountName = @Name,
-                        AccountType = @Type,
-                        AccountNature = @Nature,
-                        IsGroup = @Group
-                    WHERE AccountId = @Id";
-
-                using SqlCommand cmd = new(query, con);
-
-                cmd.Parameters.Add("@Name", SqlDbType.NVarChar, 200)
-                    .Value = txtAccountName.Text.Trim();
-
-                cmd.Parameters.Add("@Type", SqlDbType.NVarChar, 50)
-                    .Value = accountType;
-
-                cmd.Parameters.Add("@Nature", SqlDbType.NVarChar, 10)
-                    .Value = accountNature;
-
-                cmd.Parameters.Add("@Group", SqlDbType.Bit)
-                    .Value = chkIsGroup.Checked;
-
-                cmd.Parameters.Add("@Id", SqlDbType.Int)
-                    .Value = selectedAccountId.Value;
-
-                cmd.ExecuteNonQuery();
-
-                MessageBox.Show(
-                    "تم تعديل الحساب بنجاح.",
-                    "نجاح",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
-
-                RefreshAccounts();
-
-                int editedId = selectedAccountId.Value;
-                LoadAccountDetails(editedId);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(
-                    ex.Message,
-                    "خطأ في تعديل الحساب",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-            }
-        }
-
-        // =========================================
-        // حذف الحساب
-        // =========================================
-
-        private void btnDelete_Click(object? sender, EventArgs e)
-        {
-            if (selectedAccountId == null)
-            {
-                MessageBox.Show("اختر حسابًا أولاً.");
-                return;
-            }
-
-            try
-            {
-                using SqlConnection con = DatabaseConnection.GetConnection();
-                con.Open();
-
-                if (IsSystemAccount(con, selectedAccountId.Value))
+                Account account = new Account
                 {
-                    MessageBox.Show(
-                        "لا يمكن حذف حساب نظام.",
-                        "منع الحذف",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Warning);
+                    AccountId = selectedAccountId.Value,
+                    AccountNumber = txtAccountNumber.Text.Trim(),
+                    AccountName = txtAccountName.Text.Trim(),
+                    AccountType = accountType,
+                    AccountNature = accountNature,
+                    ParentAccountId = parentId,
+                    IsGroup = chkIsGroup.Checked
+                };
 
-                    return;
-                }
+                _accountService.Update(account);
 
-                if (HasChildren(con, selectedAccountId.Value))
-                {
-                    MessageBox.Show(
-                        "لا يمكن حذف الحساب لأنه يحتوي على حسابات فرعية.\nاحذف الحسابات الفرعية أولاً.",
-                        "منع الحذف",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Warning);
-
-                    return;
-                }
-
-                if (IsAccountUsed(con, selectedAccountId.Value))
-                {
-                    MessageBox.Show(
-                        "لا يمكن حذف الحساب لأنه مستخدم في عمليات محاسبية.",
-                        "منع الحذف",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Warning);
-
-                    return;
-                }
-
-                DialogResult result = MessageBox.Show(
-                    "هل أنت متأكد من حذف الحساب المحدد؟",
-                    "تأكيد الحذف",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Warning);
-
-                if (result != DialogResult.Yes)
-                    return;
-
-                string query = @"
-                    DELETE FROM Accounts
-                    WHERE AccountId = @Id";
-
-                using SqlCommand cmd = new(query, con);
-                cmd.Parameters.Add("@Id", SqlDbType.Int)
-                    .Value = selectedAccountId.Value;
-
-                cmd.ExecuteNonQuery();
-
-                MessageBox.Show(
-                    "تم حذف الحساب بنجاح.",
-                    "نجاح",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
-
+                MessageHelper.ShowInfo("تم تعديل الحساب بنجاح.", "نجاح");
                 RefreshAccounts();
                 ClearFields();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(
-                    "تعذر حذف الحساب.\n\n" + ex.Message,
-                    "خطأ في الحذف",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+                MessageHelper.ShowError($"خطأ في تعديل الحساب:\n{ex.Message}", "خطأ");
             }
         }
 
-        private bool IsSystemAccount(SqlConnection con, int accountId)
+        private void btnDelete_Click(object? sender, EventArgs e)
         {
-            string query = @"
-                SELECT COUNT(*)
-                FROM Accounts
-                WHERE AccountId = @Id
-                  AND IsSystem = 1";
+            if (!selectedAccountId.HasValue)
+            {
+                MessageHelper.ShowWarning("يرجى اختيار حساب للحذف.", "تنبيه");
+                return;
+            }
 
-            using SqlCommand cmd = new(query, con);
-            cmd.Parameters.Add("@Id", SqlDbType.Int).Value = accountId;
+            if (!MessageHelper.Confirm("هل أنت متأكد من حذف هذا الحساب؟", "تأكيد الحذف"))
+                return;
 
-            return Convert.ToInt32(cmd.ExecuteScalar()) > 0;
-        }
-        //هل الحساب يحتوي على حسابات فرعية
-        private bool HasChildren(SqlConnection con, int accountId)
-        {
-            string query = @"
-                SELECT COUNT(*)
-                FROM Accounts
-                WHERE ParentAccountId = @Id";
+            try
+            {
+                _accountService.Delete(selectedAccountId.Value);
 
-            using SqlCommand cmd = new(query, con);
-            cmd.Parameters.Add("@Id", SqlDbType.Int).Value = accountId;
-
-            return Convert.ToInt32(cmd.ExecuteScalar()) > 0;
+                MessageHelper.ShowInfo("تم حذف الحساب بنجاح.", "نجاح");
+                RefreshAccounts();
+                ClearFields();
+            }
+            catch (Exception ex)
+            {
+                MessageHelper.ShowError(ex.Message, "خطأ في الحذف");
+            }
         }
 
-        private bool IsAccountUsed(SqlConnection con, int accountId)
-        {
-            string query = @"
-                SELECT
-                    (
-                        SELECT COUNT(*)
-                        FROM JournalEntryDetails
-                        WHERE AccountId = @Id
-                    )
-                    +
-                    (
-                        SELECT COUNT(*)
-                        FROM PurchaseInvoices
-                        WHERE AccountId = @Id
-                    )
-                    +
-                    (
-                        SELECT COUNT(*)
-                        FROM SalesInvoices
-                        WHERE AccountId = @Id
-                    )
-                    +
-                    (
-                        SELECT COUNT(*)
-                        FROM PaymentVouchers
-                        WHERE AccountId = @Id
-                    )
-                    +
-                    (
-                        SELECT COUNT(*)
-                        FROM ReceiptVouchers
-                        WHERE AccountId = @Id
-                    )
-                    +
-                    (
-                        SELECT COUNT(*)
-                        FROM AccountTransactions
-                        WHERE AccountId = @Id
-                    )";
-
-            using SqlCommand cmd = new(query, con);
-            cmd.Parameters.Add("@Id", SqlDbType.Int).Value = accountId;
-
-            return Convert.ToInt32(cmd.ExecuteScalar()) > 0;
-        }
-
-        // =========================================
-        // اختيار من الجدول
-        // =========================================
-
-        private void dgvAccounts_CellClick(
-            object? sender,
-            DataGridViewCellEventArgs e)
+        private void dgvAccounts_CellClick(object? sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0)
                 return;
 
-            object value =
-                dgvAccounts.Rows[e.RowIndex]
-                    .Cells["AccountId"]
-                    .Value;
+            DataGridViewRow row = dgvAccounts.Rows[e.RowIndex];
+            object? val = row.Cells["AccountId"].Value;
 
-            if (value == null || value == DBNull.Value)
-                return;
-
-            if (int.TryParse(value.ToString(), out int accountId))
+            if (val != null && int.TryParse(val.ToString(), out int accountId))
+            {
                 LoadAccountDetails(accountId);
+            }
         }
-
-        // =========================================
-        // التحقق
-        // =========================================
 
         private bool ValidateAccount()
         {
+            if (string.IsNullOrWhiteSpace(txtAccountNumber.Text))
+            {
+                MessageHelper.ShowWarning("رقم الحساب مطلوب.", "تنبيه");
+                txtAccountNumber.Focus();
+                return false;
+            }
+
             if (string.IsNullOrWhiteSpace(txtAccountName.Text))
             {
-                MessageBox.Show(
-                    "أدخل اسم الحساب.",
-                    "تنبيه",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-
+                MessageHelper.ShowWarning("اسم الحساب مطلوب.", "تنبيه");
                 txtAccountName.Focus();
                 return false;
             }
 
-            if (cmbParentAccount.SelectedIndex == -1 &&
-                cmbAccountType.SelectedIndex == -1)
+            if (string.IsNullOrWhiteSpace(cmbAccountType.Text))
             {
-                MessageBox.Show(
-                    "اختر نوع الحساب الرئيسي.",
-                    "تنبيه",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-
+                MessageHelper.ShowWarning("نوع الحساب مطلوب.", "تنبيه");
                 cmbAccountType.Focus();
                 return false;
             }
 
-            if (selectedAccountId != null &&
-                cmbParentAccount.SelectedValue != null &&
-                cmbParentAccount.SelectedValue != DBNull.Value &&
-                int.TryParse(
-                    cmbParentAccount.SelectedValue.ToString(),
-                    out int parentId) &&
-                parentId == selectedAccountId.Value)
+            if (cmbParentAccount.SelectedValue != null &&
+                int.TryParse(cmbParentAccount.SelectedValue.ToString(), out int parentId))
             {
-                MessageBox.Show(
-                    "لا يمكن أن يكون الحساب أبًا لنفسه.",
-                    "بيانات غير صحيحة",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
+                if (selectedAccountId.HasValue && selectedAccountId.Value == parentId)
+                {
+                    MessageHelper.ShowWarning("لا يمكن أن يكون الحساب أباً لنفسه.", "تنبيه");
+                    return false;
+                }
 
-                return false;
+                string? parentType = _accountService.GetParentAccountType(parentId);
+                if (!string.IsNullOrEmpty(parentType) && parentType != cmbAccountType.Text.Trim())
+                {
+                    MessageHelper.ShowWarning($"نوع الحساب يجب أن يطابق نوع الحساب الأب ({parentType}).", "تنبيه");
+                    return false;
+                }
             }
 
-            if (selectedAccountId != null &&
-                HasChildrenForValidation(selectedAccountId.Value) &&
-                !chkIsGroup.Checked)
+            if (selectedAccountId.HasValue && !chkIsGroup.Checked)
             {
-                MessageBox.Show(
-                    "لا يمكن تحويل حساب يحتوي على حسابات فرعية إلى حساب عادي.",
-                    "بيانات غير صحيحة",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-
-                chkIsGroup.Checked = true;
-                return false;
+                if (_accountService.HasChildren(selectedAccountId.Value))
+                {
+                    MessageHelper.ShowWarning("لا يمكن تحويل هذا الحساب إلى حساب فرعي لأنه يحتوي على حسابات تابعة له.", "تنبيه");
+                    return false;
+                }
             }
 
             return true;
         }
-
-        private bool HasChildrenForValidation(int accountId)
-        {
-            try
-            {
-                using SqlConnection con = DatabaseConnection.GetConnection();
-                con.Open();
-
-                return HasChildren(con, accountId);
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        private string GetParentAccountType(SqlConnection con, int parentId)
-        {
-            string query = @"
-                SELECT AccountType
-                FROM Accounts
-                WHERE AccountId = @Id";
-
-            using SqlCommand cmd = new(query, con);
-            cmd.Parameters.Add("@Id", SqlDbType.Int).Value = parentId;
-
-            return cmd.ExecuteScalar()?.ToString() ?? "";
-        }
-
-        // =========================================
-        // تحديث البيانات
-        // =========================================
 
         private void RefreshAccounts()
         {
@@ -1034,65 +502,38 @@ namespace AccountingSystemForWindowsFormLast.Forms
             LoadParentAccounts();
         }
 
-        // =========================================
-        // تنظيف الحقول
-        // =========================================
-
         private void ClearFields()
         {
-            isLoadingAccount = true;
-
             selectedAccountId = null;
+            isLoadingAccount = false;
 
             txtAccountNumber.Clear();
             txtAccountName.Clear();
-            txtAccountNature.Clear();
 
-            cmbAccountType.SelectedIndex = -1;
             cmbParentAccount.SelectedIndex = -1;
-
-            cmbParentAccount.Enabled = true;
-            cmbAccountType.Enabled = true;
-
-            txtAccountNumber.ReadOnly = true;
-            txtAccountNature.ReadOnly = true;
+            cmbAccountType.SelectedIndex = -1;
+            txtAccountNature.Clear();
 
             chkIsGroup.Checked = false;
             chkIsGroup.Enabled = true;
+            cmbParentAccount.Enabled = true;
+            cmbAccountType.Enabled = true;
 
-            dgvAccounts.ClearSelection();
-            treeAccounts.SelectedNode = null;
+            btnAdd.Enabled = true;
+            btnEdit.Enabled = false;
+            btnDelete.Enabled = false;
 
-            isLoadingAccount = false;
-        }
-
-        // =========================================
-        // بيانات الشجرة
-        // =========================================
-
-        private class AccountNode
-        {
-            public int Id { get; set; }
-            public string Number { get; set; } = "";
-            public string Name { get; set; } = "";
-            public int? ParentId { get; set; }
-        }
-
-        private class ParentAccountItem
-        {
-            public int Id { get; set; }
-            public string Text { get; set; } = "";
-
-            public override string ToString()
+            if (treeAccounts.SelectedNode != null)
             {
-                return Text;
+                treeAccounts.SelectedNode = null;
             }
+
+            GenerateAndShowAccountNumber(null);
         }
 
-        private void AccountsForm_Load(object sender, EventArgs e)
+        private void grpAccountsList_Enter(object sender, EventArgs e)
         {
-            if (selectedAccountId == null)
-                GenerateAndShowAccountNumber(null);
+
         }
     }
 }

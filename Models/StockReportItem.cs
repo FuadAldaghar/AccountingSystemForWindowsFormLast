@@ -1,15 +1,14 @@
 namespace AccountingSystemForWindowsFormLast.Models
 {
-    public class Item
+    public class StockReportItem
     {
         public int ItemId { get; set; }
         public string ItemNumber { get; set; } = string.Empty;
         public string ItemName { get; set; } = string.Empty;
         public string Unit { get; set; } = string.Empty;
-
-        public override string ToString()
-        {
-            return $"{ItemNumber} - {ItemName}";
-        }
+        public decimal OpeningBalance { get; set; }
+        public decimal Purchases { get; set; }
+        public decimal Sales { get; set; }
+        public decimal CurrentBalance => OpeningBalance + Purchases - Sales;
     }
 }

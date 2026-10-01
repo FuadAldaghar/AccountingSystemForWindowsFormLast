@@ -1,8 +1,8 @@
-﻿
-using System;
+﻿using System;
 using System.Windows.Forms;
 using AccountingSystemForWindowsFormLast.Helpers.users;
 using AccountingSystemForWindowsFormLast.Services;
+using AccountingSystemForWindowsFormLast.Helpers;
 
 namespace AccountingSystemForWindowsFormLast.Forms.Authentication
 {
@@ -13,6 +13,10 @@ namespace AccountingSystemForWindowsFormLast.Forms.Authentication
         public LoginForm()
         {
             InitializeComponent();
+            UiTheme.Apply(this);
+            UiTheme.StyleButton(btnLogin, Accent.Primary);
+            UiTheme.StyleButton(btnExit, Accent.Danger);
+            UiTheme.Apply(this.txtPassword);
 
             _userService = new UserService();
 
@@ -22,6 +26,9 @@ namespace AccountingSystemForWindowsFormLast.Forms.Authentication
 
             AcceptButton = btnLogin;
             CancelButton = btnExit;
+
+
+        
         }
 
         private void btnLogin_Click(object? sender, EventArgs e)

@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using AccountingSystemForWindowsFormLast.Forms;
 using AccountingSystemForWindowsFormLast.Forms.Authentication;
 using AccountingSystemForWindowsFormLast.Helpers.users;
+using AccountingSystemForWindowsFormLast.Helpers;
 namespace AccountingSystemForWindowsFormLast
 {
     public partial class frm_Main : Form
@@ -31,7 +32,10 @@ namespace AccountingSystemForWindowsFormLast
             // pnlHeader.BringToFront();
             //contentPanel.BringToFront();
             InitializeMenuIcons();
-            ApplyPermissions();
+          //  ApplyPermissions();
+            UiTheme.Apply(this);
+            
+
         }
 
         private void InitializeMenuIcons()

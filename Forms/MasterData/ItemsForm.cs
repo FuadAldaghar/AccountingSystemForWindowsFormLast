@@ -1,6 +1,7 @@
 ﻿using System.Data;
-using Microsoft.Data.SqlClient;
 using AccountingSystemForWindowsFormLast.Data;
+using AccountingSystemForWindowsFormLast.Helpers;
+using Microsoft.Data.SqlClient;
 
 namespace AccountingSystemForWindowsFormLast.Forms
 {
@@ -11,6 +12,12 @@ namespace AccountingSystemForWindowsFormLast.Forms
         public ItemsForm()
         {
             InitializeComponent();
+
+            UiTheme.Apply(this);
+            UiTheme.StyleButton(btnAdd, Accent.Primary);
+            UiTheme.StyleButton(btnEdit, Accent.Warning);
+            UiTheme.StyleButton(btnDelete, Accent.Danger);
+            UiTheme.StyleButton(btnNew, Accent.Neutral);
 
             btnAdd.Click += btnAdd_Click;
             btnEdit.Click += btnEdit_Click;
@@ -33,9 +40,9 @@ namespace AccountingSystemForWindowsFormLast.Forms
             UpdateButtonsState();
         }
 
-        // =========================
+   
         // تحميل الأصناف
-        // =========================
+      
         private void LoadItems()
         {
             try
