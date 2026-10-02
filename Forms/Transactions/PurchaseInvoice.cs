@@ -1,6 +1,7 @@
 ﻿using System.Data;
-using Microsoft.Data.SqlClient;
 using AccountingSystemForWindowsFormLast.Data;
+using AccountingSystemForWindowsFormLast.Helpers;
+using Microsoft.Data.SqlClient;
 
 namespace AccountingSystemForWindowsFormLast.Forms
 {
@@ -11,6 +12,12 @@ namespace AccountingSystemForWindowsFormLast.Forms
         public PurchaseInvoice()
         {
             InitializeComponent();
+
+            UiTheme.Apply(this);
+            UiTheme.StyleButton(btnSave, Accent.Primary);
+            UiTheme.StyleButton(btnNew, Accent.Neutral);
+            UiTheme.StyleButton(btnAddRow, Accent.Primary);
+            UiTheme.StyleButton(btnRemoveRow, Accent.Danger);
 
             btnNew.Click += btnNew_Click;
             btnSave.Click += btnSave_Click;
@@ -937,6 +944,11 @@ namespace AccountingSystemForWindowsFormLast.Forms
         }
 
         private void nudQuantity_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void groupInvoice_Enter(object sender, EventArgs e)
         {
 
         }

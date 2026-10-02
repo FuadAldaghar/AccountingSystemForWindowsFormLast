@@ -13,6 +13,7 @@ namespace AccountingSystemForWindowsFormLast.Forms
 
         public AccountsForm()
         {
+           
             InitializeComponent();
             _accountService = new AccountService();
             UiTheme.Apply(this);
@@ -21,6 +22,11 @@ namespace AccountingSystemForWindowsFormLast.Forms
             UiTheme.StyleButton(btnDelete, Accent.Danger);
             UiTheme.StyleButton(btnNew, Accent.Neutral);
 
+            LoadAccounts();
+            LoadAccountTree();
+            LoadParentAccounts();
+
+            ClearFields();
         }
 
         private void AccountsForm_Load(object sender, EventArgs e)
@@ -39,11 +45,7 @@ namespace AccountingSystemForWindowsFormLast.Forms
             cmbParentAccount.SelectedIndexChanged += cmbParentAccount_SelectedIndexChanged;
             cmbAccountType.SelectedIndexChanged += cmbAccountType_SelectedIndexChanged;
 
-            LoadAccounts();
-            LoadAccountTree();
-            LoadParentAccounts();
-
-            ClearFields();
+        
             // Initial load completed in constructor
         }
 

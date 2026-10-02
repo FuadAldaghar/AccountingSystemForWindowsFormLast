@@ -16,11 +16,10 @@ namespace AccountingSystemForWindowsFormLast
         private PurchaseInvoice purchaseInvoiceForm;
         private SalesInvoice salesInvoiceForm;
         private AccountStatement accountStatementForm;
-
         private StockReport stockReportForm;
         private ReceiptVoucher receiptVoucherForm;
         private PaymentVoucher paymentVoucherForm;
-
+        private SalesLog saleslogForm;
         public frm_Main()
         {
             InitializeComponent();
@@ -32,9 +31,9 @@ namespace AccountingSystemForWindowsFormLast
             // pnlHeader.BringToFront();
             //contentPanel.BringToFront();
             InitializeMenuIcons();
-          //  ApplyPermissions();
+            //  ApplyPermissions();
             UiTheme.Apply(this);
-            
+
 
         }
 
@@ -316,7 +315,14 @@ namespace AccountingSystemForWindowsFormLast
 
             OpenForm(salesInvoiceForm);
         }
+     
+        private void salesRegisterMenuItem_Click(object sender, EventArgs e)
+        {
+            if (saleslogForm == null || saleslogForm.IsDisposed)
+                saleslogForm = new SalesLog();
 
+            OpenForm(saleslogForm);
+        }
         private void stockReportMenuItem_Click(object sender, EventArgs e)
         {
             if (stockReportForm == null || stockReportForm.IsDisposed)
@@ -418,5 +424,7 @@ namespace AccountingSystemForWindowsFormLast
                 form.ShowDialog(this);
             }
         }
+
+  
     }
 }

@@ -188,21 +188,21 @@ namespace AccountingSystemForWindowsFormLast
             // loginMenuItem
             // 
             loginMenuItem.Name = "loginMenuItem";
-            loginMenuItem.Size = new Size(224, 28);
+            loginMenuItem.Size = new Size(215, 28);
             loginMenuItem.Text = "تسجيل الدخول";
             loginMenuItem.Click += loginMenuItem_Click;
             // 
             // logoutMenuItem
             // 
             logoutMenuItem.Name = "logoutMenuItem";
-            logoutMenuItem.Size = new Size(224, 28);
+            logoutMenuItem.Size = new Size(215, 28);
             logoutMenuItem.Text = "تسجيل الخروج";
             logoutMenuItem.Click += logoutMenuItem_Click;
             // 
             // changePasswordMenuItem
             // 
             changePasswordMenuItem.Name = "changePasswordMenuItem";
-            changePasswordMenuItem.Size = new Size(224, 28);
+            changePasswordMenuItem.Size = new Size(215, 28);
             changePasswordMenuItem.Text = "تغيير كلمة المرور";
             changePasswordMenuItem.Click += changePasswordMenuItem_Click;
             // 
@@ -246,21 +246,21 @@ namespace AccountingSystemForWindowsFormLast
             // accountTreeMenuItem
             // 
             accountTreeMenuItem.Name = "accountTreeMenuItem";
-            accountTreeMenuItem.Size = new Size(224, 28);
+            accountTreeMenuItem.Size = new Size(217, 28);
             accountTreeMenuItem.Text = "دليل الحسابات";
             accountTreeMenuItem.Click += accountTreeMenuItem_Click;
             // 
             // itemsMenuItem
             // 
             itemsMenuItem.Name = "itemsMenuItem";
-            itemsMenuItem.Size = new Size(224, 28);
+            itemsMenuItem.Size = new Size(217, 28);
             itemsMenuItem.Text = "دليل الأصناف";
             itemsMenuItem.Click += itemsMenuItem_Click;
             // 
             // usersMenuItem
             // 
             usersMenuItem.Name = "usersMenuItem";
-            usersMenuItem.Size = new Size(224, 28);
+            usersMenuItem.Size = new Size(217, 28);
             usersMenuItem.Text = "إدارة المستخدمين";
             usersMenuItem.Click += usersMenuItem_Click;
             // 
@@ -309,28 +309,29 @@ namespace AccountingSystemForWindowsFormLast
             // purchaseInvoiceMenuItem
             // 
             purchaseInvoiceMenuItem.Name = "purchaseInvoiceMenuItem";
-            purchaseInvoiceMenuItem.Size = new Size(208, 28);
+            purchaseInvoiceMenuItem.Size = new Size(224, 28);
             purchaseInvoiceMenuItem.Text = "فاتورة مشتريات";
             purchaseInvoiceMenuItem.Click += purchaseInvoiceMenuItem_Click;
             // 
             // purchaseRegisterMenuItem
             // 
             purchaseRegisterMenuItem.Name = "purchaseRegisterMenuItem";
-            purchaseRegisterMenuItem.Size = new Size(208, 28);
+            purchaseRegisterMenuItem.Size = new Size(224, 28);
             purchaseRegisterMenuItem.Text = "سجل المشتريات";
             // 
             // salesInvoiceMenuItem
             // 
             salesInvoiceMenuItem.Name = "salesInvoiceMenuItem";
-            salesInvoiceMenuItem.Size = new Size(208, 28);
+            salesInvoiceMenuItem.Size = new Size(224, 28);
             salesInvoiceMenuItem.Text = "فاتورة مبيعات";
             salesInvoiceMenuItem.Click += salesInvoiceMenuItem_Click;
             // 
             // salesRegisterMenuItem
             // 
             salesRegisterMenuItem.Name = "salesRegisterMenuItem";
-            salesRegisterMenuItem.Size = new Size(208, 28);
+            salesRegisterMenuItem.Size = new Size(224, 28);
             salesRegisterMenuItem.Text = "سجل المبيعات";
+            salesRegisterMenuItem.Click += salesRegisterMenuItem_Click;
             // 
             // reportsMenu
             // 

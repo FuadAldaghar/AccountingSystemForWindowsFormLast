@@ -1,5 +1,6 @@
 ﻿using System.Data;
 using AccountingSystemForWindowsFormLast.Data;
+using AccountingSystemForWindowsFormLast.Helpers;
 using Microsoft.Data.SqlClient;
 
 namespace AccountingSystemForWindowsFormLast.Forms
@@ -11,6 +12,13 @@ namespace AccountingSystemForWindowsFormLast.Forms
         public SalesInvoice()
         {
             InitializeComponent();
+
+            UiTheme.Apply(this);
+            UiTheme.StyleButton(btnSave, Accent.Primary);
+            UiTheme.StyleButton(btnNew, Accent.Neutral);
+            UiTheme.StyleButton(btnAddRow, Accent.Primary);
+            UiTheme.StyleButton(btnRemoveRow, Accent.Danger);
+
 
             cmbItem.SelectedIndexChanged += cmbItem_SelectedIndexChanged;
             nudQuantity.ValueChanged += CalculateLineTotal;
@@ -471,7 +479,7 @@ namespace AccountingSystemForWindowsFormLast.Forms
                             "@ItemId",
                             itemId);
 
-                 
+
 
                         command.Parameters.AddWithValue(
                             "@Quantity",
@@ -971,5 +979,7 @@ namespace AccountingSystemForWindowsFormLast.Forms
             public string DisplayText =>
                 $"{Number} - {Name}";
         }
+
+  
     }
 }

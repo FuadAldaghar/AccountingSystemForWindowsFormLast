@@ -1,14 +1,39 @@
+
 using System.Data;
 using AccountingSystemForWindowsFormLast.Data;
 using AccountingSystemForWindowsFormLast.Models;
 using Microsoft.Data.SqlClient;
-
 namespace AccountingSystemForWindowsFormLast.Services
 {
     public class ItemService
     {
+        public DataTable GetDataTable()
+        {
+            using SqlConnection connection = DatabaseConnection.GetConnection();
+            connection.Open();
+
+            const string query = @"
+                SELECT 
+                    ItemId,
+                    ItemNumber,
+                    ItemName,
+                    Unit
+                FROM Items
+                ORDER BY ItemId DESC";
+
+            using SqlCommand command = new SqlCommand(query, connection);
+            using SqlDataAdapter adapter = new SqlDataAdapter(command);
+            DataTable table = new DataTable();
+            adapter.Fill(table);
+            return table;
+        }
+
         public List<Item> GetAll()
         {
+            List<Item> items = new List<Item>();
+            using SqlConnection connection = DatabaseConnection.GetConnection();
+            connection.Open();
+
             const string sql = @"
                 SELECT
                     ItemId,
@@ -18,18 +43,8 @@ namespace AccountingSystemForWindowsFormLast.Services
                 FROM Items
                 ORDER BY ItemNumber";
 
-            List<Item> items = new();
-
-            using SqlConnection connection =
-                DatabaseConnection.GetConnection();
-
-            connection.Open();
-
-            using SqlCommand command =
-                new SqlCommand(sql, connection);
-
-            using SqlDataReader reader =
-                command.ExecuteReader();
+            using SqlCommand command = new SqlCommand(sql, connection);
+            using SqlDataReader reader = command.ExecuteReader();
 
             while (reader.Read())
             {
@@ -41,6 +56,9 @@ namespace AccountingSystemForWindowsFormLast.Services
 
         public Item? GetById(int itemId)
         {
+            using SqlConnection connection = DatabaseConnection.GetConnection();
+            connection.Open();
+
             const string sql = @"
                 SELECT
                     ItemId,
@@ -50,20 +68,10 @@ namespace AccountingSystemForWindowsFormLast.Services
                 FROM Items
                 WHERE ItemId = @ItemId";
 
-            using SqlConnection connection =
-                DatabaseConnection.GetConnection();
+            using SqlCommand command = new SqlCommand(sql, connection);
+            command.Parameters.Add("@ItemId", SqlDbType.Int).Value = itemId;
 
-            connection.Open();
-
-            using SqlCommand command =
-                new SqlCommand(sql, connection);
-
-            command.Parameters.Add("@ItemId", SqlDbType.Int)
-                .Value = itemId;
-
-            using SqlDataReader reader =
-                command.ExecuteReader();
-
+            using SqlDataReader reader = command.ExecuteReader();
             if (!reader.Read())
                 return null;
 
@@ -72,6 +80,9 @@ namespace AccountingSystemForWindowsFormLast.Services
 
         public string GetNextItemNumber()
         {
+            using SqlConnection connection = DatabaseConnection.GetConnection();
+            connection.Open();
+
             const string sql = @"
                 SELECT ISNULL(
                     MAX(TRY_CAST(ItemNumber AS INT)),
@@ -79,17 +90,8 @@ namespace AccountingSystemForWindowsFormLast.Services
                 ) + 1
                 FROM Items";
 
-            using SqlConnection connection =
-                DatabaseConnection.GetConnection();
-
-            connection.Open();
-
-            using SqlCommand command =
-                new SqlCommand(sql, connection);
-
-            return Convert.ToInt32(
-                command.ExecuteScalar()
-            ).ToString();
+            using SqlCommand command = new SqlCommand(sql, connection);
+            return Convert.ToInt32(command.ExecuteScalar()).ToString();
         }
 
         public int Add(Item item)
@@ -110,18 +112,13 @@ namespace AccountingSystemForWindowsFormLast.Services
 
                 SELECT CAST(SCOPE_IDENTITY() AS INT);";
 
-            using SqlConnection connection =
-                DatabaseConnection.GetConnection();
-
+            using SqlConnection connection = DatabaseConnection.GetConnection();
             connection.Open();
 
-            using SqlCommand command =
-                new SqlCommand(sql, connection);
-
+            using SqlCommand command = new SqlCommand(sql, connection);
             AddParameters(command, item);
 
-            return Convert.ToInt32(
-                command.ExecuteScalar());
+            return Convert.ToInt32(command.ExecuteScalar());
         }
 
         public void Update(Item item)
@@ -133,55 +130,36 @@ namespace AccountingSystemForWindowsFormLast.Services
                     Unit = @Unit
                 WHERE ItemId = @ItemId";
 
-            using SqlConnection connection =
-                DatabaseConnection.GetConnection();
-
+            using SqlConnection connection = DatabaseConnection.GetConnection();
             connection.Open();
 
-            using SqlCommand command =
-                new SqlCommand(sql, connection);
-
-            command.Parameters.Add("@ItemName", SqlDbType.NVarChar, 200)
-                .Value = item.ItemName.Trim();
-
-            command.Parameters.Add("@Unit", SqlDbType.NVarChar, 50)
-                .Value = item.Unit.Trim();
-
-            command.Parameters.Add("@ItemId", SqlDbType.Int)
-                .Value = item.ItemId;
+            using SqlCommand command = new SqlCommand(sql, connection);
+            command.Parameters.Add("@ItemName", SqlDbType.NVarChar, 200).Value = item.ItemName.Trim();
+            command.Parameters.Add("@Unit", SqlDbType.NVarChar, 50).Value = item.Unit.Trim();
+            command.Parameters.Add("@ItemId", SqlDbType.Int).Value = item.ItemId;
 
             command.ExecuteNonQuery();
         }
 
         public void Delete(int itemId)
         {
-            using SqlConnection connection =
-                DatabaseConnection.GetConnection();
-
-            connection.Open();
-
             if (IsUsedInPurchaseInvoices(itemId))
             {
-                throw new InvalidOperationException(
-                    "لا يمكن حذف الصنف لأنه مستخدم في فواتير المشتريات.");
+                throw new InvalidOperationException("لا يمكن حذف الصنف لأنه مستخدم في فواتير المشتريات.");
             }
 
             if (IsUsedInSalesInvoices(itemId))
             {
-                throw new InvalidOperationException(
-                    "لا يمكن حذف الصنف لأنه مستخدم في فواتير المبيعات.");
+                throw new InvalidOperationException("لا يمكن حذف الصنف لأنه مستخدم في فواتير المبيعات.");
             }
 
-            const string sql = @"
-                DELETE FROM Items
-                WHERE ItemId = @ItemId";
+            const string sql = "DELETE FROM Items WHERE ItemId = @ItemId";
 
-            using SqlCommand command =
-                new SqlCommand(sql, connection);
+            using SqlConnection connection = DatabaseConnection.GetConnection();
+            connection.Open();
 
-            command.Parameters.Add("@ItemId", SqlDbType.Int)
-                .Value = itemId;
-
+            using SqlCommand command = new SqlCommand(sql, connection);
+            command.Parameters.Add("@ItemId", SqlDbType.Int).Value = itemId;
             command.ExecuteNonQuery();
         }
 
@@ -190,15 +168,9 @@ namespace AccountingSystemForWindowsFormLast.Services
             using SqlConnection connection = DatabaseConnection.GetConnection();
             connection.Open();
 
-            const string query = @"
-        SELECT COUNT(*)
-        FROM PurchaseInvoiceDetails
-        WHERE ItemId = @ItemId";
-
-            using SqlCommand command = new(query, connection);
-
-            command.Parameters.Add("@ItemId", SqlDbType.Int)
-                .Value = itemId;
+            const string query = "SELECT COUNT(*) FROM PurchaseInvoiceDetails WHERE ItemId = @ItemId";
+            using SqlCommand command = new SqlCommand(query, connection);
+            command.Parameters.Add("@ItemId", SqlDbType.Int).Value = itemId;
 
             return Convert.ToInt32(command.ExecuteScalar()) > 0;
         }
@@ -208,15 +180,9 @@ namespace AccountingSystemForWindowsFormLast.Services
             using SqlConnection connection = DatabaseConnection.GetConnection();
             connection.Open();
 
-            const string query = @"
-        SELECT COUNT(*)
-        FROM SalesInvoiceDetails
-        WHERE ItemId = @ItemId";
-
-            using SqlCommand command = new(query, connection);
-
-            command.Parameters.Add("@ItemId", SqlDbType.Int)
-                .Value = itemId;
+            const string query = "SELECT COUNT(*) FROM SalesInvoiceDetails WHERE ItemId = @ItemId";
+            using SqlCommand command = new SqlCommand(query, connection);
+            command.Parameters.Add("@ItemId", SqlDbType.Int).Value = itemId;
 
             return Convert.ToInt32(command.ExecuteScalar()) > 0;
         }
@@ -226,30 +192,17 @@ namespace AccountingSystemForWindowsFormLast.Services
             return new Item
             {
                 ItemId = Convert.ToInt32(reader["ItemId"]),
-                ItemNumber = reader["ItemNumber"].ToString() ?? "",
-                ItemName = reader["ItemName"].ToString() ?? "",
-                Unit = reader["Unit"].ToString() ?? ""
+                ItemNumber = reader["ItemNumber"]?.ToString() ?? "",
+                ItemName = reader["ItemName"]?.ToString() ?? "",
+                Unit = reader["Unit"]?.ToString() ?? ""
             };
         }
 
-        private static void AddParameters(
-            SqlCommand command,
-            Item item)
+        private static void AddParameters(SqlCommand command, Item item)
         {
-            command.Parameters.Add(
-                "@ItemNumber",
-                SqlDbType.NVarChar,
-                50).Value = item.ItemNumber.Trim();
-
-            command.Parameters.Add(
-                "@ItemName",
-                SqlDbType.NVarChar,
-                200).Value = item.ItemName.Trim();
-
-            command.Parameters.Add(
-                "@Unit",
-                SqlDbType.NVarChar,
-                50).Value = item.Unit.Trim();
+            command.Parameters.Add("@ItemNumber", SqlDbType.NVarChar, 50).Value = item.ItemNumber.Trim();
+            command.Parameters.Add("@ItemName", SqlDbType.NVarChar, 200).Value = item.ItemName.Trim();
+            command.Parameters.Add("@Unit", SqlDbType.NVarChar, 50).Value = item.Unit.Trim();
         }
     }
 }

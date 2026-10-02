@@ -1,12 +1,15 @@
-﻿using System.Data;
-using AccountingSystemForWindowsFormLast.Data;
+﻿using System;
+using System.Data;
+using System.Windows.Forms;
 using AccountingSystemForWindowsFormLast.Helpers;
-using Microsoft.Data.SqlClient;
+using AccountingSystemForWindowsFormLast.Services;
+using AccountingSystemForWindowsFormLast.Models;
 
 namespace AccountingSystemForWindowsFormLast.Forms
 {
     public partial class ItemsForm : Form
     {
+        private readonly ItemService _itemService;
         private int selectedItemId = 0;
 
         public ItemsForm()
@@ -19,6 +22,9 @@ namespace AccountingSystemForWindowsFormLast.Forms
             UiTheme.StyleButton(btnDelete, Accent.Danger);
             UiTheme.StyleButton(btnNew, Accent.Neutral);
 
+            _itemService = new ItemService();
+
+            btnNew.Click += btnNew_Click;
             btnAdd.Click += btnAdd_Click;
             btnEdit.Click += btnEdit_Click;
             btnDelete.Click += btnDelete_Click;
@@ -40,138 +46,79 @@ namespace AccountingSystemForWindowsFormLast.Forms
             UpdateButtonsState();
         }
 
-   
+        // =========================
         // تحميل الأصناف
-      
+        // =========================
         private void LoadItems()
         {
             try
             {
-                using SqlConnection connection = DatabaseConnection.GetConnection();
-
-                string query = @"
-                    SELECT 
-                        ItemId,
-                        ItemNumber,
-                        ItemName,
-                        Unit
-                    FROM Items
-                    ORDER BY ItemId DESC";
-
-                using SqlCommand command = new SqlCommand(query, connection);
-
-                DataTable table = new DataTable();
-
-                connection.Open();
-
-                using SqlDataAdapter adapter = new SqlDataAdapter(command);
-                adapter.Fill(table);
-
+                DataTable table = _itemService.GetDataTable();
                 dgvItems.DataSource = table;
 
-                //BeginInvoke(new Action(() =>
-                //{
-                //    dgvItems.ClearSelection();
-                //   // dgvItems.CurrentCell = null;
-                //}));
-
-                if (dgvItems.Columns["ItemId"] != null)
-                    dgvItems.Columns["ItemId"].Visible = false;
-
-                if (dgvItems.Columns["ItemNumber"] != null)
+                if (dgvItems.Columns.Count > 0)
                 {
-                    dgvItems.Columns["ItemNumber"].HeaderText = "رقم الصنف";
-                    dgvItems.Columns["ItemNumber"].Width = 150;
-                }
+                    if (dgvItems.Columns["ItemId"] != null)
+                        dgvItems.Columns["ItemId"].Visible = false;
 
-                if (dgvItems.Columns["ItemName"] != null)
-                {
-                    dgvItems.Columns["ItemName"].HeaderText = "اسم الصنف";
-                    dgvItems.Columns["ItemName"].Width = 400;
-                }
+                    if (dgvItems.Columns["ItemNumber"] != null)
+                    {
+                        dgvItems.Columns["ItemNumber"].HeaderText = "رقم الصنف";
+                        dgvItems.Columns["ItemNumber"].FillWeight = 25;
+                    }
 
-                if (dgvItems.Columns["Unit"] != null)
-                {
-                    dgvItems.Columns["Unit"].HeaderText = "الوحدة";
-                    dgvItems.Columns["Unit"].Width = 200;
-                }
+                    if (dgvItems.Columns["ItemName"] != null)
+                    {
+                        dgvItems.Columns["ItemName"].HeaderText = "اسم الصنف";
+                        dgvItems.Columns["ItemName"].FillWeight = 50;
+                    }
 
-              dgvItems.ClearSelection();
+                    if (dgvItems.Columns["Unit"] != null)
+                    {
+                        dgvItems.Columns["Unit"].HeaderText = "الوحدة";
+                        dgvItems.Columns["Unit"].FillWeight = 25;
+                    }
+                }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(
-                    "حدث خطأ أثناء تحميل الأصناف:\n" + ex.Message,
-                    "خطأ",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+                MessageHelper.ShowError($"حدث خطأ أثناء تحميل الأصناف:\n{ex.Message}", "خطأ");
             }
         }
 
         // =========================
-        // توليد رقم الصنف تلقائياً
+        // توليد رقم صنف جديد
         // =========================
         private void GenerateItemNumber()
         {
             try
             {
-                using SqlConnection connection = DatabaseConnection.GetConnection();
-
-                string query = @"
-                    SELECT ISNULL(MAX(TRY_CAST(ItemNumber AS INT)), 0) + 1
-                    FROM Items";
-
-                using SqlCommand command = new SqlCommand(query, connection);
-
-                connection.Open();
-
-                object result = command.ExecuteScalar();
-
-                int nextNumber = Convert.ToInt32(result);
-
-                txtItemNumber.Text = nextNumber.ToString();
+                txtItemNumber.Text = _itemService.GetNextItemNumber();
             }
-            catch (Exception ex)
+            catch
             {
-                MessageBox.Show(
-                    "حدث خطأ أثناء توليد رقم الصنف:\n" + ex.Message,
-                    "خطأ",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+                txtItemNumber.Text = "1";
             }
         }
 
-        // =========================
-        // مراقبة الحقول
-        // =========================
         private void InputFields_TextChanged(object? sender, EventArgs e)
         {
             UpdateButtonsState();
         }
 
-        // =========================
-        // التحكم في حالة الأزرار
-        // =========================
         private void UpdateButtonsState()
         {
             bool fieldsFilled =
                 !string.IsNullOrWhiteSpace(txtItemName.Text) &&
-                cmbUnit.SelectedIndex >= 0 &&
-                !string.IsNullOrWhiteSpace(cmbUnit.Text);
+                cmbUnit.SelectedIndex >= 0;
 
             bool itemSelected = selectedItemId > 0;
 
-            // الإضافة تحتاج تعبئة الحقول
             btnAdd.Enabled = fieldsFilled && !itemSelected;
-
-            // التعديل والحذف يحتاجان تحديد سجل
-            btnEdit.Enabled = itemSelected;
+            btnEdit.Enabled = fieldsFilled && itemSelected;
             btnDelete.Enabled = itemSelected;
         }
 
-        // =========================
-        // تحديد صنف من الجدول
-        // =========================
         private void dgvItems_CellClick(object? sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0)
@@ -183,326 +130,169 @@ namespace AccountingSystemForWindowsFormLast.Forms
                 return;
 
             selectedItemId = Convert.ToInt32(row.Cells["ItemId"].Value);
+            txtItemNumber.Text = row.Cells["ItemNumber"].Value?.ToString() ?? "";
+            txtItemName.Text = row.Cells["ItemName"].Value?.ToString() ?? "";
 
-            txtItemNumber.Text =
-                row.Cells["ItemNumber"].Value?.ToString() ?? "";
+            string unit = row.Cells["Unit"].Value?.ToString() ?? "";
+            int unitIndex = cmbUnit.Items.IndexOf(unit);
 
-            txtItemName.Text =
-                row.Cells["ItemName"].Value?.ToString() ?? "";
-
-            string unit =
-                row.Cells["Unit"].Value?.ToString() ?? "";
-
-            if (cmbUnit.Items.Contains(unit))
-                cmbUnit.SelectedItem = unit;
+            if (unitIndex >= 0)
+            {
+                cmbUnit.SelectedIndex = unitIndex;
+            }
             else
+            {
                 cmbUnit.Text = unit;
+            }
 
             UpdateButtonsState();
         }
 
+        private void btnNew_Click(object? sender, EventArgs e)
+        {
+            ClearFields();
+        }
+
         // =========================
-        // إضافة
+        // إضافة صنف
         // =========================
         private void btnAdd_Click(object? sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(txtItemName.Text))
             {
-                MessageBox.Show(
-                    "يرجى إدخال اسم الصنف.",
-                    "تنبيه",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-
+                MessageHelper.ShowWarning("يرجى إدخال اسم الصنف.", "تنبيه");
                 txtItemName.Focus();
                 return;
             }
 
-            if (string.IsNullOrWhiteSpace(cmbUnit.Text))
+            if (cmbUnit.SelectedIndex < 0 && string.IsNullOrWhiteSpace(cmbUnit.Text))
             {
-                MessageBox.Show(
-                    "يرجى اختيار الوحدة.",
-                    "تنبيه",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-
+                MessageHelper.ShowWarning("يرجى اختيار الوحدة.", "تنبيه");
                 cmbUnit.Focus();
                 return;
             }
 
             try
             {
-                using SqlConnection connection = DatabaseConnection.GetConnection();
+                Item item = new Item
+                {
+                    ItemNumber = txtItemNumber.Text.Trim(),
+                    ItemName = txtItemName.Text.Trim(),
+                    Unit = cmbUnit.Text.Trim()
+                };
 
-                string query = @"
-                    INSERT INTO Items
-                    (
-                        ItemNumber,
-                        ItemName,
-                        Unit
-                    )
-                    VALUES
-                    (
-                        @ItemNumber,
-                        @ItemName,
-                        @Unit
-                    )";
+                _itemService.Add(item);
 
-                using SqlCommand command = new SqlCommand(query, connection);
+                MessageHelper.ShowInfo("تمت إضافة الصنف بنجاح.", "نجاح");
 
-                command.Parameters.AddWithValue(
-                    "@ItemNumber",
-                    txtItemNumber.Text.Trim());
-
-                command.Parameters.AddWithValue(
-                    "@ItemName",
-                    txtItemName.Text.Trim());
-
-                command.Parameters.AddWithValue(
-                    "@Unit",
-                    cmbUnit.Text.Trim());
-
-                connection.Open();
-                command.ExecuteNonQuery();
-
-                MessageBox.Show(
-                    "تمت إضافة الصنف بنجاح.",
-                    "نجاح",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
-
-                ClearFields();
                 LoadItems();
-                GenerateItemNumber();
-                UpdateButtonsState();
+                ClearFields();
             }
-            catch (SqlException ex)
+            catch (Exception ex)
             {
-                MessageBox.Show(
-                    "حدث خطأ أثناء إضافة الصنف:\n" + ex.Message,
-                    "خطأ",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+                MessageHelper.ShowError($"حدث خطأ أثناء إضافة الصنف:\n{ex.Message}", "خطأ");
             }
         }
 
         // =========================
-        // تعديل
+        // تعديل صنف
         // =========================
         private void btnEdit_Click(object? sender, EventArgs e)
         {
             if (selectedItemId <= 0)
+            {
+                MessageHelper.ShowWarning("يرجى تحديد صنف للتعديل.", "تنبيه");
                 return;
+            }
 
             if (string.IsNullOrWhiteSpace(txtItemName.Text))
             {
-                MessageBox.Show(
-                    "يرجى إدخال اسم الصنف.",
-                    "تنبيه",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-
+                MessageHelper.ShowWarning("يرجى إدخال اسم الصنف.", "تنبيه");
                 txtItemName.Focus();
                 return;
             }
 
-            if (string.IsNullOrWhiteSpace(cmbUnit.Text))
+            if (cmbUnit.SelectedIndex < 0 && string.IsNullOrWhiteSpace(cmbUnit.Text))
             {
-                MessageBox.Show(
-                    "يرجى اختيار الوحدة.",
-                    "تنبيه",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-
+                MessageHelper.ShowWarning("يرجى اختيار الوحدة.", "تنبيه");
                 cmbUnit.Focus();
                 return;
             }
 
             try
             {
-                using SqlConnection connection = DatabaseConnection.GetConnection();
+                Item item = new Item
+                {
+                    ItemId = selectedItemId,
+                    ItemNumber = txtItemNumber.Text.Trim(),
+                    ItemName = txtItemName.Text.Trim(),
+                    Unit = cmbUnit.Text.Trim()
+                };
 
-                string query = @"
-                    UPDATE Items
-                    SET
-                        ItemName = @ItemName,
-                        Unit = @Unit
-                    WHERE ItemId = @ItemId";
+                _itemService.Update(item);
 
-                using SqlCommand command = new SqlCommand(query, connection);
+                MessageHelper.ShowInfo("تم تعديل بيانات الصنف بنجاح.", "نجاح");
 
-                command.Parameters.AddWithValue(
-                    "@ItemName",
-                    txtItemName.Text.Trim());
-
-                command.Parameters.AddWithValue(
-                    "@Unit",
-                    cmbUnit.Text.Trim());
-
-                command.Parameters.AddWithValue(
-                    "@ItemId",
-                    selectedItemId);
-
-                connection.Open();
-                command.ExecuteNonQuery();
-
-                MessageBox.Show(
-                    "تم تعديل الصنف بنجاح.",
-                    "نجاح",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
-
-                ClearFields();
                 LoadItems();
-                GenerateItemNumber();
-                UpdateButtonsState();
+                ClearFields();
             }
-            catch (SqlException ex)
+            catch (Exception ex)
             {
-                MessageBox.Show(
-                    "حدث خطأ أثناء تعديل الصنف:\n" + ex.Message,
-                    "خطأ",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+                MessageHelper.ShowError($"حدث خطأ أثناء تعديل الصنف:\n{ex.Message}", "خطأ");
             }
         }
 
         // =========================
-        // حذف
+        // حذف صنف
         // =========================
         private void btnDelete_Click(object? sender, EventArgs e)
         {
             if (selectedItemId <= 0)
+            {
+                MessageHelper.ShowWarning("يرجى تحديد صنف للحذف.", "تنبيه");
                 return;
+            }
 
-            DialogResult result = MessageBox.Show(
-                "هل أنت متأكد من حذف هذا الصنف؟",
-                "تأكيد الحذف",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question);
-
-            if (result != DialogResult.Yes)
+            if (!MessageHelper.Confirm("هل أنت متأكد من حذف هذا الصنف؟", "تأكيد الحذف"))
                 return;
 
             try
             {
-                using SqlConnection connection = DatabaseConnection.GetConnection();
+                _itemService.Delete(selectedItemId);
 
-                connection.Open();
+                MessageHelper.ShowInfo("تم حذف الصنف بنجاح.", "نجاح");
 
-                // التأكد أن الصنف غير مستخدم في فواتير المشتريات
-                string purchaseCheck = @"
-                    SELECT COUNT(*)
-                    FROM PurchaseInvoiceDetails
-                    WHERE ItemId = @ItemId";
-
-                using SqlCommand purchaseCommand =
-                    new SqlCommand(purchaseCheck, connection);
-
-                purchaseCommand.Parameters.AddWithValue(
-                    "@ItemId",
-                    selectedItemId);
-
-                int purchaseCount =
-                    Convert.ToInt32(purchaseCommand.ExecuteScalar());
-
-                if (purchaseCount > 0)
-                {
-                    MessageBox.Show(
-                        "لا يمكن حذف الصنف لأنه مستخدم في فواتير المشتريات.",
-                        "تنبيه",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Warning);
-
-                    return;
-                }
-
-                // التأكد أن الصنف غير مستخدم في فواتير المبيعات
-                string salesCheck = @"
-                    SELECT COUNT(*)
-                    FROM SalesInvoiceDetails
-                    WHERE ItemId = @ItemId";
-
-                using SqlCommand salesCommand =
-                    new SqlCommand(salesCheck, connection);
-
-                salesCommand.Parameters.AddWithValue(
-                    "@ItemId",
-                    selectedItemId);
-
-                int salesCount =
-                    Convert.ToInt32(salesCommand.ExecuteScalar());
-
-                if (salesCount > 0)
-                {
-                    MessageBox.Show(
-                        "لا يمكن حذف الصنف لأنه مستخدم في فواتير المبيعات.",
-                        "تنبيه",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Warning);
-
-                    return;
-                }
-
-                // الحذف
-                string deleteQuery = @"
-                    DELETE FROM Items
-                    WHERE ItemId = @ItemId";
-
-                using SqlCommand deleteCommand =
-                    new SqlCommand(deleteQuery, connection);
-
-                deleteCommand.Parameters.AddWithValue(
-                    "@ItemId",
-                    selectedItemId);
-
-                deleteCommand.ExecuteNonQuery();
-
-                MessageBox.Show(
-                    "تم حذف الصنف بنجاح.",
-                    "نجاح",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
-
-                ClearFields();
                 LoadItems();
-                GenerateItemNumber();
-                UpdateButtonsState();
+                ClearFields();
             }
-            catch (SqlException ex)
+            catch (InvalidOperationException ex)
             {
-                MessageBox.Show(
-                    "حدث خطأ أثناء حذف الصنف:\n" + ex.Message,
-                    "خطأ",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+                MessageHelper.ShowWarning(ex.Message, "لا يمكن الحذف");
+            }
+            catch (Exception ex)
+            {
+                MessageHelper.ShowError($"حدث خطأ أثناء حذف الصنف:\n{ex.Message}", "خطأ");
             }
         }
 
-        // =========================
-        // تفريغ الحقول
-        // =========================
         private void ClearFields()
         {
             selectedItemId = 0;
-
             txtItemName.Clear();
             cmbUnit.SelectedIndex = -1;
             cmbUnit.Text = "";
 
-            dgvItems.ClearSelection();
-
-            txtItemNumber.ReadOnly = true;
+            GenerateItemNumber();
+            UpdateButtonsState();
+            txtItemName.Focus();
         }
 
         private void dgvItems_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-
         }
 
         private void cmbUnit_SelectedIndexChanged(object sender, EventArgs e)
         {
-
         }
     }
 }
