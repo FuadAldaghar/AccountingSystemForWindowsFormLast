@@ -153,10 +153,21 @@ namespace AccountingSystemForWindowsFormLast.Forms
                 finalBalance = openingBalance;
             }
 
+            //lblOpeningBalance.Text = openingBalance.ToString("N2");
+            //lblDebitTotal.Text = totalDebit.ToString("N2");
+            //lblCreditTotal.Text = totalCredit.ToString("N2");
+            //lblFinalBalance.Text = finalBalance.ToString("N2");
+
+
             lblOpeningBalance.Text = openingBalance.ToString("N2");
-            lblDebitTotal.Text = totalDebit.ToString("N2");
+            lblDebitTotal.Text = finalBalance.ToString("N2");//totalDebit.ToString("N2");
             lblCreditTotal.Text = totalCredit.ToString("N2");
             lblFinalBalance.Text = finalBalance.ToString("N2");
+        }
+
+        private void lblDebitTotal_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

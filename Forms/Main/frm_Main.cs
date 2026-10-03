@@ -3,8 +3,9 @@ using System.Drawing;
 using System.Windows.Forms;
 using AccountingSystemForWindowsFormLast.Forms;
 using AccountingSystemForWindowsFormLast.Forms.Authentication;
-using AccountingSystemForWindowsFormLast.Helpers.users;
 using AccountingSystemForWindowsFormLast.Helpers;
+using AccountingSystemForWindowsFormLast.Helpers.users;
+using AccountingSystemForWindowsFormLast.Services;
 namespace AccountingSystemForWindowsFormLast
 {
     public partial class frm_Main : Form
@@ -73,18 +74,12 @@ namespace AccountingSystemForWindowsFormLast
         //    OpenDatabaseSettingsForm();
         //}
 
-        private void backupMenuItem_Click_1(object sender, EventArgs e)
-        {
-            // OpenDatabaseSettingsForm();
-        }
+       
         //private void backupMenuItem_Click(object? sender, EventArgs e)
         //{
         //    OpenDatabaseSettingsForm();
         //}
-        private void restoreMenuItem_Click_1(object sender, EventArgs e)
-        {
-            //  OpenDatabaseSettingsForm();
-        }
+      
         //private void restoreMenuItem_Click(object? sender, EventArgs e)
         //{
         //    OpenDatabaseSettingsForm();
@@ -278,6 +273,123 @@ namespace AccountingSystemForWindowsFormLast
             form.Show();
             form.BringToFront();
         }
+
+
+        //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //عمل نسخ احطياطي
+        private async void backupMenuItem_Click_1(object sender, EventArgs e)
+        {
+
+            var service = new DatabaseBackupService();
+            string defaultFileName = service.GetDefaultBackupFileName();
+
+            using SaveFileDialog dlg = new SaveFileDialog
+            {
+                Title = "حفظ النسخة الاحتياطية",
+                Filter = "ملف نسخة احتياطية (*.bak)|*.bak",
+                FileName = defaultFileName,
+                DefaultExt = "bak",
+                OverwritePrompt = true
+            };
+
+            if (dlg.ShowDialog(this) != DialogResult.OK)
+                return;
+
+            string backupPath = dlg.FileName;
+
+            Cursor = Cursors.WaitCursor;
+            backupMenuItem.Enabled = false;
+            restoreMenuItem.Enabled = false;
+
+            try
+            {
+                await Task.Run(() => service.Backup(backupPath));
+
+                MessageBox.Show(
+                    $"تم حفظ النسخة الاحتياطية بنجاح:\n{backupPath}",
+                    "نسخ احتياطي",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"حدث خطأ أثناء النسخ الاحتياطي:\n{ex.Message}",
+                    "خطأ",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+                backupMenuItem.Enabled = true;
+                restoreMenuItem.Enabled = true;
+            }
+
+            // OpenDatabaseSettingsForm();
+        }
+
+        //استعادة قاعدة البيانات
+        private  async void restoreMenuItem_Click_1(object sender, EventArgs e)
+        {
+            using OpenFileDialog dlg = new OpenFileDialog
+            {
+                Title = "اختر ملف النسخة الاحتياطية للاستعادة",
+                Filter = "ملف نسخة احتياطية (*.bak)|*.bak",
+                DefaultExt = "bak",
+                CheckFileExists = true
+            };
+
+            if (dlg.ShowDialog(this) != DialogResult.OK)
+                return;
+
+            string backupPath = dlg.FileName;
+
+            DialogResult confirm = MessageBox.Show(
+                $"سيتم استعادة قاعدة البيانات من الملف التالي وستُفقد جميع البيانات الحالية:\n{backupPath}\n\nهل أنت متأكد؟",
+                "تأكيد الاستعادة",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning,
+                MessageBoxDefaultButton.Button2);
+
+            if (confirm != DialogResult.Yes)
+                return;
+
+            Cursor = Cursors.WaitCursor;
+            backupMenuItem.Enabled = false;
+            restoreMenuItem.Enabled = false;
+
+            try
+            {
+                await Task.Run(() => new DatabaseBackupService().Restore(backupPath));
+
+                MessageBox.Show(
+                    "تمت استعادة قاعدة البيانات بنجاح.\nسيتم إغلاق البرنامج لتطبيق التغييرات.",
+                    "استعادة ناجحة",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+
+                // Close the application so the next launch picks up the restored DB.
+                Application.Exit();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"حدث خطأ أثناء الاستعادة:\n{ex.Message}",
+                    "خطأ",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+                backupMenuItem.Enabled = true;
+                restoreMenuItem.Enabled = true;
+            }
+
+            //  OpenDatabaseSettingsForm();
+        }
+        //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
         private void accountTreeMenuItem_Click(object sender, EventArgs e)
         {

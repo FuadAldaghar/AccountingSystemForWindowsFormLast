@@ -339,7 +339,6 @@ namespace AccountingSystemForWindowsFormLast.Forms
             lblOpeningTitle.Name = "lblOpeningTitle";
             lblOpeningTitle.Size = new Size(272, 42);
             lblOpeningTitle.TabIndex = 0;
-            lblOpeningTitle.Text = "الرصيد الافتتاحي:";
             lblOpeningTitle.TextAlign = ContentAlignment.MiddleRight;
             // 
             // lblOpeningBalance
@@ -351,7 +350,6 @@ namespace AccountingSystemForWindowsFormLast.Forms
             lblOpeningBalance.Name = "lblOpeningBalance";
             lblOpeningBalance.Size = new Size(272, 42);
             lblOpeningBalance.TabIndex = 1;
-            lblOpeningBalance.Text = "0.00";
             lblOpeningBalance.TextAlign = ContentAlignment.MiddleRight;
             // 
             // lblDebitTitle
@@ -363,7 +361,7 @@ namespace AccountingSystemForWindowsFormLast.Forms
             lblDebitTitle.Name = "lblDebitTitle";
             lblDebitTitle.Size = new Size(272, 42);
             lblDebitTitle.TabIndex = 2;
-            lblDebitTitle.Text = "إجمالي المدين:";
+            lblDebitTitle.Text = "الرصيد النهائي:";
             lblDebitTitle.TextAlign = ContentAlignment.MiddleRight;
             // 
             // lblDebitTotal
@@ -377,6 +375,7 @@ namespace AccountingSystemForWindowsFormLast.Forms
             lblDebitTotal.TabIndex = 3;
             lblDebitTotal.Text = "0.00";
             lblDebitTotal.TextAlign = ContentAlignment.MiddleRight;
+            lblDebitTotal.Click += lblDebitTotal_Click;
             // 
             // lblCreditTitle
             // 
