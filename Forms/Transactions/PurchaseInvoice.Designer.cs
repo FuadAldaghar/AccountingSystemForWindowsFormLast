@@ -481,6 +481,7 @@ namespace AccountingSystemForWindowsFormLast.Forms
             nudQuantity.Font = new Font("Segoe UI", 10F);
             nudQuantity.Location = new Point(741, 68);
             nudQuantity.Margin = new Padding(3, 4, 8, 4);
+            nudQuantity.Maximum = new decimal(new int[] { -727379968, 232, 0, 0 });
             nudQuantity.Name = "nudQuantity";
             nudQuantity.Size = new Size(281, 30);
             nudQuantity.TabIndex = 7;
@@ -493,6 +494,7 @@ namespace AccountingSystemForWindowsFormLast.Forms
             nudUnitPrice.Font = new Font("Segoe UI", 10F);
             nudUnitPrice.Location = new Point(449, 68);
             nudUnitPrice.Margin = new Padding(3, 4, 8, 4);
+            nudUnitPrice.Maximum = new decimal(new int[] { 1410065408, 2, 0, 0 });
             nudUnitPrice.Name = "nudUnitPrice";
             nudUnitPrice.Size = new Size(281, 30);
             nudUnitPrice.TabIndex = 8;
@@ -527,7 +529,7 @@ namespace AccountingSystemForWindowsFormLast.Forms
             dgvDetails.MultiSelect = false;
             dgvDetails.Name = "dgvDetails";
             dgvDetails.ReadOnly = true;
-            dgvDetails.RightToLeft = RightToLeft.No;
+            dgvDetails.RightToLeft = RightToLeft.Yes;
             dgvDetails.RowHeadersVisible = false;
             dgvDetails.RowHeadersWidth = 51;
             dgvDetails.SelectionMode = DataGridViewSelectionMode.FullRowSelect;

@@ -8,18 +8,21 @@ using AccountingSystemForWindowsFormLast.Helpers;
 namespace AccountingSystemForWindowsFormLast
 {
     public partial class frm_Main : Form
-    {
+    {// الحسابات
         private AccountsForm accountsForm;
         private JournalEntries journalEntriesForm;
         private ItemsForm itemsForm;
-
         private PurchaseInvoice purchaseInvoiceForm;
         private SalesInvoice salesInvoiceForm;
         private AccountStatement accountStatementForm;
         private StockReport stockReportForm;
         private ReceiptVoucher receiptVoucherForm;
         private PaymentVoucher paymentVoucherForm;
-        private SalesLog saleslogForm;
+        private PurchasesList purchasesListForm;
+        private SalesList salesListForm;
+        private PaymentsList paymentsListForm;
+        private ReceiptsList receiptsListForm;
+
         public frm_Main()
         {
             InitializeComponent();
@@ -315,14 +318,8 @@ namespace AccountingSystemForWindowsFormLast
 
             OpenForm(salesInvoiceForm);
         }
-     
-        private void salesRegisterMenuItem_Click(object sender, EventArgs e)
-        {
-            if (saleslogForm == null || saleslogForm.IsDisposed)
-                saleslogForm = new SalesLog();
 
-            OpenForm(saleslogForm);
-        }
+
         private void stockReportMenuItem_Click(object sender, EventArgs e)
         {
             if (stockReportForm == null || stockReportForm.IsDisposed)
@@ -424,7 +421,44 @@ namespace AccountingSystemForWindowsFormLast
                 form.ShowDialog(this);
             }
         }
+        /// <summary>
+        /// /////////////////////////////////////////
+        /// </summary>
 
-  
+
+        private void purchaseRegisterMenuItem_Click(object sender, EventArgs e)
+        {
+            if (purchasesListForm == null || purchasesListForm.IsDisposed)
+                purchasesListForm = new PurchasesList();
+
+            OpenForm(purchasesListForm);
+        }
+
+        private void salesRegisterMenuItem_Click(object sender, EventArgs e)
+        {
+            if (salesListForm == null || salesListForm.IsDisposed)
+                salesListForm = new SalesList();
+
+            OpenForm(salesListForm);
+        }
+
+        private void receiptRegisterMenuItem_Click(object sender, EventArgs e)
+        {
+            if (receiptsListForm == null || receiptsListForm.IsDisposed)
+                receiptsListForm = new ReceiptsList();
+
+            OpenForm(receiptsListForm);
+        }
+
+        private void paymentRegisterMenuItem_Click(object sender, EventArgs e)
+        {
+
+            if (paymentsListForm == null || paymentsListForm.IsDisposed)
+                paymentsListForm = new PaymentsList();
+
+            OpenForm(paymentsListForm);
+       
+
+        }
     }
 }

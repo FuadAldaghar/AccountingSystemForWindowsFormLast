@@ -1,12 +1,17 @@
-﻿using System.Data;
-using AccountingSystemForWindowsFormLast.Data;
+﻿
 using AccountingSystemForWindowsFormLast.Helpers;
-using Microsoft.Data.SqlClient;
+using AccountingSystemForWindowsFormLast.Models;
+using AccountingSystemForWindowsFormLast.Services;
+
 
 namespace AccountingSystemForWindowsFormLast.Forms
 {
     public partial class PurchaseInvoice : Form
     {
+        private readonly InvoiceService _invoiceService;
+        private readonly AccountService _accountService;
+        private readonly ItemService _itemService;
+        private List<AccountItem> _accounts = new List<AccountItem>();
         private int selectedDetailRow = -1;
 
         public PurchaseInvoice()
@@ -18,6 +23,10 @@ namespace AccountingSystemForWindowsFormLast.Forms
             UiTheme.StyleButton(btnNew, Accent.Neutral);
             UiTheme.StyleButton(btnAddRow, Accent.Primary);
             UiTheme.StyleButton(btnRemoveRow, Accent.Danger);
+            UiTheme.Apply(dgvDetails);
+            _invoiceService = new InvoiceService();
+            _accountService = new AccountService();
+            _itemService = new ItemService();
 
             btnNew.Click += btnNew_Click;
             btnSave.Click += btnSave_Click;
@@ -27,28 +36,48 @@ namespace AccountingSystemForWindowsFormLast.Forms
 
             cmbItem.SelectedIndexChanged += cmbItem_SelectedIndexChanged;
 
-            nudQuantity.ValueChanged += CalculateLineTotal;
             nudUnitPrice.ValueChanged += CalculateLineTotal;
 
             dgvDetails.CellClick += dgvDetails_CellClick;
         }
 
-        // =========================================================
-        // تحميل الفورم
-        // =========================================================
+        private void cmbPaymentType_SelectedIndexChanged(object? sender, EventArgs e)
+        {
+            LoadAccounts();
+        }
+
+        private void ApplyDefaultAccount()
+        {
+            if (_accounts.Count == 0 || cmbPaymentType.SelectedIndex < 0)
+                return;
+
+            string accountNumber = cmbPaymentType.Text.Trim() == InvoiceService.CashPaymentType
+                ? InvoiceService.CashAccountNumber
+                : InvoiceService.SuppliersAccountNumber;
+
+            int index = _accounts.FindIndex(x => x.AccountNumber == accountNumber);
+            cmbAccount.SelectedIndex = index;
+        }
+
+        private void nudQuantity_ValueChanged(object? sender, EventArgs e)
+        {
+            CalculateLineTotal(sender, e);
+        }
+
         private void PurchaseInvoice_Load(object sender, EventArgs e)
         {
+            PrepareGrid();
             LoadAccounts();
             LoadItems();
 
-            PrepareGrid();
+            if (cmbPaymentType.Items.Count > 0)
+            {
+                cmbPaymentType.SelectedIndex = 0;
+            }
 
             NewInvoice();
         }
 
-        // =========================================================
-        // تجهيز الجدول
-        // =========================================================
         private void PrepareGrid()
         {
             dgvDetails.Columns.Clear();
@@ -60,233 +89,141 @@ namespace AccountingSystemForWindowsFormLast.Forms
             dgvDetails.Columns.Add("UnitPrice", "سعر الوحدة");
             dgvDetails.Columns.Add("Total", "الإجمالي");
 
-            dgvDetails.Columns["ItemId"].Visible = false;
+            if (dgvDetails.Columns["ItemId"] != null) dgvDetails.Columns["ItemId"]!.Visible = false;
+            if (dgvDetails.Columns["ItemName"] != null) dgvDetails.Columns["ItemName"]!.FillWeight = 15;
+            if (dgvDetails.Columns["Unit"] != null) dgvDetails.Columns["Unit"]!.FillWeight = 15;
+            if (dgvDetails.Columns["Quantity"] != null) dgvDetails.Columns["Quantity"]!.FillWeight = 15;
+            if (dgvDetails.Columns["UnitPrice"] != null) dgvDetails.Columns["UnitPrice"]!.FillWeight = 17;
+            if (dgvDetails.Columns["Total"] != null) dgvDetails.Columns["Total"]!.FillWeight = 18;
 
-            dgvDetails.Columns["ItemName"].FillWeight = 35;
-            dgvDetails.Columns["Unit"].FillWeight = 15;
-            dgvDetails.Columns["Quantity"].FillWeight = 15;
-            dgvDetails.Columns["UnitPrice"].FillWeight = 17;
-            dgvDetails.Columns["Total"].FillWeight = 18;
+
+
+
+            ///
+ 
         }
 
-        // =========================================================
-        // تحميل الحسابات
-        // =========================================================
         private void LoadAccounts()
         {
             try
             {
-                using SqlConnection connection =
-                    DatabaseConnection.GetConnection();
+                List<AccountItem> accounts = _accountService.GetLeafAccounts();
+                _accounts = accounts;
 
-                string query = @"
-                    SELECT
-                        AccountId,
-                        AccountNumber,
-                        AccountName
-                    FROM Accounts
-                    WHERE IsGroup = 0
-                    ORDER BY AccountNumber";
-
-                using SqlCommand command =
-                    new SqlCommand(query, connection);
-
-                DataTable table = new DataTable();
-
-                connection.Open();
-
-                using SqlDataReader reader = command.ExecuteReader();
-
-                table.Load(reader);
-
-                cmbAccount.DataSource = table;
-                cmbAccount.DisplayMember = "AccountName";
+                cmbAccount.DataSource = null;
+                cmbAccount.DisplayMember = "DisplayText";
                 cmbAccount.ValueMember = "AccountId";
+                cmbAccount.DataSource = accounts;
                 cmbAccount.SelectedIndex = -1;
+
+                ApplyDefaultAccount();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(
-                    "حدث خطأ أثناء تحميل الحسابات:\n" + ex.Message,
-                    "خطأ",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+                MessageHelper.ShowError($"حدث خطأ أثناء تحميل الحسابات:\n{ex.Message}", "خطأ");
             }
         }
 
-        // =========================================================
-        // تحميل الأصناف
-        // =========================================================
         private void LoadItems()
         {
             try
             {
-                using SqlConnection connection =
-                    DatabaseConnection.GetConnection();
+                List<Item> items = _itemService.GetAll();
 
-                string query = @"
-                    SELECT
-                        ItemId,
-                        ItemNumber,
-                        ItemName,
-                        Unit
-                    FROM Items
-                    ORDER BY ItemNumber";
-
-                using SqlCommand command =
-                    new SqlCommand(query, connection);
-
-                DataTable table = new DataTable();
-
-                connection.Open();
-
-                using SqlDataReader reader = command.ExecuteReader();
-
-                table.Load(reader);
-
-                cmbItem.DataSource = table;
+                cmbItem.DataSource = null;
                 cmbItem.DisplayMember = "ItemName";
                 cmbItem.ValueMember = "ItemId";
+                cmbItem.DataSource = items;
                 cmbItem.SelectedIndex = -1;
             }
             catch (Exception ex)
             {
-                MessageBox.Show(
-                    "حدث خطأ أثناء تحميل الأصناف:\n" + ex.Message,
-                    "خطأ",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+                MessageHelper.ShowError($"حدث خطأ أثناء تحميل الأصناف:\n{ex.Message}", "خطأ");
             }
         }
 
-        // =========================================================
-        // عند اختيار الصنف
-        // =========================================================
-        private void cmbItem_SelectedIndexChanged(
-            object? sender,
-            EventArgs e)
+        private void cmbItem_SelectedIndexChanged(object? sender, EventArgs e)
         {
-            if (cmbItem.SelectedIndex < 0)
+            if (cmbItem.SelectedItem is Item item)
             {
-                txtUnit.Clear();
-                return;
+                txtUnit.Text = item.Unit;
+            }
+            else
+            {
+                txtUnit.Text = "";
             }
 
-            if (cmbItem.SelectedItem is DataRowView row)
-            {
-                txtUnit.Text = row["Unit"]?.ToString() ?? "";
-            }
-
-            CalculateLineTotal(null, EventArgs.Empty);
+            CalculateLineTotal(sender, e);
         }
 
-        // =========================================================
-        // حساب إجمالي السطر
-        // =========================================================
-        private void CalculateLineTotal(
-            object? sender,
-            EventArgs e)
+        private void CalculateLineTotal(object? sender, EventArgs e)
         {
-            decimal quantity = nudQuantity.Value;
-            decimal unitPrice = nudUnitPrice.Value;
-
-            decimal total = quantity * unitPrice;
-
+            decimal total = nudQuantity.Value * nudUnitPrice.Value;
             txtLineTotal.Text = total.ToString("N2");
         }
 
-        // =========================================================
-        // إضافة سطر
-        // =========================================================
         private void btnAddRow_Click(object? sender, EventArgs e)
         {
-            if (cmbItem.SelectedIndex < 0)
+            if (cmbItem.SelectedItem is not Item item)
             {
-                MessageBox.Show(
-                    "يرجى اختيار الصنف.",
-                    "تنبيه",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-
+                MessageHelper.ShowWarning("يرجى اختيار الصنف.", "تنبيه");
                 cmbItem.Focus();
                 return;
             }
 
             if (nudQuantity.Value <= 0)
             {
-                MessageBox.Show(
-                    "الكمية يجب أن تكون أكبر من صفر.",
-                    "تنبيه",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-
+                MessageHelper.ShowWarning("الكمية يجب أن تكون أكبر من صفر.", "تنبيه");
+                nudQuantity.Focus();
                 return;
             }
 
             if (nudUnitPrice.Value < 0)
             {
-                MessageBox.Show(
-                    "سعر الوحدة غير صحيح.",
-                    "تنبيه",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-
+                MessageHelper.ShowWarning("سعر الوحدة لا يمكن أن يكون سالباً.", "تنبيه");
+                nudUnitPrice.Focus();
                 return;
             }
 
-            int itemId = Convert.ToInt32(cmbItem.SelectedValue);
+            foreach (DataGridViewRow r in dgvDetails.Rows)
+            {
+                if (r.IsNewRow) continue;
+                if (r.Cells["ItemId"].Value != null &&
+                    Convert.ToInt32(r.Cells["ItemId"].Value) == item.ItemId)
+                {
+                    MessageHelper.ShowWarning("هذا الصنف مضاف مسبقاً في الفاتورة. يمكنك تعديل الكمية أو السعر.", "تنبيه");
+                    return;
+                }
+            }
 
-            string itemName = cmbItem.Text;
-            string unit = txtUnit.Text;
-
-            decimal quantity = nudQuantity.Value;
-            decimal unitPrice = nudUnitPrice.Value;
-
-            decimal total = quantity * unitPrice;
+            decimal total = nudQuantity.Value * nudUnitPrice.Value;
 
             dgvDetails.Rows.Add(
-                itemId,
-                itemName,
-                unit,
-                quantity.ToString("N2"),
-                unitPrice.ToString("N2"),
+                item.ItemId,
+                item.ItemName,
+                item.Unit,
+                nudQuantity.Value.ToString("N2"),
+                nudUnitPrice.Value.ToString("N2"),
                 total.ToString("N2"));
 
             CalculateInvoiceTotal();
-
             ClearDetailFields();
         }
 
-        // =========================================================
-        // حذف سطر
-        // =========================================================
         private void btnRemoveRow_Click(object? sender, EventArgs e)
         {
-            if (selectedDetailRow < 0 ||
-                selectedDetailRow >= dgvDetails.Rows.Count)
+            if (selectedDetailRow < 0 || selectedDetailRow >= dgvDetails.Rows.Count)
             {
-                MessageBox.Show(
-                    "يرجى تحديد السطر المراد حذفه.",
-                    "تنبيه",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-
+                MessageHelper.ShowWarning("يرجى تحديد السطر المراد حذفه.", "تنبيه");
                 return;
             }
 
             dgvDetails.Rows.RemoveAt(selectedDetailRow);
-
             selectedDetailRow = -1;
-
             CalculateInvoiceTotal();
         }
 
-        // =========================================================
-        // تحديد سطر
-        // =========================================================
-        private void dgvDetails_CellClick(
-            object? sender,
-            DataGridViewCellEventArgs e)
+        private void dgvDetails_CellClick(object? sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0)
                 return;
@@ -294,9 +231,6 @@ namespace AccountingSystemForWindowsFormLast.Forms
             selectedDetailRow = e.RowIndex;
         }
 
-        // =========================================================
-        // حساب إجمالي الفاتورة
-        // =========================================================
         private void CalculateInvoiceTotal()
         {
             decimal invoiceTotal = 0;
@@ -306,9 +240,7 @@ namespace AccountingSystemForWindowsFormLast.Forms
                 if (row.IsNewRow)
                     continue;
 
-                if (decimal.TryParse(
-                    row.Cells["Total"].Value?.ToString(),
-                    out decimal lineTotal))
+                if (decimal.TryParse(row.Cells["Total"].Value?.ToString(), out decimal lineTotal))
                 {
                     invoiceTotal += lineTotal;
                 }
@@ -317,548 +249,85 @@ namespace AccountingSystemForWindowsFormLast.Forms
             lblTotalAmount.Text = invoiceTotal.ToString("N2");
         }
 
-        // =========================================================
-        // حساب إجمالي الفاتورة كرقم
-        // =========================================================
-        private decimal GetInvoiceTotal()
+        private void btnSave_Click(object? sender, EventArgs e)
         {
-            decimal total = 0;
+            if (!ValidateInvoice())
+                return;
 
+            object? selectedAccount = cmbAccount.SelectedValue;
+            int accountId = selectedAccount == null || selectedAccount == DBNull.Value
+                ? 0
+                : Convert.ToInt32(selectedAccount);
+            string paymentType = cmbPaymentType.Text.Trim();
+            string invoiceNumber = txtInvoiceNumber.Text.Trim();
+            DateTime invoiceDate = dtpInvoiceDate.Value.Date;
+
+            List<InvoiceItem> items = new List<InvoiceItem>();
             foreach (DataGridViewRow row in dgvDetails.Rows)
             {
                 if (row.IsNewRow)
                     continue;
 
-                decimal.TryParse(
-                    row.Cells["Total"].Value?.ToString(),
-                    out decimal lineTotal);
-
-                total += lineTotal;
+                items.Add(new InvoiceItem
+                {
+                    ItemId = Convert.ToInt32(row.Cells["ItemId"].Value),
+                    ItemName = row.Cells["ItemName"].Value?.ToString() ?? "",
+                    Unit = row.Cells["Unit"].Value?.ToString() ?? "",
+                    Quantity = Convert.ToDecimal(row.Cells["Quantity"].Value),
+                    UnitPrice = Convert.ToDecimal(row.Cells["UnitPrice"].Value)
+                });
             }
-
-            return total;
-        }
-
-        // =========================================================
-        // حفظ الفاتورة
-        // =========================================================
-        private void btnSave_Click(object? sender, EventArgs e)
-        {//التحقق من صحة الفاتورة قبل الحفظ
-            if (!ValidateInvoice())
-                return;
-            // الحصول على إجمالي الفاتورة
-            decimal invoiceTotal = GetInvoiceTotal();
-            // الحصول على معرف الحساب ونوع الدفع
-            int accountId =
-                Convert.ToInt32(cmbAccount.SelectedValue);
-
-            string paymentType = cmbPaymentType.Text;
-            ///
 
             try
             {
-                using SqlConnection connection =
-                    DatabaseConnection.GetConnection();
+                _invoiceService.SavePurchaseInvoice(
+                    invoiceNumber,
+                    invoiceDate,
+                    paymentType,
+                    accountId,
+                    items);
 
-                connection.Open();
-                // بدء معاملة قاعدة البيانات
-                using SqlTransaction transaction =
-                    connection.BeginTransaction();
-
-                try
-                {
-                    // =================================================
-                    // 1. حفظ رأس الفاتورة
-                    // =================================================
-                    string invoiceQuery = @"
-                        INSERT INTO PurchaseInvoices
-                        (
-                            InvoiceNumber,
-                            InvoiceDate,
-                            PaymentType,
-                            AccountId
-                        )
-                        VALUES
-                        (
-                            @InvoiceNumber,
-                            @InvoiceDate,
-                            @PaymentType,
-                            @AccountId
-                        );
-
-                        SELECT SCOPE_IDENTITY();";
-                    // تنفيذ الاستعلام والحصول على معرف الفاتورة الجديدة
-                    int invoiceId;
-
-                    using (SqlCommand command =
-                        new SqlCommand(
-                            invoiceQuery,
-                            connection,
-                            transaction))
-                    {
-                        command.Parameters.AddWithValue(
-                            "@InvoiceNumber",
-                            txtInvoiceNumber.Text.Trim());
-
-                        command.Parameters.AddWithValue(
-                            "@InvoiceDate",
-                            dtpInvoiceDate.Value.Date);
-
-                        command.Parameters.AddWithValue(
-                            "@PaymentType",
-                            paymentType);
-
-                        command.Parameters.AddWithValue(
-                            "@AccountId",
-                            accountId);
-
-                        invoiceId =
-                            Convert.ToInt32(command.ExecuteScalar());
-                    }
-
-                    // =================================================
-                    // 2. حفظ تفاصيل الفاتورة
-                    // =================================================
-                    foreach (DataGridViewRow row in dgvDetails.Rows)
-                    {
-                        if (row.IsNewRow)
-                            continue;
-
-                        int itemId =
-                            Convert.ToInt32(
-                                row.Cells["ItemId"].Value);
-
-                        string unit =
-                            row.Cells["Unit"].Value?.ToString() ?? "";
-
-                        decimal quantity =
-                            Convert.ToDecimal(
-                                row.Cells["Quantity"].Value);
-
-                        decimal unitPrice =
-                            Convert.ToDecimal(
-                                row.Cells["UnitPrice"].Value);
-
-                        decimal total =
-                            quantity * unitPrice;
-
-                        //string detailQuery = @"
-                        //    INSERT INTO PurchaseInvoiceDetails
-                        //    (
-                        //        PurchaseInvoiceId,
-                        //        ItemId,
-                        //        Unit,
-                        //        Quantity,
-                        //        UnitPrice,
-                        //        Total
-                        //    )
-                        //    VALUES
-                        //    (
-                        //        @PurchaseInvoiceId,
-                        //        @ItemId,
-                        //        @Unit,
-                        //        @Quantity,
-                        //        @UnitPrice,
-                        //        @Total
-                        //    )";
-
-                        string detailQuery = @"
-    INSERT INTO PurchaseInvoiceDetails
-    (
-        PurchaseInvoiceId,
-        ItemId,
-        Quantity,
-        UnitPrice
-    )
-    VALUES
-    (
-        @PurchaseInvoiceId,
-        @ItemId,
-        @Quantity,
-        @UnitPrice)";
-                        using SqlCommand detailCommand =
-                            new SqlCommand(
-                                detailQuery,
-                                connection,
-                                transaction);
-
-                        detailCommand.Parameters.AddWithValue(
-                            "@PurchaseInvoiceId",
-                            invoiceId);
-
-                        detailCommand.Parameters.AddWithValue(
-                            "@ItemId",
-                            itemId);
-
-                        //detailCommand.Parameters.AddWithValue(
-                        //    "@Unit",
-                        //    unit);
-
-                        detailCommand.Parameters.AddWithValue(
-                            "@Quantity",
-                            quantity);
-
-                        detailCommand.Parameters.AddWithValue(
-                            "@UnitPrice",
-                            unitPrice);
-
-                        detailCommand.Parameters.AddWithValue(
-                            "@Total",
-                            total);
-
-                        detailCommand.ExecuteNonQuery();
-                    }
-
-                    // =================================================
-                    // 3. القيد المحاسبي
-                    // =================================================
-                    CreateJournalEntry(
-                        connection,
-                        transaction,
-                        invoiceId,
-                        invoiceTotal,
-                        accountId,
-                        paymentType);
-
-                    // =================================================
-                    // نجاح العملية
-                    // =================================================
-                    transaction.Commit();
-
-                    MessageBox.Show(
-                        "تم حفظ فاتورة المشتريات وترحيل القيد المحاسبي بنجاح.",
-                        "نجاح",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information);
-
-                    NewInvoice();
-                }
-                catch
-                {
-                    transaction.Rollback();
-                    throw;
-                }
-            }
-            catch (SqlException ex)
-            {
-                MessageBox.Show(
-                    "حدث خطأ في قاعدة البيانات:\n" + ex.Message,
-                    "خطأ",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+                MessageHelper.ShowInfo("تم حفظ فاتورة المشتريات وترحيل القيد المحاسبي بنجاح.", "نجاح");
+                NewInvoice();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(
-                    "حدث خطأ أثناء حفظ الفاتورة:\n" + ex.Message,
-                    "خطأ",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+                MessageHelper.ShowError($"حدث خطأ أثناء حفظ فاتورة المشتريات:\n{ex.Message}", "خطأ");
             }
         }
 
-        // =========================================================
-        // إنشاء القيد المحاسبي
-        // =========================================================
-        private void CreateJournalEntry(
-            SqlConnection connection,
-            SqlTransaction transaction,
-            int invoiceId,
-            decimal amount,
-            int accountId,
-            string paymentType)
-        {
-            /*
-             * فاتورة شراء:
-             *
-             * مدين  = المخزون
-             * دائن   = الحساب المقابل
-             *
-             * نقد:
-             * الحساب المقابل = الحساب المختار
-             *
-             * أجل:
-             * الحساب المختار = حساب المورد
-             *
-             * مثال:
-             * شراء بقيمة 100,000 آجل
-             *
-             * المخزون      مدين 100,000
-             * المورد       دائن 100,000
-             */
-
-            int inventoryAccountId =
-                GetInventoryAccountId(
-                    connection,
-                    transaction);
-
-            string entryNumber =
-                GetNextJournalEntryNumber(
-                    connection,
-                    transaction);
-
-            string description =
-                $"فاتورة مشتريات رقم {txtInvoiceNumber.Text}";
-
-            // ---------------------------------------------------------
-            // رأس القيد
-            // ---------------------------------------------------------
-            string entryQuery = @"
-                INSERT INTO JournalEntries
-                (
-                    EntryNumber,
-                    EntryDate,
-                    Description
-                )
-                VALUES
-                (
-                    @EntryNumber,
-                    @EntryDate,
-                    @Description
-                );
-
-                SELECT SCOPE_IDENTITY();";
-
-            int journalEntryId;
-
-            using (SqlCommand command =
-                new SqlCommand(
-                    entryQuery,
-                    connection,
-                    transaction))
-            {
-                command.Parameters.AddWithValue(
-                    "@EntryNumber",
-                    entryNumber);
-
-                command.Parameters.AddWithValue(
-                    "@EntryDate",
-                    dtpInvoiceDate.Value.Date);
-
-                command.Parameters.AddWithValue(
-                    "@Description",
-                    description);
-
-                journalEntryId =
-                    Convert.ToInt32(command.ExecuteScalar());
-            }
-
-            // ---------------------------------------------------------
-            // مدين: المخزون
-            // ---------------------------------------------------------
-            InsertJournalDetail(
-                connection,
-                transaction,
-                journalEntryId,
-                inventoryAccountId,
-                amount,
-                0,
-                description);
-
-            // ---------------------------------------------------------
-            // دائن: الحساب المقابل
-            // ---------------------------------------------------------
-            InsertJournalDetail(
-                connection,
-                transaction,
-                journalEntryId,
-                accountId,
-                0,
-                amount,
-                description);
-        }
-
-        // =========================================================
-        // إضافة تفاصيل القيد
-        // =========================================================
-        private void InsertJournalDetail(
-            SqlConnection connection,
-            SqlTransaction transaction,
-            int journalEntryId,
-            int accountId,
-            decimal debit,
-            decimal credit,
-            string description)
-        {
-            string query = @"
-                INSERT INTO JournalEntryDetails
-                (
-                    JournalEntryId,
-                    AccountId,
-                    Debit,
-                    Credit,
-                    Description
-                )
-                VALUES
-                (
-                    @JournalEntryId,
-                    @AccountId,
-                    @Debit,
-                    @Credit,
-                    @Description
-                )";
-
-            using SqlCommand command =
-                new SqlCommand(
-                    query,
-                    connection,
-                    transaction);
-
-            command.Parameters.AddWithValue(
-                "@JournalEntryId",
-                journalEntryId);
-
-            command.Parameters.AddWithValue(
-                "@AccountId",
-                accountId);
-
-            command.Parameters.AddWithValue(
-                "@Debit",
-                debit);
-
-            command.Parameters.AddWithValue(
-                "@Credit",
-                credit);
-
-            command.Parameters.AddWithValue(
-                "@Description",
-                description);
-
-            command.ExecuteNonQuery();
-        }
-
-        // =========================================================
-        // الحصول على حساب المخزون
-        // =========================================================
-        private int GetInventoryAccountId(
-     SqlConnection connection,
-     SqlTransaction transaction)
-        {
-            string query = @"
-        SELECT TOP 1 AccountId
-        FROM Accounts
-        WHERE AccountNumber = N'114'
-          AND AccountName = N'المخزون'
-          AND IsGroup = 0";
-
-            using SqlCommand command =
-                new SqlCommand(
-                    query,
-                    connection,
-                    transaction);
-
-            object? result = command.ExecuteScalar();
-
-            if (result == null)
-            {
-                throw new Exception(
-                    "لم يتم العثور على حساب المخزون 114.");
-            }
-
-            return Convert.ToInt32(result);
-        }
-
-        // =========================================================
-        // رقم القيد التالي
-        // =========================================================
-        private string GetNextJournalEntryNumber(
-            SqlConnection connection,
-            SqlTransaction transaction)
-        {
-            string query = @"
-                SELECT
-                    ISNULL(
-                        MAX(
-                            TRY_CAST(EntryNumber AS INT)
-                        ),
-                        0
-                    ) + 1
-                FROM JournalEntries";
-
-            using SqlCommand command =
-                new SqlCommand(
-                    query,
-                    connection,
-                    transaction);
-
-            int nextNumber =
-                Convert.ToInt32(command.ExecuteScalar());
-
-            return nextNumber.ToString();
-        }
-
-        // =========================================================
-        // التحقق من الفاتورة
-        // =========================================================
         private bool ValidateInvoice()
         {
             if (string.IsNullOrWhiteSpace(txtInvoiceNumber.Text))
             {
-                MessageBox.Show(
-                    "رقم الفاتورة غير موجود.",
-                    "تنبيه",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-
+                MessageHelper.ShowWarning("رقم الفاتورة مطلوب.", "تنبيه");
                 return false;
             }
 
             if (cmbPaymentType.SelectedIndex < 0)
             {
-                MessageBox.Show(
-                    "يرجى اختيار نوع الدفع: نقد أو أجل.",
-                    "تنبيه",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-
+                MessageHelper.ShowWarning("يرجى اختيار نوع الدفع: نقد أو أجل.", "تنبيه");
                 cmbPaymentType.Focus();
-
                 return false;
             }
 
-            if (cmbAccount.SelectedIndex < 0)
+            if (cmbPaymentType.Text.Trim() != InvoiceService.CashPaymentType &&
+                (cmbAccount.SelectedIndex < 0 || cmbAccount.SelectedValue == null))
             {
-                MessageBox.Show(
-                    "يرجى اختيار الحساب.",
-                    "تنبيه",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-
+                MessageHelper.ShowWarning("يرجى اختيار حساب المورد في حالة الشراء الآجل.", "تنبيه");
                 cmbAccount.Focus();
-
                 return false;
             }
 
-            if (dgvDetails.Rows.Count == 0)
+            if (dgvDetails.Rows.Count == 0 || (dgvDetails.Rows.Count == 1 && dgvDetails.Rows[0].IsNewRow))
             {
-                MessageBox.Show(
-                    "لا يمكن حفظ الفاتورة بدون أصناف.",
-                    "تنبيه",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-
-                return false;
-            }
-
-            decimal total = GetInvoiceTotal();
-
-            if (total <= 0)
-            {
-                MessageBox.Show(
-                    "إجمالي الفاتورة يجب أن يكون أكبر من صفر.",
-                    "تنبيه",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-
+                MessageHelper.ShowWarning("يجب إضافة صنف واحد على الأقل في الفاتورة.", "تنبيه");
                 return false;
             }
 
             return true;
         }
 
-        // =========================================================
-        // فاتورة جديدة
-        // =========================================================
         private void btnNew_Click(object? sender, EventArgs e)
         {
             NewInvoice();
@@ -866,91 +335,41 @@ namespace AccountingSystemForWindowsFormLast.Forms
 
         private void NewInvoice()
         {
-            txtInvoiceNumber.Text =
-                GenerateInvoiceNumber();
+            try
+            {
+                txtInvoiceNumber.Text = _invoiceService.GetNextPurchaseInvoiceNumber();
+            }
+            catch
+            {
+                txtInvoiceNumber.Text = "1";
+            }
 
-            dtpInvoiceDate.Value =
-                DateTime.Today;
+            dtpInvoiceDate.Value = DateTime.Today;
 
-            cmbPaymentType.SelectedIndex = -1;
             cmbAccount.SelectedIndex = -1;
 
-            dgvDetails.Rows.Clear();
+            if (cmbPaymentType.Items.Count > 0)
+                cmbPaymentType.SelectedIndex = 0;
 
-            selectedDetailRow = -1;
+            ApplyDefaultAccount();
 
             ClearDetailFields();
+
+            dgvDetails.Rows.Clear();
+            selectedDetailRow = -1;
 
             CalculateInvoiceTotal();
         }
 
-        // =========================================================
-        // توليد رقم الفاتورة
-        // =========================================================
-        private string GenerateInvoiceNumber()
-        {
-            try
-            {
-                using SqlConnection connection =
-                    DatabaseConnection.GetConnection();
-
-                string query = @"
-                    SELECT
-                        ISNULL(
-                            MAX(
-                                TRY_CAST(InvoiceNumber AS INT)
-                            ),
-                            0
-                        ) + 1
-                    FROM PurchaseInvoices";
-
-                using SqlCommand command =
-                    new SqlCommand(query, connection);
-
-                connection.Open();
-
-                int nextNumber =
-                    Convert.ToInt32(command.ExecuteScalar());
-
-                return nextNumber.ToString();
-            }
-            catch
-            {
-                return "1";
-            }
-        }
-
-        // =========================================================
-        // تنظيف حقول السطر
-        // =========================================================
         private void ClearDetailFields()
         {
             cmbItem.SelectedIndex = -1;
             txtUnit.Clear();
-
             nudQuantity.Value = 1;
             nudUnitPrice.Value = 0;
-
             txtLineTotal.Text = "0.00";
-
-            selectedDetailRow = -1;
-
-            dgvDetails.ClearSelection();
         }
 
-        private void cmbPaymentType_SelectedIndexChanged(object sender, EventArgs e)
-        {
 
-        }
-
-        private void nudQuantity_ValueChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void groupInvoice_Enter(object sender, EventArgs e)
-        {
-
-        }
     }
 }

@@ -131,12 +131,24 @@ namespace AccountingSystemForWindowsFormLast.Helpers
                     toolStrip.BackColor = SurfaceAlt;
                     toolStrip.Font = Body(10F);
                     break;
+                    
             }
 
             foreach (Control child in control.Controls)
-            {
+            {   
                 Apply(child);
+
             }
+            if ((control.Name == "panelHeader" || control.Name == "pnlHeader") && control.Controls[0] is Label)
+            {
+                control.Controls[0].ForeColor = Color.White;
+             
+
+
+            }
+
+          
+
         }
 
         private static void StylePanel(Panel panel)
@@ -312,6 +324,19 @@ namespace AccountingSystemForWindowsFormLast.Helpers
             grid.AlternatingRowsDefaultCellStyle.SelectionBackColor = Color.FromArgb(214, 232, 222);
 
             grid.RowTemplate.Height = RowHeight;
+
+
+
+            grid.DefaultCellStyle.Alignment =
+            DataGridViewContentAlignment.MiddleCenter;
+
+             grid.ColumnHeadersDefaultCellStyle.Alignment =
+                DataGridViewContentAlignment.MiddleCenter;
+
+            grid.CellBorderStyle =
+                DataGridViewCellBorderStyle.Single;
+
+            grid.GridColor = Color.LightGray;
         }
 
         private static void StyleMenu(MenuStrip menu)

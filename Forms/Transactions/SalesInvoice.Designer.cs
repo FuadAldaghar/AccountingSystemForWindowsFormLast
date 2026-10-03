@@ -1,44 +1,4 @@
 ﻿
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 namespace AccountingSystemForWindowsFormLast.Forms
 {
     partial class SalesInvoice
@@ -567,7 +527,7 @@ namespace AccountingSystemForWindowsFormLast.Forms
             dgvDetails.MultiSelect = false;
             dgvDetails.Name = "dgvDetails";
             dgvDetails.ReadOnly = true;
-            dgvDetails.RightToLeft = RightToLeft.No;
+            dgvDetails.RightToLeft = RightToLeft.Yes;
             dgvDetails.RowHeadersVisible = false;
             dgvDetails.RowHeadersWidth = 51;
             dgvDetails.SelectionMode = DataGridViewSelectionMode.FullRowSelect;

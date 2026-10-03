@@ -44,7 +44,6 @@ namespace AccountingSystemForWindowsFormLast
         private System.Windows.Forms.Panel pnlHeaderAccent;
         private System.Windows.Forms.Label lblTitle;
         private System.Windows.Forms.Label lblSubTitle;
-        private System.Windows.Forms.Label lblBrand;
 
         protected override void Dispose(bool disposing)
         {
@@ -60,7 +59,6 @@ namespace AccountingSystemForWindowsFormLast
         {
             contentPanel = new Panel();
             pnlHeader = new Panel();
-            lblBrand = new Label();
             lblSubTitle = new Label();
             lblTitle = new Label();
             pnlHeaderAccent = new Panel();
@@ -100,81 +98,69 @@ namespace AccountingSystemForWindowsFormLast
             // 
             contentPanel.BackColor = Color.FromArgb(246, 248, 247);
             contentPanel.Dock = DockStyle.Fill;
-            contentPanel.Location = new Point(0, 123);
+            contentPanel.Location = new Point(0, 134);
             contentPanel.Name = "contentPanel";
-            contentPanel.Padding = new Padding(10);
-            contentPanel.Size = new Size(1390, 731);
+            contentPanel.Padding = new Padding(11);
+            contentPanel.Size = new Size(1544, 794);
             contentPanel.TabIndex = 2;
             // 
             // pnlHeader
             // 
             pnlHeader.BackColor = Color.FromArgb(24, 78, 58);
-            pnlHeader.Controls.Add(lblBrand);
             pnlHeader.Controls.Add(lblSubTitle);
             pnlHeader.Controls.Add(lblTitle);
             pnlHeader.Controls.Add(pnlHeaderAccent);
             pnlHeader.Dock = DockStyle.Top;
+            pnlHeader.Font = new Font("PT Bold Heading", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 178);
             pnlHeader.Location = new Point(0, 0);
             pnlHeader.Name = "pnlHeader";
-            pnlHeader.Size = new Size(1390, 78);
+            pnlHeader.Size = new Size(1544, 85);
             pnlHeader.TabIndex = 0;
-            // 
-            // lblBrand
-            // 
-            lblBrand.Dock = DockStyle.Right;
-            lblBrand.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            lblBrand.ForeColor = Color.FromArgb(230, 240, 235);
-            lblBrand.Location = new Point(1180, 0);
-            lblBrand.Name = "lblBrand";
-            lblBrand.Padding = new Padding(0, 0, 24, 0);
-            lblBrand.Size = new Size(210, 74);
-            lblBrand.TabIndex = 0;
-            lblBrand.Text = "Accounting System";
-            lblBrand.TextAlign = ContentAlignment.MiddleRight;
             // 
             // lblSubTitle
             // 
             lblSubTitle.Font = new Font("Segoe UI", 9F);
             lblSubTitle.ForeColor = Color.FromArgb(205, 225, 215);
-            lblSubTitle.Location = new Point(24, 43);
+            lblSubTitle.Location = new Point(27, 47);
             lblSubTitle.Name = "lblSubTitle";
-            lblSubTitle.Size = new Size(650, 24);
+            lblSubTitle.Size = new Size(722, 26);
             lblSubTitle.TabIndex = 2;
-            lblSubTitle.Text = "إدارة الحسابات والفواتير والسندات والتقارير المالية";
             lblSubTitle.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // lblTitle
             // 
-            lblTitle.Font = new Font("Segoe UI", 19F, FontStyle.Bold);
+            lblTitle.AutoEllipsis = true;
+            lblTitle.FlatStyle = FlatStyle.Popup;
+            lblTitle.Font = new Font("PT Bold Heading", 14F, FontStyle.Regular, GraphicsUnit.Point, 178);
             lblTitle.ForeColor = Color.White;
-            lblTitle.Location = new Point(24, 7);
+            lblTitle.Location = new Point(1116, 10);
             lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(650, 38);
+            lblTitle.Size = new Size(416, 63);
             lblTitle.TabIndex = 1;
-            lblTitle.Text = "نظام المحاسبة";
+            lblTitle.Text = "نظام ادارة المبيعات والمشتريات";
             lblTitle.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // pnlHeaderAccent
             // 
             pnlHeaderAccent.BackColor = Color.FromArgb(214, 170, 54);
             pnlHeaderAccent.Dock = DockStyle.Bottom;
-            pnlHeaderAccent.Location = new Point(0, 74);
+            pnlHeaderAccent.Location = new Point(0, 81);
             pnlHeaderAccent.Name = "pnlHeaderAccent";
-            pnlHeaderAccent.Size = new Size(1390, 4);
+            pnlHeaderAccent.Size = new Size(1544, 4);
             pnlHeaderAccent.TabIndex = 0;
             // 
             // mainMenuStrip
             // 
             mainMenuStrip.BackColor = Color.White;
-            mainMenuStrip.Font = new Font("Segoe UI", 10F);
+            mainMenuStrip.Font = new Font("PT Bold Heading", 8F);
             mainMenuStrip.ForeColor = Color.FromArgb(45, 45, 45);
             mainMenuStrip.ImageScalingSize = new Size(24, 24);
             mainMenuStrip.Items.AddRange(new ToolStripItem[] { loginMenu, databaseMenu, systemMenu, vouchersMenu, invoicesMenu, reportsMenu });
-            mainMenuStrip.Location = new Point(0, 78);
+            mainMenuStrip.Location = new Point(0, 85);
             mainMenuStrip.Name = "mainMenuStrip";
-            mainMenuStrip.Padding = new Padding(16, 7, 16, 7);
+            mainMenuStrip.Padding = new Padding(18, 8, 18, 8);
             mainMenuStrip.RightToLeft = RightToLeft.Yes;
-            mainMenuStrip.Size = new Size(1390, 45);
+            mainMenuStrip.Size = new Size(1544, 49);
             mainMenuStrip.TabIndex = 1;
             // 
             // loginMenu
@@ -182,27 +168,27 @@ namespace AccountingSystemForWindowsFormLast
             loginMenu.DropDownItems.AddRange(new ToolStripItem[] { loginMenuItem, logoutMenuItem, changePasswordMenuItem });
             loginMenu.Name = "loginMenu";
             loginMenu.Padding = new Padding(10, 2, 10, 2);
-            loginMenu.Size = new Size(135, 31);
+            loginMenu.Size = new Size(113, 33);
             loginMenu.Text = "تسجيل الدخول";
             // 
             // loginMenuItem
             // 
             loginMenuItem.Name = "loginMenuItem";
-            loginMenuItem.Size = new Size(215, 28);
+            loginMenuItem.Size = new Size(183, 30);
             loginMenuItem.Text = "تسجيل الدخول";
             loginMenuItem.Click += loginMenuItem_Click;
             // 
             // logoutMenuItem
             // 
             logoutMenuItem.Name = "logoutMenuItem";
-            logoutMenuItem.Size = new Size(215, 28);
+            logoutMenuItem.Size = new Size(183, 30);
             logoutMenuItem.Text = "تسجيل الخروج";
             logoutMenuItem.Click += logoutMenuItem_Click;
             // 
             // changePasswordMenuItem
             // 
             changePasswordMenuItem.Name = "changePasswordMenuItem";
-            changePasswordMenuItem.Size = new Size(215, 28);
+            changePasswordMenuItem.Size = new Size(183, 30);
             changePasswordMenuItem.Text = "تغيير كلمة المرور";
             changePasswordMenuItem.Click += changePasswordMenuItem_Click;
             // 
@@ -211,27 +197,27 @@ namespace AccountingSystemForWindowsFormLast
             databaseMenu.DropDownItems.AddRange(new ToolStripItem[] { connectionMenuItem, backupMenuItem, restoreMenuItem });
             databaseMenu.Name = "databaseMenu";
             databaseMenu.Padding = new Padding(10, 2, 10, 2);
-            databaseMenu.Size = new Size(193, 31);
+            databaseMenu.Size = new Size(156, 33);
             databaseMenu.Text = "إعدادات قاعدة البيانات";
             // 
             // connectionMenuItem
             // 
             connectionMenuItem.Name = "connectionMenuItem";
-            connectionMenuItem.Size = new Size(253, 28);
+            connectionMenuItem.Size = new Size(220, 30);
             connectionMenuItem.Text = "ربط قاعدة البيانات";
             connectionMenuItem.Click += connectionMenuItem_Click_1;
             // 
             // backupMenuItem
             // 
             backupMenuItem.Name = "backupMenuItem";
-            backupMenuItem.Size = new Size(253, 28);
+            backupMenuItem.Size = new Size(220, 30);
             backupMenuItem.Text = "نسخ احتياطي";
             backupMenuItem.Click += backupMenuItem_Click_1;
             // 
             // restoreMenuItem
             // 
             restoreMenuItem.Name = "restoreMenuItem";
-            restoreMenuItem.Size = new Size(253, 28);
+            restoreMenuItem.Size = new Size(220, 30);
             restoreMenuItem.Text = "استعادة قاعدة البيانات";
             restoreMenuItem.Click += restoreMenuItem_Click_1;
             // 
@@ -240,27 +226,27 @@ namespace AccountingSystemForWindowsFormLast
             systemMenu.DropDownItems.AddRange(new ToolStripItem[] { accountTreeMenuItem, itemsMenuItem, usersMenuItem });
             systemMenu.Name = "systemMenu";
             systemMenu.Padding = new Padding(10, 2, 10, 2);
-            systemMenu.Size = new Size(76, 31);
+            systemMenu.Size = new Size(70, 33);
             systemMenu.Text = "الدليل";
             // 
             // accountTreeMenuItem
             // 
             accountTreeMenuItem.Name = "accountTreeMenuItem";
-            accountTreeMenuItem.Size = new Size(217, 28);
+            accountTreeMenuItem.Size = new Size(185, 30);
             accountTreeMenuItem.Text = "دليل الحسابات";
             accountTreeMenuItem.Click += accountTreeMenuItem_Click;
             // 
             // itemsMenuItem
             // 
             itemsMenuItem.Name = "itemsMenuItem";
-            itemsMenuItem.Size = new Size(217, 28);
+            itemsMenuItem.Size = new Size(185, 30);
             itemsMenuItem.Text = "دليل الأصناف";
             itemsMenuItem.Click += itemsMenuItem_Click;
             // 
             // usersMenuItem
             // 
             usersMenuItem.Name = "usersMenuItem";
-            usersMenuItem.Size = new Size(217, 28);
+            usersMenuItem.Size = new Size(185, 30);
             usersMenuItem.Text = "إدارة المستخدمين";
             usersMenuItem.Click += usersMenuItem_Click;
             // 
@@ -269,67 +255,70 @@ namespace AccountingSystemForWindowsFormLast
             vouchersMenu.DropDownItems.AddRange(new ToolStripItem[] { receiptVoucherMenuItem, receiptRegisterMenuItem, paymentVoucherMenuItem, paymentRegisterMenuItem });
             vouchersMenu.Name = "vouchersMenu";
             vouchersMenu.Padding = new Padding(10, 2, 10, 2);
-            vouchersMenu.Size = new Size(93, 31);
+            vouchersMenu.Size = new Size(80, 33);
             vouchersMenu.Text = "السندات";
             // 
             // receiptVoucherMenuItem
             // 
             receiptVoucherMenuItem.Name = "receiptVoucherMenuItem";
-            receiptVoucherMenuItem.Size = new Size(237, 28);
+            receiptVoucherMenuItem.Size = new Size(201, 30);
             receiptVoucherMenuItem.Text = "سند قبض";
             receiptVoucherMenuItem.Click += receiptVoucherMenuItem_Click;
             // 
             // receiptRegisterMenuItem
             // 
             receiptRegisterMenuItem.Name = "receiptRegisterMenuItem";
-            receiptRegisterMenuItem.Size = new Size(237, 28);
+            receiptRegisterMenuItem.Size = new Size(201, 30);
             receiptRegisterMenuItem.Text = "سجل سندات القبض";
+            receiptRegisterMenuItem.Click += receiptRegisterMenuItem_Click;
             // 
             // paymentVoucherMenuItem
             // 
             paymentVoucherMenuItem.Name = "paymentVoucherMenuItem";
-            paymentVoucherMenuItem.Size = new Size(237, 28);
+            paymentVoucherMenuItem.Size = new Size(201, 30);
             paymentVoucherMenuItem.Text = "سند صرف";
             paymentVoucherMenuItem.Click += paymentVoucherMenuItem_Click;
             // 
             // paymentRegisterMenuItem
             // 
             paymentRegisterMenuItem.Name = "paymentRegisterMenuItem";
-            paymentRegisterMenuItem.Size = new Size(237, 28);
+            paymentRegisterMenuItem.Size = new Size(201, 30);
             paymentRegisterMenuItem.Text = "سجل سندات الصرف";
+            paymentRegisterMenuItem.Click += paymentRegisterMenuItem_Click;
             // 
             // invoicesMenu
             // 
             invoicesMenu.DropDownItems.AddRange(new ToolStripItem[] { purchaseInvoiceMenuItem, purchaseRegisterMenuItem, salesInvoiceMenuItem, salesRegisterMenuItem });
             invoicesMenu.Name = "invoicesMenu";
             invoicesMenu.Padding = new Padding(10, 2, 10, 2);
-            invoicesMenu.Size = new Size(85, 31);
+            invoicesMenu.Size = new Size(73, 33);
             invoicesMenu.Text = "الفواتير";
             // 
             // purchaseInvoiceMenuItem
             // 
             purchaseInvoiceMenuItem.Name = "purchaseInvoiceMenuItem";
-            purchaseInvoiceMenuItem.Size = new Size(224, 28);
+            purchaseInvoiceMenuItem.Size = new Size(180, 30);
             purchaseInvoiceMenuItem.Text = "فاتورة مشتريات";
             purchaseInvoiceMenuItem.Click += purchaseInvoiceMenuItem_Click;
             // 
             // purchaseRegisterMenuItem
             // 
             purchaseRegisterMenuItem.Name = "purchaseRegisterMenuItem";
-            purchaseRegisterMenuItem.Size = new Size(224, 28);
+            purchaseRegisterMenuItem.Size = new Size(180, 30);
             purchaseRegisterMenuItem.Text = "سجل المشتريات";
+            purchaseRegisterMenuItem.Click += purchaseRegisterMenuItem_Click;
             // 
             // salesInvoiceMenuItem
             // 
             salesInvoiceMenuItem.Name = "salesInvoiceMenuItem";
-            salesInvoiceMenuItem.Size = new Size(224, 28);
+            salesInvoiceMenuItem.Size = new Size(180, 30);
             salesInvoiceMenuItem.Text = "فاتورة مبيعات";
             salesInvoiceMenuItem.Click += salesInvoiceMenuItem_Click;
             // 
             // salesRegisterMenuItem
             // 
             salesRegisterMenuItem.Name = "salesRegisterMenuItem";
-            salesRegisterMenuItem.Size = new Size(224, 28);
+            salesRegisterMenuItem.Size = new Size(180, 30);
             salesRegisterMenuItem.Text = "سجل المبيعات";
             salesRegisterMenuItem.Click += salesRegisterMenuItem_Click;
             // 
@@ -338,27 +327,27 @@ namespace AccountingSystemForWindowsFormLast
             reportsMenu.DropDownItems.AddRange(new ToolStripItem[] { stockReportMenuItem, accountStatementMenuItem, قيوداليوميهToolStripMenuItem });
             reportsMenu.Name = "reportsMenu";
             reportsMenu.Padding = new Padding(10, 2, 10, 2);
-            reportsMenu.Size = new Size(84, 31);
+            reportsMenu.Size = new Size(74, 33);
             reportsMenu.Text = "التقارير";
             // 
             // stockReportMenuItem
             // 
             stockReportMenuItem.Name = "stockReportMenuItem";
-            stockReportMenuItem.Size = new Size(244, 28);
+            stockReportMenuItem.Size = new Size(208, 30);
             stockReportMenuItem.Text = "تقرير مخزون الأصناف";
             stockReportMenuItem.Click += stockReportMenuItem_Click;
             // 
             // accountStatementMenuItem
             // 
             accountStatementMenuItem.Name = "accountStatementMenuItem";
-            accountStatementMenuItem.Size = new Size(244, 28);
+            accountStatementMenuItem.Size = new Size(208, 30);
             accountStatementMenuItem.Text = "كشف حساب";
             accountStatementMenuItem.Click += accountStatementMenuItem_Click;
             // 
             // قيوداليوميهToolStripMenuItem
             // 
             قيوداليوميهToolStripMenuItem.Name = "قيوداليوميهToolStripMenuItem";
-            قيوداليوميهToolStripMenuItem.Size = new Size(244, 28);
+            قيوداليوميهToolStripMenuItem.Size = new Size(208, 30);
             قيوداليوميهToolStripMenuItem.Text = "قيود اليومية";
             قيوداليوميهToolStripMenuItem.Click += قيوداليوميهToolStripMenuItem_Click;
             // 
@@ -370,21 +359,20 @@ namespace AccountingSystemForWindowsFormLast
             // 
             // frm_Main
             // 
-            AutoScaleDimensions = new SizeF(9F, 23F);
+            AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(246, 248, 247);
-            ClientSize = new Size(1390, 854);
+            ClientSize = new Size(1544, 928);
             Controls.Add(contentPanel);
             Controls.Add(mainMenuStrip);
             Controls.Add(pnlHeader);
-            Font = new Font("Segoe UI", 10F);
+            Font = new Font("PT Bold Heading", 8.25F);
             MainMenuStrip = mainMenuStrip;
-            MinimumSize = new Size(1000, 650);
+            MinimumSize = new Size(1109, 702);
             Name = "frm_Main";
             RightToLeft = RightToLeft.Yes;
             RightToLeftLayout = true;
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "نظام المحاسبة";
             Load += frm_Main_Load;
             pnlHeader.ResumeLayout(false);
             mainMenuStrip.ResumeLayout(false);
