@@ -1,6 +1,4 @@
-﻿using System;
-using System.Drawing;
-using System.Windows.Forms;
+﻿
 using AccountingSystemForWindowsFormLast.Forms;
 using AccountingSystemForWindowsFormLast.Forms.Authentication;
 using AccountingSystemForWindowsFormLast.Helpers;
@@ -35,7 +33,7 @@ namespace AccountingSystemForWindowsFormLast
             // pnlHeader.BringToFront();
             //contentPanel.BringToFront();
             InitializeMenuIcons();
-            //  ApplyPermissions();
+            ApplyPermissions();
             UiTheme.Apply(this);
 
 
@@ -49,52 +47,45 @@ namespace AccountingSystemForWindowsFormLast
             usersMenuItem.Image = CreateMenuIcon(MenuIconType.Users);
 
             vouchersMenu.Image = CreateMenuIcon(MenuIconType.Money);
-            receiptVoucherMenuItem.Image = CreateMenuIcon(MenuIconType.Receipt);
-            paymentVoucherMenuItem.Image = CreateMenuIcon(MenuIconType.Payment);
+            receiptVoucherMenuItem.Image = CreateMenuIcon(MenuIconType.New);
+            paymentVoucherMenuItem.Image = CreateMenuIcon(MenuIconType.New);
 
             invoicesMenu.Image = CreateMenuIcon(MenuIconType.Invoice);
-            purchaseInvoiceMenuItem.Image = CreateMenuIcon(MenuIconType.Purchase);
-            salesInvoiceMenuItem.Image = CreateMenuIcon(MenuIconType.Sales);
+            purchaseInvoiceMenuItem.Image = CreateMenuIcon(MenuIconType.New);
+            salesInvoiceMenuItem.Image = CreateMenuIcon(MenuIconType.New);
 
             reportsMenu.Image = CreateMenuIcon(MenuIconType.Report);
             stockReportMenuItem.Image = CreateMenuIcon(MenuIconType.Stock);
             accountStatementMenuItem.Image = CreateMenuIcon(MenuIconType.Statement);
             قيوداليوميهToolStripMenuItem.Image = CreateMenuIcon(MenuIconType.Report);
+
+           databaseMenu.Image= CreateMenuIcon(MenuIconType.Database);
+            restoreMenuItem.Image= CreateMenuIcon(MenuIconType.Restore);
+            backupMenuItem.Image= CreateMenuIcon(MenuIconType.Backup);
+
+
+            loginMenu.Image=CreateMenuIcon(MenuIconType.Login);
+            loginMenuItem.Image=CreateMenuIcon(MenuIconType.Login);
+            logoutMenuItem.Image = CreateMenuIcon(MenuIconType.Logout);
+            changePasswordMenuItem.Image = CreateMenuIcon(MenuIconType.Password);
+
+
+
+
+            receiptRegisterMenuItem.Image = CreateMenuIcon(MenuIconType.Receipt);
+            paymentRegisterMenuItem.Image = CreateMenuIcon(MenuIconType.Payment);
+
+
+            salesRegisterMenuItem.Image = CreateMenuIcon(MenuIconType.Sales);
+            purchaseRegisterMenuItem.Image = CreateMenuIcon(MenuIconType.Purchase);
+
+
         }
 
         //اعدادات قاعدة البيانات
         //private DatabaseSettingsForm databaseSettingsForm;
         //ربط قاعدة البيانات
-        private void connectionMenuItem_Click_1(object sender, EventArgs e)
-        {
-            //  OpenDatabaseSettingsForm();
-        }
-        //private void connectionMenuItem_Click(object? sender, EventArgs e)
-        //{
-        //    OpenDatabaseSettingsForm();
-        //}
-
-       
-        //private void backupMenuItem_Click(object? sender, EventArgs e)
-        //{
-        //    OpenDatabaseSettingsForm();
-        //}
-      
-        //private void restoreMenuItem_Click(object? sender, EventArgs e)
-        //{
-        //    OpenDatabaseSettingsForm();
-        //}
-
-        //private void OpenDatabaseSettingsForm()
-        //{
-        //    if (databaseSettingsForm == null || databaseSettingsForm.IsDisposed)
-        //        databaseSettingsForm = new DatabaseSettingsForm();
-
-        //    databaseSettingsForm.ShowDialog(this);
-        //}
-        //----------------------------------------------------نهاية اعداد قاعدة البيانات
-
-
+ 
         private void frm_Main_Load(object sender, EventArgs e)
         {
             // Keep the content area responsive to the main window size.

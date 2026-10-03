@@ -14,9 +14,7 @@ namespace AccountingSystemForWindowsFormLast.Forms.Authentication
         {
             InitializeComponent();
             UiTheme.Apply(this);
-            UiTheme.StyleButton(btnLogin, Accent.Primary);
-            UiTheme.StyleButton(btnExit, Accent.Danger);
-            UiTheme.Apply(this.txtPassword);
+
 
             _userService = new UserService();
 
@@ -26,9 +24,10 @@ namespace AccountingSystemForWindowsFormLast.Forms.Authentication
 
             AcceptButton = btnLogin;
             CancelButton = btnExit;
+            btnExit.BackColor= Color.Red;
+            btnExit.ForeColor = Color.White;
 
 
-        
         }
 
         private void btnLogin_Click(object? sender, EventArgs e)

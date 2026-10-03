@@ -10,6 +10,7 @@ namespace AccountingSystemForWindowsFormLast.Forms
 
         public JournalEntries()
         {
+            MessageBox.Show("الواجهة غير مكتمله بشكل مثالي");
             InitializeComponent();
 
             LoadAccounts();
@@ -32,11 +33,11 @@ namespace AccountingSystemForWindowsFormLast.Forms
             // Ensure dgvDetails columns have expected names
             if (dgvDetails.Columns.Count == 5)
             {
-                dgvDetails.Columns[0].Name = "AccountId";
-                dgvDetails.Columns[1].Name = "AccountName";
-                dgvDetails.Columns[2].Name = "Debit";
-                dgvDetails.Columns[3].Name = "Credit";
-                dgvDetails.Columns[4].Name = "LineDescription";
+                dgvDetails.Columns[0].Name = "رقم الحساب";
+                dgvDetails.Columns[1].Name = "اسم الحساب";
+                dgvDetails.Columns[2].Name = "مدين";
+                dgvDetails.Columns[3].Name = "دائن";
+                dgvDetails.Columns[4].Name = "الوصف";
                 dgvDetails.Columns[0].Visible = false;
             }
 

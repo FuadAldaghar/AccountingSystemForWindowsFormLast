@@ -52,17 +52,17 @@ namespace AccountingSystemForWindowsFormLast.Forms.Authentication
             headerPanel.Location = new Point(0, 0);
             headerPanel.Margin = new Padding(3, 4, 3, 4);
             headerPanel.Name = "headerPanel";
-            headerPanel.Size = new Size(544, 93);
+            headerPanel.Size = new Size(553, 93);
             headerPanel.TabIndex = 0;
             // 
             // lblTitle
             // 
             lblTitle.Dock = DockStyle.Fill;
             lblTitle.Font = new System.Drawing.Font("Segoe UI", 16F, FontStyle.Bold);
-            lblTitle.ForeColor = Color.White;
+            lblTitle.ForeColor = Color.FromArgb(64, 64, 0);
             lblTitle.Location = new Point(0, 0);
             lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(544, 93);
+            lblTitle.Size = new Size(553, 93);
             lblTitle.TabIndex = 0;
             lblTitle.Text = "تغيير كلمة المرور";
             lblTitle.TextAlign = ContentAlignment.MiddleCenter;
@@ -132,7 +132,7 @@ namespace AccountingSystemForWindowsFormLast.Forms.Authentication
             // 
             // btnChangePassword
             // 
-            btnChangePassword.BackColor = Color.FromArgb(34, 139, 94);
+            btnChangePassword.BackColor = Color.FromArgb(0, 64, 0);
             btnChangePassword.FlatAppearance.BorderSize = 0;
             btnChangePassword.FlatStyle = FlatStyle.Flat;
             btnChangePassword.Font = new System.Drawing.Font("Segoe UI", 10F, FontStyle.Bold);
@@ -147,12 +147,12 @@ namespace AccountingSystemForWindowsFormLast.Forms.Authentication
             // 
             // btnCancel
             // 
-            btnCancel.BackColor = Color.Gainsboro;
+            btnCancel.BackColor = Color.FromArgb(192, 0, 0);
             btnCancel.FlatAppearance.BorderSize = 0;
             btnCancel.FlatStyle = FlatStyle.Flat;
             btnCancel.Font = new System.Drawing.Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnCancel.ForeColor = Color.Black;
-            btnCancel.Location = new Point(40, 420);
+            btnCancel.ForeColor = Color.Transparent;
+            btnCancel.Location = new Point(57, 420);
             btnCancel.Margin = new Padding(3, 4, 3, 4);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(223, 56);
@@ -174,7 +174,7 @@ namespace AccountingSystemForWindowsFormLast.Forms.Authentication
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
-            ClientSize = new Size(544, 497);
+            ClientSize = new Size(553, 553);
             Controls.Add(btnCancel);
             Controls.Add(btnChangePassword);
             Controls.Add(lblMessage);

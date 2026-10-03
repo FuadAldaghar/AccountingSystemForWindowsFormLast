@@ -63,7 +63,7 @@ namespace AccountingSystemForWindowsFormLast.Forms.Authentication
             mainPanel.Margin = new Padding(3, 4, 3, 4);
             mainPanel.Name = "mainPanel";
             mainPanel.Padding = new Padding(51, 40, 51, 40);
-            mainPanel.Size = new Size(594, 827);
+            mainPanel.Size = new Size(576, 670);
             mainPanel.TabIndex = 0;
             // 
             // lblMessage
@@ -78,23 +78,23 @@ namespace AccountingSystemForWindowsFormLast.Forms.Authentication
             // 
             // btnExit
             // 
-            btnExit.BackColor = Color.FromArgb(235, 235, 235);
+            btnExit.BackColor = Color.FromArgb(192, 0, 0);
             btnExit.Cursor = Cursors.Hand;
             btnExit.FlatAppearance.BorderSize = 0;
             btnExit.FlatStyle = FlatStyle.Flat;
             btnExit.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
-            btnExit.ForeColor = Color.FromArgb(60, 60, 60);
+            btnExit.ForeColor = Color.White;
             btnExit.Location = new Point(303, 540);
             btnExit.Margin = new Padding(3, 4, 3, 4);
             btnExit.Name = "btnExit";
-            btnExit.Size = new Size(240, 64);
+            btnExit.Size = new Size(240, 52);
             btnExit.TabIndex = 3;
             btnExit.Text = "خروج";
             btnExit.UseVisualStyleBackColor = false;
             // 
             // btnLogin
             // 
-            btnLogin.BackColor = Color.FromArgb(22, 130, 83);
+            btnLogin.BackColor = Color.FromArgb(64, 64, 0);
             btnLogin.Cursor = Cursors.Hand;
             btnLogin.FlatAppearance.BorderSize = 0;
             btnLogin.FlatStyle = FlatStyle.Flat;
@@ -103,7 +103,7 @@ namespace AccountingSystemForWindowsFormLast.Forms.Authentication
             btnLogin.Location = new Point(51, 540);
             btnLogin.Margin = new Padding(3, 4, 3, 4);
             btnLogin.Name = "btnLogin";
-            btnLogin.Size = new Size(240, 64);
+            btnLogin.Size = new Size(251, 52);
             btnLogin.TabIndex = 2;
             btnLogin.Text = "تسجيل الدخول";
             btnLogin.UseVisualStyleBackColor = false;
@@ -112,12 +112,12 @@ namespace AccountingSystemForWindowsFormLast.Forms.Authentication
             // chkShowPassword
             // 
             chkShowPassword.AutoSize = true;
-            chkShowPassword.Font = new Font("Segoe UI", 9.5F);
+            chkShowPassword.Font = new Font("Segoe UI", 12F);
             chkShowPassword.ForeColor = Color.FromArgb(80, 80, 80);
-            chkShowPassword.Location = new Point(51, 467);
+            chkShowPassword.Location = new Point(51, 492);
             chkShowPassword.Margin = new Padding(3, 4, 3, 4);
             chkShowPassword.Name = "chkShowPassword";
-            chkShowPassword.Size = new Size(145, 25);
+            chkShowPassword.Size = new Size(176, 32);
             chkShowPassword.TabIndex = 4;
             chkShowPassword.Text = "إظهار كلمة المرور";
             chkShowPassword.UseVisualStyleBackColor = true;
@@ -129,10 +129,12 @@ namespace AccountingSystemForWindowsFormLast.Forms.Authentication
             txtPassword.Font = new Font("Segoe UI", 12F);
             txtPassword.Location = new Point(51, 413);
             txtPassword.Margin = new Padding(3, 4, 3, 4);
+            txtPassword.Multiline = true;
             txtPassword.Name = "txtPassword";
             txtPassword.PasswordChar = '●';
-            txtPassword.Size = new Size(491, 34);
+            txtPassword.Size = new Size(491, 46);
             txtPassword.TabIndex = 1;
+            txtPassword.Text = "admin";
             // 
             // lblPassword
             // 
@@ -141,9 +143,9 @@ namespace AccountingSystemForWindowsFormLast.Forms.Authentication
             lblPassword.ForeColor = Color.FromArgb(40, 40, 40);
             lblPassword.Location = new Point(440, 384);
             lblPassword.Name = "lblPassword";
-            lblPassword.Size = new Size(100, 25);
+            lblPassword.Size = new Size(105, 25);
             lblPassword.TabIndex = 5;
-            lblPassword.Text = "كلمة المرور";
+            lblPassword.Text = "كلمة المرور:";
             // 
             // txtUserName
             // 
@@ -152,9 +154,11 @@ namespace AccountingSystemForWindowsFormLast.Forms.Authentication
             txtUserName.Font = new Font("Segoe UI", 12F);
             txtUserName.Location = new Point(51, 307);
             txtUserName.Margin = new Padding(3, 4, 3, 4);
+            txtUserName.Multiline = true;
             txtUserName.Name = "txtUserName";
-            txtUserName.Size = new Size(491, 34);
+            txtUserName.Size = new Size(491, 47);
             txtUserName.TabIndex = 0;
+            txtUserName.Text = "admin";
             // 
             // lblUserName
             // 
@@ -163,30 +167,30 @@ namespace AccountingSystemForWindowsFormLast.Forms.Authentication
             lblUserName.ForeColor = Color.FromArgb(40, 40, 40);
             lblUserName.Location = new Point(418, 278);
             lblUserName.Name = "lblUserName";
-            lblUserName.Size = new Size(125, 25);
+            lblUserName.Size = new Size(130, 25);
             lblUserName.TabIndex = 6;
-            lblUserName.Text = "اسم المستخدم";
+            lblUserName.Text = "اسم المستخدم:";
             // 
             // headerPanel
             // 
-            headerPanel.BackColor = Color.FromArgb(22, 130, 83);
+            headerPanel.BackColor = Color.FromArgb(0, 64, 0);
             headerPanel.Controls.Add(lblSubtitle);
             headerPanel.Controls.Add(lblTitle);
             headerPanel.Dock = DockStyle.Top;
             headerPanel.Location = new Point(51, 40);
             headerPanel.Margin = new Padding(3, 4, 3, 4);
             headerPanel.Name = "headerPanel";
-            headerPanel.Size = new Size(492, 200);
+            headerPanel.Size = new Size(474, 200);
             headerPanel.TabIndex = 7;
             // 
             // lblSubtitle
             // 
             lblSubtitle.Dock = DockStyle.Bottom;
-            lblSubtitle.Font = new Font("Segoe UI", 11F);
-            lblSubtitle.ForeColor = Color.FromArgb(225, 255, 240);
+            lblSubtitle.Font = new Font("Segoe UI", 14F);
+            lblSubtitle.ForeColor = Color.FromArgb(0, 64, 0);
             lblSubtitle.Location = new Point(0, 140);
             lblSubtitle.Name = "lblSubtitle";
-            lblSubtitle.Size = new Size(492, 60);
+            lblSubtitle.Size = new Size(474, 60);
             lblSubtitle.TabIndex = 0;
             lblSubtitle.Text = "تسجيل الدخول إلى النظام";
             lblSubtitle.TextAlign = ContentAlignment.MiddleCenter;
@@ -194,13 +198,13 @@ namespace AccountingSystemForWindowsFormLast.Forms.Authentication
             // lblTitle
             // 
             lblTitle.Dock = DockStyle.Top;
-            lblTitle.Font = new Font("Segoe UI", 22F, FontStyle.Bold);
-            lblTitle.ForeColor = Color.White;
+            lblTitle.Font = new Font("Segoe UI", 15F, FontStyle.Bold);
+            lblTitle.ForeColor = Color.FromArgb(0, 64, 0);
             lblTitle.Location = new Point(0, 0);
             lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(492, 87);
+            lblTitle.Size = new Size(474, 87);
             lblTitle.TabIndex = 1;
-            lblTitle.Text = "نظام المحاسبة";
+            lblTitle.Text = "اهلا بك في نظام ادارة   المبيعات والمشتريات";
             lblTitle.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // LoginForm
@@ -208,7 +212,7 @@ namespace AccountingSystemForWindowsFormLast.Forms.Authentication
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(245, 250, 247);
-            ClientSize = new Size(594, 827);
+            ClientSize = new Size(576, 670);
             Controls.Add(mainPanel);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             Margin = new Padding(3, 4, 3, 4);
@@ -218,7 +222,7 @@ namespace AccountingSystemForWindowsFormLast.Forms.Authentication
             RightToLeft = RightToLeft.Yes;
             RightToLeftLayout = true;
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "تسجيل الدخول - نظام المحاسبة";
+            Text = "تسجيل الدخول";
             mainPanel.ResumeLayout(false);
             mainPanel.PerformLayout();
             headerPanel.ResumeLayout(false);

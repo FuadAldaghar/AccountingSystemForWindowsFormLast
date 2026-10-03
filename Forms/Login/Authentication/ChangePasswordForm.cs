@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using AccountingSystemForWindowsFormLast.Helpers;
 using AccountingSystemForWindowsFormLast.Helpers.users;
 using AccountingSystemForWindowsFormLast.Services;
 
@@ -12,7 +13,7 @@ namespace AccountingSystemForWindowsFormLast.Forms.Authentication
         public ChangePasswordForm()
         {
             InitializeComponent();
-
+            UiTheme.Apply(this);
             _userService = new UserService();
 
             btnChangePassword.Click += btnChangePassword_Click;
@@ -20,6 +21,9 @@ namespace AccountingSystemForWindowsFormLast.Forms.Authentication
 
             AcceptButton = btnChangePassword;
             CancelButton = btnCancel;
+
+            btnCancel.BackColor = Color.Red;
+            btnCancel.ForeColor = Color.White;
         }
 
         private void btnChangePassword_Click(object? sender, EventArgs e)

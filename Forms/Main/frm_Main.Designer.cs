@@ -35,7 +35,6 @@ namespace AccountingSystemForWindowsFormLast
         private System.Windows.Forms.ToolStripMenuItem changePasswordMenuItem;
 
         private System.Windows.Forms.ToolStripMenuItem databaseMenu;
-        private System.Windows.Forms.ToolStripMenuItem connectionMenuItem;
         private System.Windows.Forms.ToolStripMenuItem backupMenuItem;
         private System.Windows.Forms.ToolStripMenuItem restoreMenuItem;
 
@@ -68,7 +67,6 @@ namespace AccountingSystemForWindowsFormLast
             logoutMenuItem = new ToolStripMenuItem();
             changePasswordMenuItem = new ToolStripMenuItem();
             databaseMenu = new ToolStripMenuItem();
-            connectionMenuItem = new ToolStripMenuItem();
             backupMenuItem = new ToolStripMenuItem();
             restoreMenuItem = new ToolStripMenuItem();
             systemMenu = new ToolStripMenuItem();
@@ -194,30 +192,23 @@ namespace AccountingSystemForWindowsFormLast
             // 
             // databaseMenu
             // 
-            databaseMenu.DropDownItems.AddRange(new ToolStripItem[] { connectionMenuItem, backupMenuItem, restoreMenuItem });
+            databaseMenu.DropDownItems.AddRange(new ToolStripItem[] { backupMenuItem, restoreMenuItem });
             databaseMenu.Name = "databaseMenu";
             databaseMenu.Padding = new Padding(10, 2, 10, 2);
             databaseMenu.Size = new Size(156, 33);
             databaseMenu.Text = "إعدادات قاعدة البيانات";
             // 
-            // connectionMenuItem
-            // 
-            connectionMenuItem.Name = "connectionMenuItem";
-            connectionMenuItem.Size = new Size(220, 30);
-            connectionMenuItem.Text = "ربط قاعدة البيانات";
-            connectionMenuItem.Click += connectionMenuItem_Click_1;
-            // 
             // backupMenuItem
             // 
             backupMenuItem.Name = "backupMenuItem";
-            backupMenuItem.Size = new Size(220, 30);
+            backupMenuItem.Size = new Size(224, 30);
             backupMenuItem.Text = "نسخ احتياطي";
             backupMenuItem.Click += backupMenuItem_Click_1;
             // 
             // restoreMenuItem
             // 
             restoreMenuItem.Name = "restoreMenuItem";
-            restoreMenuItem.Size = new Size(220, 30);
+            restoreMenuItem.Size = new Size(224, 30);
             restoreMenuItem.Text = "استعادة قاعدة البيانات";
             restoreMenuItem.Click += restoreMenuItem_Click_1;
             // 
@@ -410,7 +401,8 @@ namespace AccountingSystemForWindowsFormLast
             Backup,
             Restore,
             Register,
-            Journal
+            Journal,
+            New
         }
 
         // =============================================================
@@ -427,7 +419,7 @@ namespace AccountingSystemForWindowsFormLast
                 g.Clear(Color.Transparent);
 
                 // Accounting system palette: deep green + light gold.
-                Color green = Color.FromArgb(24, 78, 58);
+                Color green = Color.Green;
                 Color gold = Color.FromArgb(214, 170, 54);
                 Color lightGold = Color.FromArgb(238, 211, 125);
                 Color dark = Color.FromArgb(70, 70, 70);
@@ -544,12 +536,17 @@ namespace AccountingSystemForWindowsFormLast
                 else if (type == MenuIconType.Login)
                 {
                     DrawRoundedRectangle(g, greenPen, 3, 3, 13, 16, 3);
+
+                    // سهم الدخول باتجاه اليسار
                     g.FillPolygon(goldBrush, new[] {
-                        new Point(11, 8), new Point(17, 8),
-                        new Point(17, 5), new Point(20, 11),
-                        new Point(17, 17), new Point(17, 14),
-                        new Point(11, 14)
-                    });
+        new Point(17, 8),
+        new Point(11, 8),
+        new Point(11, 5),
+        new Point(7, 11),
+        new Point(11, 17),
+        new Point(11, 14),
+        new Point(17, 14)
+    });
                 }
                 else if (type == MenuIconType.Logout)
                 {
@@ -561,6 +558,41 @@ namespace AccountingSystemForWindowsFormLast
                         new Point(10, 14)
                     });
                 }
+                else if (type == MenuIconType.New)
+                {
+                    // ورقة / مستند
+                    g.DrawRectangle(greenPen, 4, 3, 14, 16);
+
+                    // علامة +
+                    using Pen plusPen = new Pen(greenPen.Color, 2.5f);
+
+                    g.DrawLine(plusPen, 11, 7, 11, 15);
+                    g.DrawLine(plusPen, 7, 11, 15, 11);
+                }
+                //else if (type == MenuIconType.New)
+                //{
+                //    using Pen plusPen = new Pen(greenPen.Color, 3f);
+
+                //    // +
+                //    g.DrawLine(plusPen, 11, 4, 11, 18);
+                //    g.DrawLine(plusPen, 4, 11, 18, 11);
+                //}
+                //else if (type == MenuIconType.New)
+                //{
+                //    // علامة +
+                //    using Pen plusPen = new Pen(greenPen.Color, 2.5f);
+
+                //    // الخط العمودي
+                //    g.DrawLine(plusPen,
+                //        new Point(11, 5),
+                //        new Point(11, 17));
+
+                //    // الخط الأفقي
+                //    g.DrawLine(plusPen,
+                //        new Point(5, 11),
+                //        new Point(17, 11));
+                //}
+
                 else if (type == MenuIconType.Password)
                 {
                     g.FillRectangle(lightGoldBrush, 4, 9, 14, 10);

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using AccountingSystemForWindowsFormLast.Helpers;
 using AccountingSystemForWindowsFormLast.Services;
 
 namespace AccountingSystemForWindowsFormLast.Forms.Authentication
@@ -12,7 +13,7 @@ namespace AccountingSystemForWindowsFormLast.Forms.Authentication
         public AddUserForm()
         {
             InitializeComponent();
-
+            UiTheme.Apply(this);
             _userService = new UserService();
 
             LoadRoles();
@@ -22,6 +23,9 @@ namespace AccountingSystemForWindowsFormLast.Forms.Authentication
 
             AcceptButton = btnSave;
             CancelButton = btnCancel;
+
+            btnCancel.BackColor = Color.Red;
+            btnCancel.ForeColor = Color.White;
         }
 
 

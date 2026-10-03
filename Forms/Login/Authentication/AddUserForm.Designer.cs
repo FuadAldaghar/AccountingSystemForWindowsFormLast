@@ -63,17 +63,17 @@ namespace AccountingSystemForWindowsFormLast.Forms.Authentication
             headerPanel.Location = new Point(0, 0);
             headerPanel.Margin = new Padding(3, 4, 3, 4);
             headerPanel.Name = "headerPanel";
-            headerPanel.Size = new Size(573, 93);
+            headerPanel.Size = new Size(556, 93);
             headerPanel.TabIndex = 0;
             // 
             // lblTitle
             // 
             lblTitle.Dock = DockStyle.Fill;
             lblTitle.Font = new System.Drawing.Font("Segoe UI", 16F, FontStyle.Bold);
-            lblTitle.ForeColor = Color.White;
+            lblTitle.ForeColor = Color.FromArgb(64, 64, 0);
             lblTitle.Location = new Point(0, 0);
             lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(573, 93);
+            lblTitle.Size = new Size(556, 93);
             lblTitle.TabIndex = 0;
             lblTitle.Text = "إضافة مستخدم جديد";
             lblTitle.TextAlign = ContentAlignment.MiddleCenter;
@@ -176,7 +176,7 @@ namespace AccountingSystemForWindowsFormLast.Forms.Authentication
             // 
             // btnSave
             // 
-            btnSave.BackColor = Color.FromArgb(34, 139, 94);
+            btnSave.BackColor = Color.FromArgb(0, 64, 0);
             btnSave.FlatAppearance.BorderSize = 0;
             btnSave.FlatStyle = FlatStyle.Flat;
             btnSave.Font = new System.Drawing.Font("Segoe UI", 10F, FontStyle.Bold);
@@ -191,15 +191,15 @@ namespace AccountingSystemForWindowsFormLast.Forms.Authentication
             // 
             // btnCancel
             // 
-            btnCancel.BackColor = Color.Gainsboro;
+            btnCancel.BackColor = Color.FromArgb(192, 0, 0);
             btnCancel.FlatAppearance.BorderSize = 0;
             btnCancel.FlatStyle = FlatStyle.Flat;
             btnCancel.Font = new System.Drawing.Font("Tahoma", 9F, FontStyle.Bold);
-            btnCancel.ForeColor = Color.Black;
-            btnCancel.Location = new Point(40, 520);
+            btnCancel.ForeColor = Color.White;
+            btnCancel.Location = new Point(56, 520);
             btnCancel.Margin = new Padding(3, 4, 3, 4);
             btnCancel.Name = "btnCancel";
-            btnCancel.Size = new Size(223, 56);
+            btnCancel.Size = new Size(247, 56);
             btnCancel.TabIndex = 12;
             btnCancel.Text = "إلغاء";
             btnCancel.UseVisualStyleBackColor = false;
@@ -219,7 +219,7 @@ namespace AccountingSystemForWindowsFormLast.Forms.Authentication
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
-            ClientSize = new Size(573, 637);
+            ClientSize = new Size(556, 637);
             Controls.Add(btnCancel);
             Controls.Add(btnSave);
             Controls.Add(lblMessage);
