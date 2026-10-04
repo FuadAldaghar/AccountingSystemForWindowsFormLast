@@ -72,6 +72,7 @@ namespace AccountingSystemForWindowsFormLast.Forms
             lblCreditTotal = new Label();
             lblBalanceTitle = new Label();
             lblFinalBalance = new Label();
+            button1 = new Button();
             rootLayout.SuspendLayout();
             panelHeader.SuspendLayout();
             groupFilters.SuspendLayout();
@@ -174,8 +175,8 @@ namespace AccountingSystemForWindowsFormLast.Forms
             filtersLayout.Name = "filtersLayout";
             filtersLayout.Padding = new Padding(4, 0, 4, 8);
             filtersLayout.RowCount = 2;
-            filtersLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 56F));
-            filtersLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            filtersLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            filtersLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             filtersLayout.Size = new Size(1129, 99);
             filtersLayout.TabIndex = 0;
             // 
@@ -183,7 +184,7 @@ namespace AccountingSystemForWindowsFormLast.Forms
             // 
             lblAccount.Anchor = AnchorStyles.Right;
             lblAccount.Font = new Font("Segoe UI", 9.5F, FontStyle.Bold);
-            lblAccount.Location = new Point(994, 18);
+            lblAccount.Location = new Point(994, 12);
             lblAccount.Name = "lblAccount";
             lblAccount.Size = new Size(125, 20);
             lblAccount.TabIndex = 0;
@@ -195,7 +196,7 @@ namespace AccountingSystemForWindowsFormLast.Forms
             cmbAccount.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             cmbAccount.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbAccount.Font = new Font("Segoe UI", 10F);
-            cmbAccount.Location = new Point(732, 11);
+            cmbAccount.Location = new Point(732, 6);
             cmbAccount.Margin = new Padding(3, 4, 10, 6);
             cmbAccount.Name = "cmbAccount";
             cmbAccount.Size = new Size(256, 31);
@@ -205,7 +206,7 @@ namespace AccountingSystemForWindowsFormLast.Forms
             // 
             lblFromDate.Anchor = AnchorStyles.Right;
             lblFromDate.Font = new Font("Segoe UI", 9.5F, FontStyle.Bold);
-            lblFromDate.Location = new Point(613, 18);
+            lblFromDate.Location = new Point(613, 12);
             lblFromDate.Name = "lblFromDate";
             lblFromDate.Size = new Size(103, 20);
             lblFromDate.TabIndex = 2;
@@ -216,7 +217,7 @@ namespace AccountingSystemForWindowsFormLast.Forms
             // 
             dtpFromDate.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             dtpFromDate.Format = DateTimePickerFormat.Short;
-            dtpFromDate.Location = new Point(419, 12);
+            dtpFromDate.Location = new Point(419, 6);
             dtpFromDate.Margin = new Padding(3, 4, 10, 6);
             dtpFromDate.Name = "dtpFromDate";
             dtpFromDate.Size = new Size(188, 30);
@@ -226,7 +227,7 @@ namespace AccountingSystemForWindowsFormLast.Forms
             // 
             lblToDate.Anchor = AnchorStyles.Right;
             lblToDate.Font = new Font("Segoe UI", 9.5F, FontStyle.Bold);
-            lblToDate.Location = new Point(300, 18);
+            lblToDate.Location = new Point(300, 12);
             lblToDate.Name = "lblToDate";
             lblToDate.Size = new Size(103, 20);
             lblToDate.TabIndex = 4;
@@ -237,7 +238,7 @@ namespace AccountingSystemForWindowsFormLast.Forms
             // 
             dtpToDate.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             dtpToDate.Format = DateTimePickerFormat.Short;
-            dtpToDate.Location = new Point(8, 12);
+            dtpToDate.Location = new Point(8, 6);
             dtpToDate.Margin = new Padding(3, 4, 4, 6);
             dtpToDate.Name = "dtpToDate";
             dtpToDate.Size = new Size(286, 30);
@@ -246,23 +247,24 @@ namespace AccountingSystemForWindowsFormLast.Forms
             // filterButtons
             // 
             filtersLayout.SetColumnSpan(filterButtons, 6);
-            filterButtons.Controls.Add(btnSearch);
+            filterButtons.Controls.Add(button1);
             filterButtons.Controls.Add(btnShowAll);
+            filterButtons.Controls.Add(btnSearch);
             filterButtons.Dock = DockStyle.Fill;
             filterButtons.FlowDirection = FlowDirection.RightToLeft;
-            filterButtons.Location = new Point(4, 56);
+            filterButtons.Location = new Point(4, 45);
             filterButtons.Margin = new Padding(0);
             filterButtons.Name = "filterButtons";
-            filterButtons.Size = new Size(1121, 35);
+            filterButtons.Size = new Size(1121, 46);
             filterButtons.TabIndex = 6;
             filterButtons.WrapContents = false;
             // 
             // btnSearch
             // 
-            btnSearch.Location = new Point(6, 6);
+            btnSearch.Location = new Point(272, 6);
             btnSearch.Margin = new Padding(6);
             btnSearch.Name = "btnSearch";
-            btnSearch.Size = new Size(114, 36);
+            btnSearch.Size = new Size(141, 36);
             btnSearch.TabIndex = 0;
             btnSearch.Text = "بحث";
             btnSearch.UseVisualStyleBackColor = false;
@@ -272,7 +274,7 @@ namespace AccountingSystemForWindowsFormLast.Forms
             btnShowAll.Location = new Point(132, 6);
             btnShowAll.Margin = new Padding(6);
             btnShowAll.Name = "btnShowAll";
-            btnShowAll.Size = new Size(114, 36);
+            btnShowAll.Size = new Size(128, 36);
             btnShowAll.TabIndex = 1;
             btnShowAll.Text = "عرض الكل";
             btnShowAll.UseVisualStyleBackColor = false;
@@ -425,6 +427,19 @@ namespace AccountingSystemForWindowsFormLast.Forms
             lblFinalBalance.Text = "0.00";
             lblFinalBalance.TextAlign = ContentAlignment.MiddleRight;
             // 
+            // button1
+            // 
+            button1.BackColor = Color.FromArgb(255, 128, 0);
+            button1.FlatStyle = FlatStyle.Popup;
+            button1.ForeColor = Color.White;
+            button1.Location = new Point(3, 3);
+            button1.Name = "button1";
+            button1.Size = new Size(120, 39);
+            button1.TabIndex = 2;
+            button1.Text = "رسالةsms";
+            button1.UseVisualStyleBackColor = false;
+            button1.Click += button1_Click;
+            // 
             // AccountStatement
             // 
             AutoScaleDimensions = new SizeF(120F, 120F);
@@ -450,5 +465,7 @@ namespace AccountingSystemForWindowsFormLast.Forms
             footerLayout.ResumeLayout(false);
             ResumeLayout(false);
         }
+
+        private Button button1;
     }
 }

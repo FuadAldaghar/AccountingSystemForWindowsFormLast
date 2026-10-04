@@ -20,6 +20,26 @@ namespace AccountingSystemForWindowsFormLast.Forms
             UiTheme.StyleButton(btnSearch, Accent.Primary);
             UiTheme.StyleButton(btnShowAll, Accent.Neutral);
 
+            ////////////////////////sms
+
+            //Button btnSms = new Button
+            //{
+            //    Name = "btnSms",
+            //    Text = "إرسال SMS",
+            //    Width = 125,
+            //    Height = 36,
+            //    Margin = new Padding(6),
+            //    Enabled = false
+            //};
+
+            //UiTheme.StyleButton(btnSms, Accent.Success);
+            //btnSms.Click += BtnSms_Click;
+            //filterButtons.Controls.Add(btnSms);
+
+            
+
+            ////////////////////
+
             _reportService = new ReportService();
             _accountService = new AccountService();
 
@@ -35,6 +55,103 @@ namespace AccountingSystemForWindowsFormLast.Forms
             LoadAccounts();
         }
 
+        //زر ارسال رسالة
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (cmbAccount.SelectedItem is not AccountItem account)
+            {
+                MessageHelper.ShowWarning(
+                    "اختر الحساب واعرض كشف الحساب أولاً.",
+                    "تنبيه");
+                return;
+            }
+
+            decimal finalBalance = GetDisplayedFinalBalance();
+
+            decimal totalDebit = 0;
+            decimal totalCredit = 0;
+
+            foreach (DataGridViewRow row in dgvStatement.Rows)
+            {
+                if (row.IsNewRow)
+                    continue;
+
+                totalDebit += ToDecimal(row.Cells["مدين"]?.Value);
+                totalCredit += ToDecimal(row.Cells["دائن"]?.Value);
+            }
+
+            (decimal due, decimal owed) =
+                CalculateCustomerAmounts(
+                    finalBalance,
+                    account.AccountNature);
+
+            using SendSmsForm form = new SendSmsForm(
+                account.AccountId,
+                account.AccountName,
+                account.AccountNature,
+                finalBalance,
+                due,
+                owed,
+                dtpFromDate.Value.Date,
+                dtpToDate.Value.Date);
+
+            form.ShowDialog(this);
+        }
+        private void BtnSms_Click(object? sender, EventArgs e)
+        {
+            
+        }
+        private decimal GetDisplayedFinalBalance()
+        {
+            if (dgvStatement.Rows.Count > 0)
+            {
+                DataGridViewRow lastRow =
+                    dgvStatement.Rows[dgvStatement.Rows.Count - 1];
+
+                return ToDecimal(lastRow.Cells["الرصيد"]?.Value);
+            }
+
+            return _reportService.GetAccountOpeningBalance(
+                Convert.ToInt32(cmbAccount.SelectedValue),
+                dtpFromDate.Value.Date);
+        }
+
+        private static (decimal due, decimal owed) CalculateCustomerAmounts(
+            decimal balance,
+            string nature)
+        {
+            // The same sign convention used by ReportService:
+            // مدين  = Debit - Credit
+            // دائن  = Credit - Debit
+            //
+            // For a debit-nature account:
+            // positive balance => customer owes us.
+            //
+            // For a credit-nature account:
+            // positive balance => we owe the customer/supplier.
+
+            if (nature == "دائن")
+            {
+                return balance >= 0
+                    ? (0, balance)
+                    : (Math.Abs(balance), 0);
+            }
+
+            return balance >= 0
+                ? (balance, 0)
+                : (0, Math.Abs(balance));
+        }
+        private static decimal ToDecimal(object? value)
+        {
+            if (value == null || value == DBNull.Value)
+                return 0;
+
+            return decimal.TryParse(
+                value.ToString(),
+                out decimal result)
+                ? result
+                : 0;
+        }
         private void LoadAccounts()
         {
             try
@@ -169,5 +286,7 @@ namespace AccountingSystemForWindowsFormLast.Forms
         {
 
         }
+
+       
     }
 }
